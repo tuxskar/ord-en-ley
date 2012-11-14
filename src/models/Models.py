@@ -4,9 +4,8 @@ Created on Nov 14, 2012
 @author: skar
 '''
 
+from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
@@ -33,6 +32,11 @@ class Client(Base):
     def __repr__(self):
         return "<Client('%s','%s','%s')>" % \
                 (self.dni, self.name, self.surname)
+                
+def get_session(echo=False, user = 'skar', password = 'mypass'):
+        engine = create_engine("mysql://"+user+":"+password+"@localhost/leyenorden" , echo=echo)
+        Base.metadata.create_all(engine)
+        return sessionmaker(engine)()
 
 if __name__ == '__main__':
 #    Before use this module you should create a user and password plus create a database
@@ -43,12 +47,12 @@ if __name__ == '__main__':
 #    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
 #    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
     
-    engine = create_engine("mysql://skar:mypass@localhost/leyenorden", 
-                           echo=False)
-        
-    Base.metadata.create_all(engine)
-    
-    session = sessionmaker(engine)()
+#    engine = create_engine("mysql://skar:mypass@localhost/leyenorden", 
+#                           echo=False)
+#        
+#    Base.metadata.create_all(engine)
+#    
+    session = get_session()
     clients = session.query(Client).all()
     print clients
     for c in clients:
