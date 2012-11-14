@@ -6,6 +6,8 @@ Created on Nov 14, 2012
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
@@ -13,11 +15,11 @@ class Client(Base):
     __tablename__ = 'clients'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    surname = Column(String)
-    dni = Column(String, unique=True)
-    email = Column(String)
-    web = Column(String)
+    name = Column(String(30))
+    surname = Column(String(60))
+    dni = Column(String(15), unique=True)
+    email = Column(String(30))
+    web = Column(String(30))
     
     def __init__(self, name=None, surname=None, 
                  dni=None, email=None, web=None):
@@ -33,4 +35,42 @@ class Client(Base):
                 (self.dni, self.name, self.surname)
 
 if __name__ == '__main__':
-    pass
+#    Before use this module you should create a user and password plus create a database
+#    called leyenorden
+#    in mysql database you should loggin into root profile and execute:
+#    > mysql -u root -p
+#    mysql> create database leyenorden;
+#    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
+#    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
+    
+    engine = create_engine("mysql://skar:mypass@localhost/leyenorden", 
+                           echo=False)
+        
+    Base.metadata.create_all(engine)
+    
+    session = sessionmaker(engine)()
+    clients = session.query(Client).all()
+    print clients
+    for c in clients:
+        print c
+    if len(clients) == 0:
+            client1 = Client('maria', 'Ortega', '12345678z')
+            client2 = Client('Josefa', 'Jimenez', '98765454s')
+            client3 = Client('Ana', 'Ramirez', '23456789r')
+            print 'Created client1-3'
+            session.add_all([client1,client2,client3])
+            session.commit()
+            print 'Added all clients'
+    else:
+        session.delete(clients[0])
+        session.commit()
+        print 'deleted clients[0]'
+
+#    session.add(client1)
+#    session.add(client2)
+#    session.add(client3)
+#    session.commit()
+#    
+#    print 'added all clients'
+    
+    
