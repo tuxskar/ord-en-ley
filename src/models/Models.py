@@ -38,21 +38,7 @@ def get_session(echo=False, user = 'skar', password = 'mypass'):
         Base.metadata.create_all(engine)
         return sessionmaker(engine)()
 
-if __name__ == '__main__':
-#    Before use this module you should create a user and password plus create a database
-#    called leyenorden
-#    in mysql database you should loggin into root profile and execute:
-#    > mysql -u root -p
-#    mysql> create database leyenorden;
-#    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
-#    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
-    
-#    engine = create_engine("mysql://skar:mypass@localhost/leyenorden", 
-#                           echo=False)
-#        
-#    Base.metadata.create_all(engine)
-#    
-    session = get_session()
+def _insert_delete_test(session):
     clients = session.query(Client).all()
     print clients
     for c in clients:
@@ -70,11 +56,14 @@ if __name__ == '__main__':
         session.commit()
         print 'deleted clients[0]'
 
-#    session.add(client1)
-#    session.add(client2)
-#    session.add(client3)
-#    session.commit()
-#    
-#    print 'added all clients'
-    
-    
+if __name__ == '__main__':
+#    Before use this module you should create a user and password plus create a database
+#    called leyenorden
+#    in mysql database you should loggin into root profile and execute:
+#    > mysql -u root -p
+#    mysql> create database leyenorden;
+#    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
+#    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
+
+    session = get_session()
+    _insert_delete_test(session)
