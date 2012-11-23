@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Nov 17, 2012
 
 @author: skar
 '''
+
 import sys
 try:  
     import pygtk  
@@ -33,6 +35,8 @@ class main_view(object):
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
         
+        self.liststore = self.builder.get_object("client_store")
+        
         self.window = self.builder.get_object(self.main_window_name)
         
         dic = {
@@ -40,9 +44,17 @@ class main_view(object):
                }
         self.builder.connect_signals(dic)
         
+        self.liststore.append(["primera","cosa", "añadida"])
+    
+    def add_row_client(self, client_column, pos = None):
+        if pos != None:
+            self.liststore.append(client_column)
+        else:
+            self.liststore.insert(pos, client_column)
+    
         
     def quit(self, widget):
-        sys.exit(0)
+        gtk.main_quit()
 
 if __name__ == '__main__':
     gui = main_view()

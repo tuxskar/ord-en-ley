@@ -5,19 +5,12 @@
   <object class="GtkListStore" id="client_store">
     <columns>
       <!-- column-name name -->
-      <column type="gchar"/>
+      <column type="gchararray"/>
       <!-- column-name surname -->
-      <column type="gchar"/>
+      <column type="gchararray"/>
       <!-- column-name dni -->
-      <column type="gchar"/>
+      <column type="gchararray"/>
     </columns>
-    <data>
-      <row>
-        <col id="0"/>
-        <col id="1"/>
-        <col id="2"/>
-      </row>
-    </data>
   </object>
   <object class="GtkWindow" id="main_view">
     <property name="can_focus">False</property>
@@ -253,6 +246,39 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">client_store</property>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="name_column">
+                        <property name="title" translatable="yes">Name</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="name_cell"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="surname_column">
+                        <property name="title" translatable="yes">Surname</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="surname_cell"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="dni_column">
+                        <property name="title" translatable="yes">DNI</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="dni_cell"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>
