@@ -51,10 +51,10 @@ def _insert_delete_test(session):
             session.add_all([client1,client2,client3])
             session.commit()
             print 'Added all clients'
-    else:
-        session.delete(clients[0])
-        session.commit()
-        print 'deleted clients[0]'
+#    else:
+#        session.delete(clients[0])
+#        session.commit()
+#        print 'deleted clients[0]'
 
 if __name__ == '__main__':
 #    Before use this module you should create a user and password plus create a database

@@ -10,7 +10,7 @@ class db_manager(object):
     This module is the layer between physical DB to controller
     '''
 
-    def __init__(self, session = None, user_name = None, user_password=None):
+    def __init__(self, user_name = None, user_password=None, session = None):
         '''
         This constructor has at least a session object to start petitions agains 
         '''
@@ -23,6 +23,7 @@ class db_manager(object):
         
     def get_all_clients(self):
         return self.session.query(Models.Client).all()
+    
 
 if __name__ == '__main__':
     dbman = db_manager()

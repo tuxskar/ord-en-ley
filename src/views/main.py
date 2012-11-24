@@ -13,8 +13,7 @@ except:
     pass  
 
 try:  
-    import gtk  
-    import gtk.glade  
+    import gtk   
 except:  
     print("GTK Not Availible")
     sys.exit(1)
@@ -44,14 +43,16 @@ class main_view(object):
                }
         self.builder.connect_signals(dic)
         
-        self.liststore.append(["primera","cosa", "añadida"])
+#        self.liststore.append(["primera","cosa", "añadida"])
     
     def add_row_client(self, client_column, pos = None):
-        if pos != None:
+        if pos == None:
             self.liststore.append(client_column)
         else:
             self.liststore.insert(pos, client_column)
     
+    def show(self):
+        self.window.show()
         
     def quit(self, widget):
         gtk.main_quit()

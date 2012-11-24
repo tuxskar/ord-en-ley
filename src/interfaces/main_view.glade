@@ -263,7 +263,7 @@
                         <child>
                           <object class="GtkCellRendererText" id="surname_cell"/>
                           <attributes>
-                            <attribute name="text">0</attribute>
+                            <attribute name="text">1</attribute>
                           </attributes>
                         </child>
                       </object>
