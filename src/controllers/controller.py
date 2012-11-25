@@ -9,7 +9,8 @@ try:
 except:  
     pass  
 from db import db_manager
-from views import main
+import views.main
+import views.client
 import gtk
 
 class Controller(object):
@@ -25,11 +26,17 @@ class Controller(object):
         self.db_manager = db_manager.db_manager(user_name, user_password)
     
     def init_main(self):
-        self.main_view = main.main_view()
+        self.main_view = views.main.main_view()
         for client in self.db_manager.get_all_clients():
             row_client = [client.name, client.surname, client.dni]
             self.main_view.add_row_client(row_client)
         self.main_view.show()
+        
+    def show_client_info(self, dni):
+##        self.client_info = client_view(client)
+        client = self.db_manager.get_client(dni)
+        self.client_info = views.client.client_view(client)
+        self.client_info.show()
 
 if __name__ == '__main__':
     cont = Controller()

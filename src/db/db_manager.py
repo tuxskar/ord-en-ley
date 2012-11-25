@@ -24,6 +24,8 @@ class db_manager(object):
     def get_all_clients(self):
         return self.session.query(Models.Client).all()
     
+    def get_client(self, dni):
+        return self.session.query(Models.Client).filter(Models.Client.dni==dni).one()
 
 if __name__ == '__main__':
     dbman = db_manager()

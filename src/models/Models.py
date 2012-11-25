@@ -44,9 +44,9 @@ def _insert_delete_test(session):
     for c in clients:
         print c
     if len(clients) == 0:
-            client1 = Client('maria', 'Ortega', '12345678z')
-            client2 = Client('Josefa', 'Jimenez', '98765454s')
-            client3 = Client('Ana', 'Ramirez', '23456789r')
+            client1 = Client('maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
+            client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
+            client3 = Client('Ana', 'Ramirez', '23456789r', web="www.anaramirez.tk")
             print 'Created client1-3'
             session.add_all([client1,client2,client3])
             session.commit()

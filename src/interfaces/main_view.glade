@@ -197,7 +197,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">left</property>
-            <property name="homogeneous">True</property>
             <child>
               <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
@@ -246,6 +245,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">client_store</property>
+                    <signal name="row-activated" handler="on_client_tree_row_activated" swapped="no"/>
                     <child>
                       <object class="GtkTreeViewColumn" id="name_column">
                         <property name="title" translatable="yes">Name</property>
@@ -299,7 +299,14 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">TODO</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label3">
@@ -313,7 +320,14 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkLabel" id="label6">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">TODO</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label4">

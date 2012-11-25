@@ -18,6 +18,8 @@ except:
     print("GTK Not Availible")
     sys.exit(1)
 
+import controllers.controller
+
 class main_view(object):
     '''
     This is the main view that represent the whole application dashboard
@@ -40,8 +42,11 @@ class main_view(object):
         
         dic = {
         "on_main_view_destroy" : self.quit,
+        "on_client_tree_row_activated" : self.row_activated,
                }
         self.builder.connect_signals(dic)
+        
+        self.controller = controllers.controller.Controller()
         
 #        self.liststore.append(["primera","cosa", "añadida"])
     
@@ -51,6 +56,13 @@ class main_view(object):
         else:
             self.liststore.insert(pos, client_column)
     
+    def row_activated(self, tree_view, iters, column):
+        treeselection = tree_view.get_selection()
+        model, treeiter = treeselection.get_selected()
+        dni = self.liststore.get_value(treeiter, 2)
+        self.controller.show_client_info(dni)
+        
+        
     def show(self):
         self.window.show()
         
