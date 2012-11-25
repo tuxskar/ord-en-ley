@@ -65,6 +65,9 @@ class main_view(object):
         
     def show(self):
         self.window.show()
+    
+    def hide(self):
+        self.window.hide()
         
     def quit(self, widget):
         gtk.main_quit()

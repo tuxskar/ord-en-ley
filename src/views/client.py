@@ -24,7 +24,7 @@ class client_view(object):
 
     def __init__(self, client=None):
         '''
-        TODO
+        
         '''
         if client == None:
             print "Unable to build client info view with a None client"
@@ -53,10 +53,14 @@ class client_view(object):
             self.web_entry.set_text(_None_to_str(client.web))
     
     def quit(self, widget):
-        gtk.quit_add(1,sys.exit(0))
+#        gtk.main_quit()
+        self.hide()
     
     def show(self):
         self.window.show()
+    
+    def hide(self):
+        self.window.hide()
         
 def _None_to_str(txt):
     if txt == None:
