@@ -43,6 +43,7 @@ class main_view(object):
         dic = {
         "on_main_view_destroy" : self.quit,
         "on_client_tree_row_activated" : self.row_activated,
+        "on_new_client_clicked" : self.new_client,
                }
         self.builder.connect_signals(dic)
         
@@ -59,6 +60,9 @@ class main_view(object):
         treeiter = self.liststore.get_iter(path)
         dni = self.liststore.get_value(treeiter, 2)
         self.controller.show_client_info(dni)
+    
+    def new_client(self, new_button):
+        self.controller.show_client_info(None, kind="new")
         
     def show(self):
         self.window.show()

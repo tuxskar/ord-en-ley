@@ -26,6 +26,10 @@ class db_manager(object):
     
     def get_client(self, dni):
         return self.session.query(Models.Client).filter(Models.Client.dni==dni).one()
+    
+    def insert_client(self, client):
+        self.session.add(client)
+        self.session.commit()
 
 if __name__ == '__main__':
     dbman = db_manager()

@@ -32,11 +32,17 @@ class Controller(object):
             self.main_view.add_row_client(row_client)
         self.main_view.show()
         
-    def show_client_info(self, dni):
+    def show_client_info(self, dni=None, kind=None):
 ##        self.client_info = client_view(client)
-        client = self.db_manager.get_client(dni)
-        self.client_info = views.client.client_view(client)
+        if dni!=None:
+            client = self.db_manager.get_client(dni)
+            self.client_info = views.client.client_view(client)
+        else:
+            self.client_info = views.client.client_view(kind=kind)
         self.client_info.show()
+    
+    def insert_new_client(self, client):
+        self.db_manager.insert_client(client)
 
 if __name__ == '__main__':
     cont = Controller()
