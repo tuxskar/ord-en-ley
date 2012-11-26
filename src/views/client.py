@@ -66,8 +66,7 @@ class client_view(object):
         # TODO check dni is not none
         dni = self.dni_entry.get_text()
         if dni=="":
-            print "dni empty"
-            self.warning_label.set_text("Warning, dni field must be filled")
+            self.warning_label.set_text("Warning, dni field must be filled  ")
             self.warning_label.show()
         else:
             self.warning_label.hide()
@@ -77,8 +76,6 @@ class client_view(object):
                                       self.email_entry.get_text(),
                                       self.web_entry.get_text(),
                                       )
-            print "New apply clicked client: "
-            print client
             self.controller.insert_new_client(client)
         
     
