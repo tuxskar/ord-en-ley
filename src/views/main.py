@@ -48,7 +48,6 @@ class main_view(object):
         
         self.controller = controllers.controller.Controller()
         
-#        self.liststore.append(["primera","cosa", "añadida"])
     
     def add_row_client(self, client_column, pos = None):
         if pos == None:
@@ -56,12 +55,10 @@ class main_view(object):
         else:
             self.liststore.insert(pos, client_column)
     
-    def row_activated(self, tree_view, iters, column):
-        treeselection = tree_view.get_selection()
-        model, treeiter = treeselection.get_selected()
+    def row_activated(self, tree_view, path, column):
+        treeiter = self.liststore.get_iter(path)
         dni = self.liststore.get_value(treeiter, 2)
         self.controller.show_client_info(dni)
-        
         
     def show(self):
         self.window.show()
