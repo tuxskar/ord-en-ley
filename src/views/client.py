@@ -40,7 +40,8 @@ class client_view(object):
         self.dni_entry = self.builder.get_object("dni_entry")
         self.email_entry = self.builder.get_object("email_entry")
         self.web_entry = self.builder.get_object("web_entry")
-            
+        self.warning_label = self.builder.get_object("warning_label")    
+        
         dic = {
             "on_client_info_destroy" : self.quit,
             "on_cancel_clicked" : self.quit,
@@ -63,15 +64,22 @@ class client_view(object):
     
     def new_apply(self, apply_button):
         # TODO check dni is not none
-        client = models.Models.Client(self.name_entry.get_text(),
+        dni = self.dni_entry.get_text()
+        if dni=="":
+            print "dni empty"
+            self.warning_label.set_text("Warning, dni field must be filled")
+            self.warning_label.show()
+        else:
+            self.warning_label.hide()
+            client = models.Models.Client(self.name_entry.get_text(),
                                       self.surname_entry.get_text(),
                                       self.dni_entry.get_text(),
                                       self.email_entry.get_text(),
                                       self.web_entry.get_text(),
                                       )
-        print "New apply clicked client: "
-        print client
-    #self.controller.insert_new_client(client)
+            print "New apply clicked client: "
+            print client
+            self.controller.insert_new_client(client)
         
     
     def quit(self, widget):
