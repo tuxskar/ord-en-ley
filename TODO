@@ -1,8 +1,5 @@
 Issues
-close client_info when new client is saved
-check if new client is already in the system
-refresh main_view when you add new client
+
 
 TODO:
-Delete client when cancel button in main_view is clicked
-Modify client using client_view
+
