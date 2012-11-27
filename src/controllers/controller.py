@@ -27,13 +27,12 @@ class Controller(object):
     
     def init_main(self):
         self.main_view = views.main.main_view()
-        for client in self.db_manager.get_all_clients():
-            row_client = [client.name, client.surname, client.dni]
+        for client in self.db_manager.get_client_columns():
+            row_client = [client[0], client[1], client[2]]
             self.main_view.add_row_client(row_client)
         self.main_view.show()
         
     def show_client_info(self, dni=None, kind=None):
-##        self.client_info = client_view(client)
         if dni!=None:
             client = self.db_manager.get_client(dni)
             self.client_info = views.client.client_view(client)

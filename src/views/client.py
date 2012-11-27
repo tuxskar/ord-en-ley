@@ -13,9 +13,10 @@ except:
 try:  
     import gtk   
 except:  
-    print("GTK Not Availible")
+    print("GTK Not Available")
     sys.exit(1)
-from db import db_manager
+
+import db.db_manager
 import models.Models
 import controllers.controller
 
@@ -80,7 +81,6 @@ class client_view(object):
         
     
     def quit(self, widget):
-#        gtk.main_quit()
         self.hide()
     
     def show(self):
@@ -95,7 +95,7 @@ def _None_to_str(txt):
     return txt
         
 if __name__ == '__main__':
-    db_man = db_manager.db_manager()
+    db_man = db.db_manager.db_manager()
     client = db_man.get_all_clients()[0]
     cl_view = client_view(client)
     cl_view.window.show()    

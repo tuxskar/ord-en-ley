@@ -24,6 +24,11 @@ class db_manager(object):
     def get_all_clients(self):
         return self.session.query(Models.Client).all()
     
+    def get_client_columns(self):
+        return self.session.query(Models.Client.name, 
+                           Models.Client.surname,
+                           Models.Client.dni).all()
+                                             
     def get_client(self, dni):
         return self.session.query(Models.Client).filter(Models.Client.dni==dni).one()
     
@@ -33,4 +38,4 @@ class db_manager(object):
 
 if __name__ == '__main__':
     dbman = db_manager()
-    print dbman.get_all_clients()
+    print dbman.get_client_columns()

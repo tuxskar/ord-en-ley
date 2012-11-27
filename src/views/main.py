@@ -15,7 +15,7 @@ except:
 try:  
     import gtk   
 except:  
-    print("GTK Not Availible")
+    print("GTK Not Available")
     sys.exit(1)
 
 import controllers.controller
@@ -24,7 +24,6 @@ class main_view(object):
     '''
     This is the main view that represent the whole application dashboard
     '''
-#    wTree = None
 
     def __init__(self):
         '''
