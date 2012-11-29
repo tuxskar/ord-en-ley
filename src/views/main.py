@@ -18,18 +18,17 @@ except:
     print("GTK Not Available")
     sys.exit(1)
 
-import controllers.controller
-
 class main_view(object):
     '''
     This is the main view that represent the whole application dashboard
     '''
 
-    def __init__(self):
+    def __init__(self, ctrl):
         '''
         Build the main dashboard view using the main_view.glade file 
         located in interfaces
         '''
+        self.controller = ctrl
         self.filename = "../interfaces/main_view.glade"
         self.main_window_name = "main_view"
         self.builder = gtk.Builder()
@@ -46,7 +45,6 @@ class main_view(object):
                }
         self.builder.connect_signals(dic)
         
-        self.controller = controllers.controller.Controller()
         
     
     def add_row_client(self, client_column, pos = None):

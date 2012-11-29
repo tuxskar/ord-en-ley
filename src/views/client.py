@@ -18,22 +18,21 @@ except:
 
 import db.db_manager
 import models.Models
-import controllers.controller
 
 class client_view(object):
     '''
     This view show a client info
     '''
 
-    def __init__(self, client=None, kind=None):
+    def __init__(self, ctrl, client=None, kind=None):
         '''
         
         '''
+        self.controller = ctrl
         self.filename = "../interfaces/client_view.glade"
         self.main_window_name = "client_info"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
-        self.controller = controllers.controller.Controller()
         
         self.window = self.builder.get_object(self.main_window_name)
         self.name_entry = self.builder.get_object("name_entry")
@@ -64,7 +63,6 @@ class client_view(object):
         pass
     
     def new_apply(self, apply_button):
-        # TODO check dni is not none
         dni = self.dni_entry.get_text()
         if dni=="":
             self.warning_label.set_text("Warning, dni field must be filled  ")
@@ -78,6 +76,8 @@ class client_view(object):
                                       self.web_entry.get_text(),
                                       )
             self.controller.insert_new_client(client)
+            self.controller.refresh_clients_main_view(client)
+            self.window.hide()
         
     
     def quit(self, widget):
