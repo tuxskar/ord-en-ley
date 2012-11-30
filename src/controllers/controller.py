@@ -3,6 +3,10 @@ Created on Nov 17, 2012
 
 @author: skar
 '''
+import sys,os.path
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 try:  
     import pygtk  
     pygtk.require("2.0")  

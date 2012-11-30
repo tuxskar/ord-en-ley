@@ -3,7 +3,8 @@ Created on Nov 17, 2012
 
 @author: skar
 '''
-import sys
+import sys,os.path
+
 try:  
     import pygtk  
     pygtk.require("2.0")  
@@ -29,7 +30,8 @@ class client_view(object):
         
         '''
         self.controller = ctrl
-        self.filename = "../interfaces/client_view.glade"
+        dir = os.path.dirname(__file__)
+        self.filename = os.path.join(dir, "../interfaces/client_view.glade")
         self.main_window_name = "client_info"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)

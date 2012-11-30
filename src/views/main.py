@@ -4,8 +4,8 @@ Created on Nov 17, 2012
 
 @author: skar
 '''
+import sys,os.path
 
-import sys
 try:  
     import pygtk  
     pygtk.require("2.0")  
@@ -29,7 +29,8 @@ class main_view(object):
         located in interfaces
         '''
         self.controller = ctrl
-        self.filename = "../interfaces/main_view.glade"
+        dir = os.path.dirname(__file__)
+        self.filename = os.path.join(dir, "../interfaces/main_view.glade")
         self.main_window_name = "main_view"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
