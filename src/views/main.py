@@ -33,8 +33,10 @@ class main_view(object):
         self.main_window_name = "main_view"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
-        
+
+        self.treeview = self.builder.get_object("client_tree")
         self.liststore = self.builder.get_object("client_store")
+        self.notifier_label = self.builder.get_object("notifier_label")
         
         self.window = self.builder.get_object(self.main_window_name)
         
@@ -42,6 +44,7 @@ class main_view(object):
         "on_main_view_destroy" : self.quit,
         "on_client_tree_row_activated" : self.row_activated,
         "on_new_client_clicked" : self.new_client,
+        "on_delete_client_clicked" : self.delete_client,
                }
         self.builder.connect_signals(dic)
         
@@ -61,6 +64,18 @@ class main_view(object):
     def new_client(self, new_button):
         self.controller.show_client_info(None, kind="new")
         
+    def delete_client(self, new_button):
+        model, path = self.treeview.get_selection().get_selected()
+        if path != None:
+            dni = model.get_value(path, 2)
+#TODO add a pop-up view to ask if user is sure want to delete client with dni=dni
+            self.controller.delete_client(dni)
+            model.remove(path)
+            self.notifier_label.set_text("Client with dni: %s, has been deleted" % dni)
+        else:
+            self.notifier_label.set_text("Row to delete must be selected") 
+
+
     def show(self):
         self.window.show()
     

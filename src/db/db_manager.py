@@ -17,7 +17,7 @@ class db_manager(object):
         if session != None:
             self.session = session
         elif user_name != None and user_password != None:
-            self.session = Models.get_session(user_name, user_password)
+            self.session = models.get_session(user_name, user_password)
         else:
             self.session = Models.get_session()
         
@@ -31,6 +31,10 @@ class db_manager(object):
                                              
     def get_client(self, dni):
         return self.session.query(Models.Client).filter(Models.Client.dni==dni).one()
+
+    def delete_client(self, dni):
+        self.session.query(Models.Client).filter(Models.Client.dni==dni).delete()
+        self.session.commit()
     
     def insert_client(self, client):
         self.session.add(client)

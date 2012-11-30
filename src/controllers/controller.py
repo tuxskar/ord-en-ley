@@ -51,6 +51,9 @@ class Controller(object):
             self.main_view = views.main.main_view(self)
         row_client = [client.name, client.surname, client.dni]
         self.main_view.add_row_client(row_client)
+    
+    def delete_client(self, dni):
+        self.db_manager.delete_client(dni) 
 
 if __name__ == '__main__':
     cont = Controller()
