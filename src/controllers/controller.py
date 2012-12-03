@@ -59,6 +59,9 @@ class Controller(object):
     def delete_client(self, dni):
         self.db_manager.delete_client(dni) 
 
+    def to_modify(self, dni, client):
+        self.db_manager.modify_client(dni, client)
+
 if __name__ == '__main__':
     cont = Controller()
     main_view = views.main.main_view(cont)

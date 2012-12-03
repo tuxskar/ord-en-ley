@@ -42,14 +42,14 @@ class db_manager(object):
 
     def modify_client(self, dni, client):
         dic = {
-                Models.Client.name: client.name
-                Models.Client.sursurname: client.name
-                Models.Client.dni: client.dni
-                Models.Client.email: client.email
-                Models.Client.web: client.web
+                Models.Client.name : client.name,
+                Models.Client.surname : client.surname,
+                Models.Client.dni : client.dni,
+                Models.Client.email : client.email,
+                Models.Client.web : client.web,
                 }
         self.session.query(Models.Client).filter(Models.Client.dni==dni).update(dic)
-        self.commit()
+        self.session.commit()
 
 if __name__ == '__main__':
     dbman = db_manager()
