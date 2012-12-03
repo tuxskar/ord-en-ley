@@ -40,6 +40,17 @@ class db_manager(object):
         self.session.add(client)
         self.session.commit()
 
+    def modify_client(self, dni, client):
+        dic = {
+                Models.Client.name: client.name
+                Models.Client.sursurname: client.name
+                Models.Client.dni: client.dni
+                Models.Client.email: client.email
+                Models.Client.web: client.web
+                }
+        self.session.query(Models.Client).filter(Models.Client.dni==dni).update(dic)
+        self.commit()
+
 if __name__ == '__main__':
     dbman = db_manager()
     print dbman.get_client_columns()

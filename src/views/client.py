@@ -78,6 +78,13 @@ class client_view(object):
             self.warning_label.show()
         elif to_update != None:
             print "to update actual client"
+            client = models.Models.Client(self.name_entry.get_text(),
+                                      self.surname_entry.get_text(),
+                                      self.dni_entry.get_text(),
+                                      self.email_entry.get_text(),
+                                      self.web_entry.get_text(),
+                                      )
+            self.controller.to_modify(self.old_dni, client)
             #enter the modified the client with actual dni==to_update or self.old_dni, otherwise it raise a exception
         else:
             self.warning_label.hide()
