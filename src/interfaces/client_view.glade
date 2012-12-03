@@ -76,6 +76,7 @@
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <signal name="changed" handler="client_entry_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -91,6 +92,7 @@
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <signal name="changed" handler="client_entry_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -108,6 +110,7 @@
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <signal name="changed" handler="client_entry_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -125,6 +128,7 @@
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <signal name="changed" handler="client_entry_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -142,6 +146,7 @@
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <signal name="changed" handler="client_entry_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -195,7 +200,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="apply">
-                    <property name="label">gtk-apply</property>
+                    <property name="label">gtk-ok</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

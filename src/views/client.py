@@ -43,32 +43,42 @@ class client_view(object):
         self.email_entry = self.builder.get_object("email_entry")
         self.web_entry = self.builder.get_object("web_entry")
         self.warning_label = self.builder.get_object("warning_label")    
+        self.apply_button = self.builder.get_object("apply")
         
         dic = {
             "on_client_info_destroy" : self.quit,
             "on_cancel_clicked" : self.quit,
+            "client_entry_changed" : self.entry_changed,
               }
         
+        self.modified = None
         if kind == "new":    
-            dic['on_apply_clicked'] = self.new_apply    
+            dic['on_apply_clicked'] = self.save_apply    
         if client!=None:
             dic['on_apply_clicked'] = self.to_modify 
             self.name_entry.set_text(_None_to_str(client.name))
             self.surname_entry.set_text(_None_to_str(client.surname))
-            self.dni_entry.set_text(_None_to_str(client.dni))
+            self.old_dni = _None_to_str(client.dni)
+            self.dni_entry.set_text(self.old_dni)
             self.email_entry.set_text(_None_to_str(client.email))
             self.web_entry.set_text(_None_to_str(client.web))
+            self.modified = False
         
         self.builder.connect_signals(dic)
     
-    def to_modify(self):
-        pass
+    def to_modify(self, button):
+        if self.modified == True:
+            self.modified = False
+            self.save_apply(button, self.old_dni)
     
-    def new_apply(self, apply_button):
+    def save_apply(self, apply_button, to_update=None):
         dni = self.dni_entry.get_text()
         if dni=="":
             self.warning_label.set_text("Warning, dni field must be filled  ")
             self.warning_label.show()
+        elif to_update != None:
+            print "to update actual client"
+            #enter the modified the client with actual dni==to_update or self.old_dni, otherwise it raise a exception
         else:
             self.warning_label.hide()
             client = models.Models.Client(self.name_entry.get_text(),
@@ -81,7 +91,11 @@ class client_view(object):
             self.controller.refresh_clients_main_view(client)
             self.window.hide()
         
-    
+    def entry_changed(self, widget):
+        if self.modified == False:
+            self.modified = True
+            self.apply_button.set_label("Save")
+
     def quit(self, widget):
         self.hide()
     
