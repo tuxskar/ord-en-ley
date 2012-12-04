@@ -32,11 +32,8 @@ class Client(Base):
     def __repr__(self):
         return "<Client('%s','%s','%s')>" % \
                 (self.dni, self.name, self.surname)
-    def insert_test(self,session):
+def insert_test(session):
         clients = session.query(Client).all()
-        print clients
-        for c in clients:
-            print c
         if len(clients) == 0:
             client1 = Client('Maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
             client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
@@ -48,10 +45,12 @@ class Client(Base):
             print 'Added all clients'
             print a
                 
-def get_session(echo=False, user = 'dbuser', password = 'mypass', sqlite=True):
+def get_session(user = None, password = None, echo=False, sqlite=True):
     if sqlite:
         engine = create_engine("sqlite:///leyenorden.db" , echo=echo)
     else:
+        print user
+        print password
         engine = create_engine("mysql://"+user+":"+password+"@localhost/leyenorden" , echo=echo)
     Base.metadata.create_all(engine)
     return sessionmaker(engine)()

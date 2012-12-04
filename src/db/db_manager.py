@@ -17,7 +17,7 @@ class db_manager(object):
         if session != None:
             self.session = session
         elif user_name != None and user_password != None:
-            self.session = models.get_session(user_name, user_password)
+            self.session = Models.get_session(user_name, user_password, sqlite=False)
         else:
             self.session = Models.get_session()
         
@@ -52,7 +52,7 @@ class db_manager(object):
         self.session.commit()
 
     def insert_test_clients(self):
-        Models.Client().insert_test(self.session)
+        Models.insert_test(self.session)
 
 if __name__ == '__main__':
     dbman = db_manager()
