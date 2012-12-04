@@ -48,12 +48,20 @@ class main_view(object):
         "on_delete_client_clicked" : self.delete_client,
                }
         self.builder.connect_signals(dic)
-        
+        self.values = {}
         
     
     def add_row_client(self, client_column, pos = None):
+        #TODO optimitation using the old position of the client that you have update
         if pos == None:
-            self.liststore.append(client_column)
+            dni = client_column[2]
+            if self.values.has_key(dni):
+                titer = self.liststore.insert_after(self.values.get(dni),client_column)
+                self.liststore.remove(self.values.get(dni))
+            else:
+                titer = self.liststore.append(client_column)
+            self.values[client_column[2]] = titer
+            print self.values
         else:
             self.liststore.insert(pos, client_column)
     

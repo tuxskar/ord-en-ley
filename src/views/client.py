@@ -76,16 +76,6 @@ class client_view(object):
         if dni=="":
             self.warning_label.set_text("Warning, dni field must be filled  ")
             self.warning_label.show()
-        elif to_update != None:
-            print "to update actual client"
-            client = models.Models.Client(self.name_entry.get_text(),
-                                      self.surname_entry.get_text(),
-                                      self.dni_entry.get_text(),
-                                      self.email_entry.get_text(),
-                                      self.web_entry.get_text(),
-                                      )
-            self.controller.to_modify(self.old_dni, client)
-            #enter the modified the client with actual dni==to_update or self.old_dni, otherwise it raise a exception
         else:
             self.warning_label.hide()
             client = models.Models.Client(self.name_entry.get_text(),
@@ -94,7 +84,10 @@ class client_view(object):
                                       self.email_entry.get_text(),
                                       self.web_entry.get_text(),
                                       )
-            self.controller.insert_new_client(client)
+            if to_update != None:
+                self.controller.to_modify(self.old_dni, client)
+            else:
+                self.controller.insert_new_client(client)
             self.controller.refresh_clients_main_view(client)
             self.window.hide()
         
