@@ -70,6 +70,8 @@ class client_view(object):
         if self.modified == True:
             self.modified = False
             self.save_apply(button, self.old_dni)
+        else:
+            self.window.hide()
     
     def save_apply(self, apply_button, to_update=None):
         dni = self.dni_entry.get_text()
@@ -88,7 +90,7 @@ class client_view(object):
                 self.controller.to_modify(self.old_dni, client)
             else:
                 self.controller.insert_new_client(client)
-            self.controller.refresh_clients_main_view(client)
+            self.controller.refresh_clients_main_view(client, old_dni=self.old_dni)
             self.window.hide()
         
     def entry_changed(self, widget):

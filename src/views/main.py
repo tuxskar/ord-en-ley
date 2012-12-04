@@ -51,19 +51,14 @@ class main_view(object):
         self.values = {}
         
     
-    def add_row_client(self, client_column, pos = None):
+    def add_row_client(self, client_column, old_dni=None):
         #TODO optimitation using the old position of the client that you have update
-        if pos == None:
-            dni = client_column[2]
-            if self.values.has_key(dni):
-                titer = self.liststore.insert_after(self.values.get(dni),client_column)
-                self.liststore.remove(self.values.get(dni))
-            else:
-                titer = self.liststore.append(client_column)
-            self.values[client_column[2]] = titer
-            print self.values
+        if self.values.has_key(old_dni):
+            titer = self.liststore.insert_after(self.values.get(old_dni),client_column)
+            self.liststore.remove(self.values.pop(old_dni))
         else:
-            self.liststore.insert(pos, client_column)
+            titer = self.liststore.append(client_column)
+        self.values[client_column[2]] = titer
     
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
@@ -98,3 +93,5 @@ if __name__ == '__main__':
     gui = main_view()
     gui.window.show()
     gtk.main()
+
+#Borrar el antiguo dni cuando se va a modificar en self.values

@@ -50,11 +50,9 @@ class Controller(object):
     def insert_new_client(self, client):
         self.db_manager.insert_client(client)
         
-    def refresh_clients_main_view(self, client):
-        if self.main_view == None:
-            self.main_view = views.main.main_view(self)
+    def refresh_clients_main_view(self, client, old_dni=None):
         row_client = [client.name, client.surname, client.dni]
-        self.main_view.add_row_client(row_client)
+        self.main_view.add_row_client(row_client, old_dni)
     
     def delete_client(self, dni):
         self.db_manager.delete_client(dni) 
