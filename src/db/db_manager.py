@@ -51,6 +51,9 @@ class db_manager(object):
         self.session.query(Models.Client).filter(Models.Client.dni==dni).update(dic)
         self.session.commit()
 
+    def insert_test_clients(self):
+        Models.Client().insert_test(self.session)
+
 if __name__ == '__main__':
     dbman = db_manager()
     print dbman.get_client_columns()

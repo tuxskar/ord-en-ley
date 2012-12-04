@@ -60,6 +60,9 @@ class Controller(object):
     def to_modify(self, dni, client):
         self.db_manager.modify_client(dni, client)
 
+    def insert_test_clients(self):
+        self.db_manager.insert_test_clients()
+
 if __name__ == '__main__':
     cont = Controller()
     main_view = views.main.main_view(cont)

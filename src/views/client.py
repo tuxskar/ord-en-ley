@@ -50,7 +50,7 @@ class client_view(object):
             "on_cancel_clicked" : self.quit,
             "client_entry_changed" : self.entry_changed,
               }
-        
+        self.old_dni = ""
         self.modified = None
         if kind == "new":    
             dic['on_apply_clicked'] = self.save_apply    
