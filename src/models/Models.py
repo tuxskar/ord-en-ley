@@ -49,8 +49,6 @@ def get_session(user = None, password = None, echo=False, sqlite=True):
     if sqlite:
         engine = create_engine("sqlite:///leyenorden.db" , echo=echo)
     else:
-        print user
-        print password
         engine = create_engine("mysql://"+user+":"+password+"@localhost/leyenorden" , echo=echo)
     Base.metadata.create_all(engine)
     return sessionmaker(engine)()
