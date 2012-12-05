@@ -5,6 +5,8 @@ src/controllers/__init__.py
 src/controllers/controller.py
 src/db/__init__.py
 src/db/db_manager.py
+src/interfaces/client_view.glade
+src/interfaces/main_view.glade
 src/models/Models.py
 src/models/__init__.py
 src/views/__init__.py

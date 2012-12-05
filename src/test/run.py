@@ -18,9 +18,6 @@ import gtk
 
 
 def main():
-    pass
-
-if __name__ == '__main__':
     #To use mysql with user=skar and pass=mypass uncomment next line
     #cont = controllers.controller.Controller(user_name="skar", user_password="mypass")
     cont = controllers.controller.Controller()
@@ -29,3 +26,6 @@ if __name__ == '__main__':
     cont.connect_main_view(main_view)
     cont.init_main()
     gtk.main()
+
+if __name__ == '__main__':
+    self.main()
