@@ -28,4 +28,4 @@ def main():
     gtk.main()
 
 if __name__ == '__main__':
-    self.main()
+    main()
