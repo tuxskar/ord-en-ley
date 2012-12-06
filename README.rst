@@ -20,19 +20,22 @@ completas impliquen un gasto inicial muy elevado.
 Maintenance
 -----------
 Author: Oscar Ramirez Jimenez <tuxskar>
+
 Email: tuxskar<at>gmail.com
 
 Installation
------------- ::
+------------
+::
 $> python setup.py install
 
 Run
---- ::
-$> ordenley
+---
+::
+> ordenley
 
-Actual version
---------------
-Pre-alpha: 0.1dev
+Actual version (Pre-alpha 0.1dev)
+--------------------------------
+
 This version allow you just work with simple clients
 
 Features
