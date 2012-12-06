@@ -5,8 +5,8 @@ from setuptools import setup, find_packages
 version = '0.1dev'
 
 REQUIREMENTS = [
-        'SQLAechemy>=0.7.8',
-        'Pygtk',
+        'SQLAlchemy>=0.7.8',
+        #'Pygtk',
         ]
 
 setup(name = 'Ord-en Ley',
@@ -19,13 +19,13 @@ setup(name = 'Ord-en Ley',
       url = 'http://github.com/tuxskar/ord-en-ley',
       packages = find_packages(),
       data_files = [
-          ('interfaces' , ['main_view.glade','client_view.glade']),
+          ('interfaces' , ['ordenley/views/interfaces/main_view.glade',
+              'ordenley/views/interfaces/client_view.glade']),
             ],
-      include_package_data=True,
       install_requires = REQUIREMENTS,
       entry_points = {
           'console_scripts':
-          ['ordenley = src.test.run:main']
+          ['ordenley = ordenley.test.run:main']
           },
       classifiers = [
           'Development Status :: 2 - Pre-Alpha',
