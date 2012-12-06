@@ -9,7 +9,7 @@ REQUIREMENTS = [
 
 setup(name = 'Ord-en Ley',
       version = version,
-      long_description = open('README').read(),
+      long_description = open('README.rst').read(),
       author = 'Oscar Ramirez',
       author_email = 'tuxskar@gmail.com',
       description = 'Manager desktop app oriented to lawyers office',
