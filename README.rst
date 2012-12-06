@@ -23,19 +23,20 @@ Author: Oscar Ramirez Jimenez <tuxskar>
 Email: tuxskar<at>gmail.com
 
 Installation
-------------
-> python setup.py install
+------------ ::
+$> python setup.py install
 
 Run
----
-> ordenley
+--- ::
+$> ordenley
 
 Actual version
 --------------
 Pre-alpha: 0.1dev
 This version allow you just work with simple clients
 
-### Features
+Features
+........
 - Show actual clients in the DB
 - Modify clients from UI
 - Add new clients from UI
