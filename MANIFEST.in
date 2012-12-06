@@ -1,0 +1,12 @@
+include README
+include setup.py
+include src/controllers/__init__.py
+include src/controllers/controller.py
+include src/db/__init__.py
+include src/db/db_manager.py
+include src/models/Models.py
+include src/models/__init__.py
+include src/views/__init__.py
+include src/views/client.py
+include src/views/interfaces/*
+include src/views/main.py
