@@ -56,8 +56,10 @@ class main_view(object):
         if self.values.has_key(old_dni):
             titer = self.liststore.insert_after(self.values.get(old_dni),client_column)
             self.liststore.remove(self.values.pop(old_dni))
+            self.notifier_label.set_text("Modified client with old DNI: %s" % old_dni) 
         else:
             titer = self.liststore.append(client_column)
+            self.notifier_label.set_text(("Added client %s %s" % (client_column[0], client_column[1])))
         self.values[client_column[2]] = titer
     
     def row_activated(self, tree_view, path, column):
@@ -67,6 +69,7 @@ class main_view(object):
     
     def new_client(self, new_button):
         self.controller.show_client_info(None, kind="new")
+        self.notifier_label.set_text("Inserting new client")
         
     def delete_client(self, new_button):
         model, path = self.treeview.get_selection().get_selected()
@@ -113,5 +116,3 @@ if __name__ == '__main__':
     gui = main_view()
     gui.window.show()
     gtk.main()
-
-#Borrar el antiguo dni cuando se va a modificar en self.values
