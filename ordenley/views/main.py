@@ -30,9 +30,7 @@ class main_view(object):
         located in interfaces
         '''
         self.controller = ctrl
-        #addres = os.path.join(os.path.dirname(__file__)
         self.filename = views.get_data("main_view.glade")
-        print "path = " + views.get_data("main_view.glade")
         self.main_window_name = "main_view"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
@@ -64,7 +62,7 @@ class main_view(object):
     
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
-        dni = self.liststore.get_value(treeiter, 2)
+        dni = self.liststore.get_value(treeiter, 2).decode('utf-8')
         self.controller.show_client_info(dni)
     
     def new_client(self, new_button):
@@ -73,14 +71,34 @@ class main_view(object):
     def delete_client(self, new_button):
         model, path = self.treeview.get_selection().get_selected()
         if path != None:
-            dni = model.get_value(path, 2)
-#TODO add a pop-up view to ask if user is sure want to delete client with dni=dni
-            self.controller.delete_client(dni)
-            model.remove(path)
-            self.notifier_label.set_text("Client with dni: %s, has been deleted" % dni)
+            dni = model.get_value(path, 2).decode('utf8')
+            name = model.get_value(path, 0).decode('utf8')
+            surname = model.get_value(path, 1).decode('utf8')
+            response = self.delete_client_dialog(name, surname, dni)
+            if response:
+                self.controller.delete_client(dni)
+                model.remove(path)
+                self.notifier_label.set_text("Client %s %s with dni: %s, has been deleted" % \
+                    (name, surname, dni))
+            else:
+                self.notifier_label.set_text("No client deleted")
         else:
-            self.notifier_label.set_text("Row to delete must be selected") 
+            self.notifier_label.set_text("A Row must be selected to be deleted") 
 
+    def delete_client_dialog(self, name, surname, dni):
+        delete_dialog = gtk.Dialog("Delete client", self.window,
+                                  gtk.DIALOG_MODAL,
+                                  ( gtk.STOCK_NO, False,
+                                    gtk.STOCK_YES, True))
+        label = gtk.Label("Are you sure you want to delete the client: \n\
+                Name: %s \n\
+                Surname: %s \n\
+                DNI: %s?\n" % (name, surname, dni))
+        delete_dialog.get_content_area().pack_start(label)
+        delete_dialog.show_all()
+        res =  delete_dialog.run()
+        delete_dialog.hide()
+        return res
 
     def show(self):
         self.window.show()
