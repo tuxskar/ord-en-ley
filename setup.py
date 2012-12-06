@@ -18,8 +18,12 @@ setup(name = 'Ord-en Ley',
       license = 'GPLv3',
       url = 'http://github.com/tuxskar/ord-en-ley',
       packages = find_packages(),
+      #data_files = [
+          #('interfaces' , ['ordenley/views/interfaces/main_view.glade',
+              #'ordenley/views/interfaces/client_view.glade']),
+            #],
       data_files = [
-          ('interfaces' , ['ordenley/views/interfaces/main_view.glade',
+          ('ordenley/views/interfaces' , ['ordenley/views/interfaces/main_view.glade',
               'ordenley/views/interfaces/client_view.glade']),
             ],
       install_requires = REQUIREMENTS,

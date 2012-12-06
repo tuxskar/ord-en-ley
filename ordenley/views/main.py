@@ -30,7 +30,9 @@ class main_view(object):
         located in interfaces
         '''
         self.controller = ctrl
+        #addres = os.path.join(os.path.dirname(__file__)
         self.filename = views.get_data("main_view.glade")
+        print "path = " + views.get_data("main_view.glade")
         self.main_window_name = "main_view"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
