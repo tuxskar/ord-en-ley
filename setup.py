@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-
 from setuptools import setup, find_packages
 
 version = '0.1dev'
 
 REQUIREMENTS = [
         'SQLAechemy>=0.7.8',
-        'pygtk',
+        'PyGTK',
         ]
 
 with open('README') as file:
     long_description = file.read()
 
+PACKAGES = ['controllers','db', 'models', 'views']
+PACKAGES_DIR = {'' : 'src'}
 setup(name = 'Ord-en Ley',
       version = version,
       long_description = long_description,
@@ -20,10 +21,11 @@ setup(name = 'Ord-en Ley',
       description = 'Manager desktop app oriented to lawyers office',
       license = 'GPLv3',
       url = 'http://github.com/tuxskar/ord-en-ley',
-      packages = find_packages(),
+      packages = PACKAGES,
+      package_dir = PACKAGES_DIR,
       data_files = [('interfaces', [
-            'src/interfaces/client_view.glade',
-            'src/interfaces/main_view.glade',
+            #'client_view.glade',
+            'interfaces/main_view.glade',
             ])],
       install_requires = REQUIREMENTS,
       classifiers = [
