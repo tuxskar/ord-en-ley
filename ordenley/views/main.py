@@ -77,8 +77,8 @@ class main_view(object):
             dni = model.get_value(path, 2).decode('utf8')
             name = model.get_value(path, 0).decode('utf8')
             surname = model.get_value(path, 1).decode('utf8')
-            response = self.delete_client_dialog(name, surname, dni)
-            if response:
+            keep = self.delete_client_dialog(name, surname, dni)
+            if not keep:
                 self.controller.delete_client(dni)
                 model.remove(path)
                 self.notifier_label.set_text("Client %s %s with dni: %s, has been deleted" % \
@@ -91,8 +91,8 @@ class main_view(object):
     def delete_client_dialog(self, name, surname, dni):
         delete_dialog = gtk.Dialog("Delete client", self.window,
                                   gtk.DIALOG_MODAL,
-                                  ( gtk.STOCK_NO, False,
-                                    gtk.STOCK_YES, True))
+                                  ( gtk.STOCK_NO, True ,
+                                    gtk.STOCK_YES, False))
         label = gtk.Label("Are you sure you want to delete the client: \n\
                 Name: %s \n\
                 Surname: %s \n\
