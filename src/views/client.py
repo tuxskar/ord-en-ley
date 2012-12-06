@@ -19,6 +19,7 @@ except:
 
 import db.db_manager
 import models.Models
+import views
 
 class client_view(object):
     '''
@@ -30,8 +31,7 @@ class client_view(object):
         
         '''
         self.controller = ctrl
-        dir = os.path.dirname(__file__)
-        self.filename = os.path.join(dir, "../interfaces/client_view.glade")
+        self.filename = views.get_data("client_view.glade")
         self.main_window_name = "client_info"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)

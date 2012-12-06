@@ -5,6 +5,7 @@ Created on Nov 17, 2012
 @author: skar
 '''
 import sys,os.path
+import views
 
 try:  
     import pygtk  
@@ -29,8 +30,7 @@ class main_view(object):
         located in interfaces
         '''
         self.controller = ctrl
-        dir = os.path.dirname(__file__)
-        self.filename = os.path.join(dir, "../interfaces/main_view.glade")
+        self.filename = views.get_data("main_view.glade")
         self.main_window_name = "main_view"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.filename)
