@@ -38,12 +38,10 @@ def insert_test(session):
             client1 = Client('Maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
             client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
             client3 = Client('Ana', 'Ramirez', '23456789r', web="www.anaramirez.tk")
-            print 'Created client1-3'
             a = [client1,client2,client3]
             session.add_all(a)
             session.commit()
-            print 'Added all clients'
-            print a
+            print 'Inserted 3 test clients'
                 
 def get_session(user = None, password = None, echo=False, sqlite=True):
     if sqlite:
