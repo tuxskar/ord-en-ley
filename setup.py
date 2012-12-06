@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-#from distutils.core import setup
 
 version = '0.1dev'
 
 REQUIREMENTS = [
         'SQLAlchemy>=0.7.8',
-        #'Pygtk',
         ]
 
 setup(name = 'Ord-en Ley',
@@ -18,10 +16,6 @@ setup(name = 'Ord-en Ley',
       license = 'GPLv3',
       url = 'http://github.com/tuxskar/ord-en-ley',
       packages = find_packages(),
-      #data_files = [
-          #('interfaces' , ['ordenley/views/interfaces/main_view.glade',
-              #'ordenley/views/interfaces/client_view.glade']),
-            #],
       data_files = [
           ('ordenley/views/interfaces' , ['ordenley/views/interfaces/main_view.glade',
               'ordenley/views/interfaces/client_view.glade']),
