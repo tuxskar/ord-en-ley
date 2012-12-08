@@ -1,7 +1,7 @@
 '''
 Created on Nov 14, 2012
 
-@author: skar
+@author: tuxskar
 '''
 
 from sqlalchemy import Column, Integer, String, create_engine

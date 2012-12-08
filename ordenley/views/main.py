@@ -2,7 +2,7 @@
 '''
 Created on Nov 17, 2012
 
-@author: skar
+@author: tuxskar
 '''
 import sys,os.path
 import views

@@ -2,7 +2,7 @@
 '''
 Created on Nov 17, 2012
 
-@author: skar
+@author: tuxskar
 '''
 from models import Models
 
