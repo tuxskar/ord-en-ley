@@ -31,7 +31,7 @@ class db_manager(object):
                            Models.Client.dni).all()
                                              
     def get_client(self, dni):
-        return self.session.query(Models.Client).filter(Models.Client.dni==dni).one()
+        return self.session.query(Models.Client).filter(Models.Client.dni==dni).first()
 
     def delete_client(self, dni):
         self.session.query(Models.Client).filter(Models.Client.dni==dni).delete()
@@ -57,7 +57,7 @@ class db_manager(object):
 
     def client_exist(self, dni):
         """Check if client exist in the db"""
-        if self.get_client==None:
+        if self.get_client(dni)==None:
             return False
         else:
             return True

@@ -49,6 +49,7 @@ class main_view(object):
                }
         self.builder.connect_signals(dic)
         self.values = {}
+        self.activated_clients = []
         
     
     def add_row_client(self, client_column, old_dni=None):
@@ -65,13 +66,22 @@ class main_view(object):
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
         dni = self.liststore.get_value(treeiter, 2).decode('utf-8')
+        self.activated_clients.append(dni)
         self.controller.show_client_info(dni)
     
+    def deactivate_client(self,dni):
+        """Remove client from activated_clients by dni"""
+        if self.activated_clients.count(dni) != 0:
+            self.activated_clients.remove(dni)
+            return True
+        else:
+            return False
+
     def new_client(self, new_button):
         self.controller.show_client_info(None, kind="new")
         self.notifier_label.set_text("Inserting new client")
         
-    def delete_client(self, new_button):
+    def delete_client(self, delete_button):
         model, path = self.treeview.get_selection().get_selected()
         if path != None:
             dni = model.get_value(path, 2).decode('utf8')
@@ -79,6 +89,9 @@ class main_view(object):
             surname = model.get_value(path, 1).decode('utf8')
             keep = self.delete_client_dialog(name, surname, dni)
             if not keep:
+                #hide view_client if exist and delete
+                if self.deactivate_client(dni):
+                    self.controller.hide_view(dni)
                 self.controller.delete_client(dni)
                 model.remove(path)
                 self.notifier_label.set_text("Client %s %s with dni: %s, has been deleted" % \

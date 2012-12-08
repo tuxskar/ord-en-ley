@@ -29,6 +29,7 @@ class Controller(object):
         '''
         self.db_manager = db.db_manager.db_manager(user_name, user_password)
         self.main_view = None
+        self.client_views = {}
         
     def init_main(self):
         for client in self.db_manager.get_client_columns():
@@ -42,10 +43,11 @@ class Controller(object):
     def show_client_info(self, dni=None, kind=None):
         if dni!=None:
             client = self.db_manager.get_client(dni)
-            self.client_info = views.client.client_view(self,client)
+            client_info = views.client.client_view(self,client)
+            self.client_views[client.dni] = client_info
         else:
-            self.client_info = views.client.client_view(self,kind=kind)
-        self.client_info.show()
+            client_info = views.client.client_view(self,kind=kind)
+        client_info.show()
     
     def insert_new_client(self, client):
         self.db_manager.insert_client(client)
@@ -59,6 +61,10 @@ class Controller(object):
 
     def to_modify(self, dni, client):
         self.db_manager.modify_client(dni, client)
+        
+    def hide_view(self, dni):
+        """Hide client_view by dni"""
+        self.client_views.get(dni).hide()
 
     def insert_test_clients(self):
         self.db_manager.insert_test_clients()
