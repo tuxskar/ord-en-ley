@@ -20,8 +20,8 @@ class Client(Base):
     email = Column(String(30))
     web = Column(String(30))
     
-    def __init__(self, name=None, surname=None, 
-                 dni=None, email=None, web=None):
+    def __init__(self, name="", surname="", 
+                 dni="", email="", web=""):
         self.name = name.decode('utf-8')
         self.surname = surname.decode('utf-8')
         self.dni = dni.decode('utf-8')

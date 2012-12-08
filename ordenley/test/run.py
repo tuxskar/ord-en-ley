@@ -1,7 +1,7 @@
 '''
 Created on Dec 4, 2012
 
-@author: skar
+@author: tuxskar
 '''
 import sys,os.path
 
