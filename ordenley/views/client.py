@@ -80,11 +80,11 @@ class client_view(object):
             self.warning_label.show()
         else:
             self.warning_label.hide()
-            client = models.Models.Client(self.name_entry.get_text().decode('utf-8'),
-                                      self.surname_entry.get_text().decode('utf-8'),
-                                      self.dni_entry.get_text().decode('utf-8'),
-                                      self.email_entry.get_text().decode('utf-8'),
-                                      self.web_entry.get_text().decode('utf-8'),
+            client = models.Models.Client(self.name_entry.get_text(),
+                                      self.surname_entry.get_text(),
+                                      self.dni_entry.get_text(),
+                                      self.email_entry.get_text(),
+                                      self.web_entry.get_text(),
                                       )
             if to_update != None:
                 self.controller.to_modify(self.old_dni, client)

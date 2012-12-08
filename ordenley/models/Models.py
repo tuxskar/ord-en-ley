@@ -22,11 +22,11 @@ class Client(Base):
     
     def __init__(self, name=None, surname=None, 
                  dni=None, email=None, web=None):
-        self.name = name
-        self.surname = surname
-        self.dni = dni
-        self.email = email
-        self.web = web
+        self.name = name.decode('utf-8')
+        self.surname = surname.decode('utf-8')
+        self.dni = dni.decode('utf-8')
+        self.email = email.decode('utf-8')
+        self.web = web.decode('utf-8')
 
     
     def __repr__(self):
