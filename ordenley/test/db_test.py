@@ -21,9 +21,8 @@ class db_test(unittest.TestCase):
         self.clients_inserted = []
 
     def tearDown(self):
-        pass
-        #for c in self.clients_inserted:
-            #self.db_manager.delete_client(c.dni)
+        for c in self.clients_inserted:
+            self.db_manager.delete_client(c.dni)
 
     def test_insert_client(self):
         old_clients = self.db_manager.get_all_clients()
@@ -45,7 +44,6 @@ class db_test(unittest.TestCase):
         new_clients = self.db_manager.get_all_clients()
         self.assertEqual(old_clients, 
                         new_clients)
-        #print self.clients_inserted
 
     def random_string(self, length=10):
         s = ""
