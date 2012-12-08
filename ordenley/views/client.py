@@ -75,8 +75,12 @@ class client_view(object):
     
     def save_apply(self, apply_button, to_update=None):
         dni = self.dni_entry.get_text()
+        exist = self.controller.client_exist(dni)
         if dni=="":
             self.warning_label.set_text("Warning, dni field must be filled  ")
+            self.warning_label.show()
+        elif exist == True:
+            self.warning_label.set_text("Warning, dni already in the system")
             self.warning_label.show()
         else:
             self.warning_label.hide()

@@ -55,6 +55,13 @@ class db_manager(object):
     def insert_test_clients(self):
         Models.insert_test(self.session)
 
+    def client_exist(self, dni):
+        """Check if client exist in the db"""
+        if self.get_client==None:
+            return False
+        else:
+            return True
+
 if __name__ == '__main__':
     dbman = db_manager()
     print dbman.get_client_columns()

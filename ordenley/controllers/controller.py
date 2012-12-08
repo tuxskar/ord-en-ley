@@ -63,6 +63,11 @@ class Controller(object):
     def insert_test_clients(self):
         self.db_manager.insert_test_clients()
 
+    def client_exist(self, dni):
+        """Check if client with dni==dni is already in the system"""
+        # TODO select row with dni==dni in main_view
+        return self.db_manager.client_exist(dni)
+
 if __name__ == '__main__':
     cont = Controller()
     main_view = views.main.main_view(cont)
