@@ -2,7 +2,7 @@ Ord-en Ley
 ==========
 
 Resume
--------
+------
 Desktop program to manage lawyer's office
 
 This project has been made to allow mainly new lawyers who wants to start her law office, 
@@ -36,7 +36,7 @@ Run
 > ordenley
 
 Actual version (Pre-alpha 0.1dev)
---------------------------------
+---------------------------------
 
 This version allow you just work with simple clients
 

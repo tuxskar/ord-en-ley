@@ -7,7 +7,7 @@ REQUIREMENTS = [
         'SQLAlchemy>=0.7.8',
         ]
 
-setup(name = 'Ord-en_Ley',
+setup(name = 'ordenley',
       version = version,
       long_description = open('README.rst').read(),
       author = 'Oscar Ramirez',

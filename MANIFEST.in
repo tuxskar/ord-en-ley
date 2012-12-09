@@ -8,5 +8,7 @@ include ordenley/models/Models.py
 include ordenley/models/__init__.py
 include ordenley/views/__init__.py
 include ordenley/views/client.py
-include ordenley/views/interfaces/*
+include ordenley/views/interfaces/client_view.glade
+include ordenley/views/interfaces/main_view.glade
+include ordenley/views/interfaces/__init__.py
 include ordenley/views/main.py
