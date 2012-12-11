@@ -31,10 +31,15 @@ class client_view(object):
         
         '''
         self.controller = ctrl
-        self.filename = views.get_data("client_view.glade")
-        self.main_window_name = "client_info"
         self.builder = gtk.Builder()
-        self.builder.add_from_file(self.filename)
+        self.main_window_name = "client_info"
+        glade_name = "client_view.glade"
+        try:
+            self.filename = views.get_data_dev(glade_name)
+            self.builder.add_from_file(self.filename)
+        except glib.GError, e:
+            self.filename = views.get_data(glade_name)
+            self.builder.add_from_file(self.filename)
         
         self.window = self.builder.get_object(self.main_window_name)
         self.name_entry = self.builder.get_object("name_entry")

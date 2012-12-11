@@ -18,6 +18,7 @@ try:
 except:  
     print("GTK Not Available")
     sys.exit(1)
+import glib
 
 class main_view(object):
     '''
@@ -30,10 +31,15 @@ class main_view(object):
         located in interfaces
         '''
         self.controller = ctrl
-        self.filename = views.get_data("main_view.glade")
-        self.main_window_name = "main_view"
         self.builder = gtk.Builder()
-        self.builder.add_from_file(self.filename)
+        self.main_window_name = "main_view"
+        glade_name = "main_view.glade"
+        try:
+            self.filename = views.get_data_dev(glade_name)
+            self.builder.add_from_file(self.filename)
+        except glib.GError, e:
+            self.filename = views.get_data(glade_name)
+            self.builder.add_from_file(self.filename)
 
         self.treeview = self.builder.get_object("client_tree")
         self.liststore = self.builder.get_object("client_store")
