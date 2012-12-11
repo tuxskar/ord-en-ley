@@ -28,28 +28,32 @@ Installation on Linux
 Using PyPI:
 
 ::
+
 $> pip install ordenley
 
 Alternative installation
-.........................
+........................
 As normal python application:
 
 ::
+
 $> python setup.py install
 
 Run
 ---
+As the program script is stored into bin you can run it using:
 
 ::
+
 > ordenley
 
 Actual version (Pre-alpha 0.1.4dev)
----------------------------------
-
+-----------------------------------
 This version allow you just work with simple clients
 
 Features
 ........
+- Installation easy from PyPI using "pip install ordenley"
 - Show actual clients in the DB
 - Modify clients from UI
 - Add new clients from UI
