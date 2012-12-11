@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-version = '0.1.2dev'
+version = '0.1.4dev'
 
 REQUIREMENTS = [
         'SQLAlchemy>=0.7.8',

@@ -1,14 +1,13 @@
-include README
+include README.rst
 include setup.py
 include ordenley/controllers/__init__.py
 include ordenley/controllers/controller.py
 include ordenley/db/__init__.py
 include ordenley/db/db_manager.py
-include ordenley/models/Models.py
 include ordenley/models/__init__.py
+include ordenley/models/Models.py
 include ordenley/views/__init__.py
 include ordenley/views/client.py
+include ordenley/views/main.py
 include ordenley/views/interfaces/client_view.glade
 include ordenley/views/interfaces/main_view.glade
-include ordenley/views/interfaces/__init__.py
-include ordenley/views/main.py

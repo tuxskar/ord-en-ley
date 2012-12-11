@@ -23,16 +23,24 @@ Author: Oscar Ramirez Jimenez
 
 Email: tuxskar<at>gmail.com
 
-Installation
-------------
-::
+Installation on Linux
+---------------------
+Using PyPI:
 
+::
+$> pip install ordenley
+
+Alternative installation
+.........................
+As normal python application:
+
+::
 $> python setup.py install
 
 Run
 ---
-::
 
+::
 > ordenley
 
 Actual version (Pre-alpha 0.1dev)
