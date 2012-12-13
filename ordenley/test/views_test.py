@@ -10,5 +10,5 @@ import unittest
 class views_test(unittest.TestCase):
     print "algo"
 
-#if __name__ == '__main__':
-    #unittest.main()
+if __name__ == '__main__':
+    unittest.main()
