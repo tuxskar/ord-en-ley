@@ -84,5 +84,5 @@ class db_test(unittest.TestCase):
                 dni = dni)
         return client
 
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+    #unittest.main()

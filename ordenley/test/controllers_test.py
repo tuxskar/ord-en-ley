@@ -20,5 +20,5 @@ class controllers_test(unittest.TestCase):
         """docstring for test_refresh_client"""
         pass
 
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+    #unittest.main()

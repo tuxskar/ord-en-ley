@@ -8,9 +8,7 @@ Created on Dec 8, 2012
 import unittest
 
 class views_test(unittest.TestCase):
-    pass
+    print "algo"
 
-
-
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+    #unittest.main()
