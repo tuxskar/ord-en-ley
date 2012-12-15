@@ -30,8 +30,8 @@ class Client(Base):
 
     
     def __repr__(self):
-        return "<Client('%s','%s','%s')>" % \
-                (self.dni, self.name, self.surname)
+        return ("<Client('%s','%s','%s')>" % \
+                (self.dni, self.name, self.surname)).encode('utf-8')
 def insert_test(session):
         clients = session.query(Client).all()
         if len(clients) == 0:
