@@ -47,12 +47,13 @@ As the program script is stored into bin you can run it using:
 
 > ordenley
 
-Actual version (Pre-alpha 0.1.4dev)
------------------------------------
+Actual version Pre-alpha
+------------------------
 This version allow you just work with simple clients
 
 Features
 ........
+- Database located in the same position (at home/.ordenley)
 - Installation easy from PyPI using "pip install ordenley"
 - Show actual clients in the DB
 - Modify clients from UI
