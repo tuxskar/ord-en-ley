@@ -46,8 +46,7 @@ def insert_test(session):
                 
 def get_session(user = None, password = None, echo=False, sqlite=True):
     if sqlite:
-        home = os.path.expanduser('~')
-        ordenpath = home + "/.ordeneley"
+        ordenpath = os.path.expanduser('~/.ordeneley')
         if not os.path.exists(ordenpath):
             os.makedirs(ordenpath)
         engine = create_engine("sqlite:///%s/leyenorden.db" % ordenpath, echo=echo)
