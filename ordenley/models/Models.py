@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 Base = declarative_base()
+sqlite_db_name = "leyenorden.db"
 
 class Client(Base):
     __tablename__ = 'clients'
@@ -42,14 +43,14 @@ def insert_test(session):
             a = [client1,client2,client3]
             session.add_all(a)
             session.commit()
-            print 'Inserted 3 test clients'
+            return True
                 
 def get_session(user = None, password = None, echo=False, sqlite=True):
     if sqlite:
-        ordenpath = os.path.expanduser('~/.ordeneley')
+        ordenpath = os.path.expanduser('~/.ordenley')
         if not os.path.exists(ordenpath):
             os.makedirs(ordenpath)
-        engine = create_engine("sqlite:///%s/leyenorden.db" % ordenpath, echo=echo)
+        engine = create_engine("sqlite:///%s/%s" % (ordenpath, sqlite_db_name), echo=echo)
     else:
         engine = create_engine("mysql://"+user+":"+password+"@localhost/leyenorden" , echo=echo)
     Base.metadata.create_all(engine)
@@ -61,6 +62,11 @@ def delete_first_test(session):
     session.delete(client)
     session.commit()
     print 'deleted' + str(client)
+
+def delete_db(session):
+    """Delete db from software"""
+    db_path = os.path.expanduser('~/.ordenley/%s' % sqlite_db_name)
+    os.remove(db_path)
 
 if __name__ == '__main__':
 #    Before use this module you should create a user and password plus create a database
