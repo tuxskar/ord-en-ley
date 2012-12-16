@@ -7,6 +7,7 @@ Created on Nov 14, 2012
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
 Base = declarative_base()
 
@@ -30,8 +31,8 @@ class Client(Base):
 
     
     def __repr__(self):
-        return ("<Client('%s','%s','%s')>" % \
-                (self.dni, self.name, self.surname)).encode('utf-8')
+        return "<Client('%s','%s','%s')>" % \
+                (self.dni, self.name, self.surname)
 def insert_test(session):
         clients = session.query(Client).all()
         if len(clients) == 0:
@@ -45,7 +46,11 @@ def insert_test(session):
                 
 def get_session(user = None, password = None, echo=False, sqlite=True):
     if sqlite:
-        engine = create_engine("sqlite:///leyenorden.db" , echo=echo)
+        home = os.path.expanduser('~')
+        ordenpath = home + "/.ordeneley"
+        if not os.path.exists(ordenpath):
+            os.makedirs(ordenpath)
+        engine = create_engine("sqlite:///%s/leyenorden.db" % ordenpath, echo=echo)
     else:
         engine = create_engine("mysql://"+user+":"+password+"@localhost/leyenorden" , echo=echo)
     Base.metadata.create_all(engine)
