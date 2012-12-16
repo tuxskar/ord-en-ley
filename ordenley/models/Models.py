@@ -34,6 +34,7 @@ class Client(Base):
     def __repr__(self):
         return "<Client('%s','%s','%s')>" % \
                 (self.dni, self.name, self.surname)
+
 def insert_test(session):
         clients = session.query(Client).all()
         if len(clients) == 0:
@@ -58,15 +59,22 @@ def get_session(user = None, password = None, echo=False, sqlite=True):
 
 
 def delete_first_test(session):
-    client = session.query(Client).one()
+    client = session.query(Client).first()
     session.delete(client)
     session.commit()
     print 'deleted' + str(client)
+    return True
 
-def delete_db(session):
+def delete_sqlite_db(session):
     """Delete db from software"""
     db_path = os.path.expanduser('~/.ordenley/%s' % sqlite_db_name)
     os.remove(db_path)
+
+def main():
+    """main function to test this module"""
+    session = get_session()
+    insert_test(session)
+    
 
 if __name__ == '__main__':
 #    Before use this module you should create a user and password plus create a database
@@ -76,5 +84,4 @@ if __name__ == '__main__':
 #    mysql> create database leyenorden;
 #    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
 #    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
-    session = get_session()
-    insert_test(session)
+    self.main()

@@ -21,14 +21,25 @@ class models_test(unittest.TestCase):
         self.assertEqual(str(c), "<Client('%s','%s','%s')>" % (dni, name, surname))
 
     def session_sqlite_test(self):
-        """docstring for session_and_insert_test"""
+        """test for session_and_insert_test"""
         session = models.Models.get_session(sqlite=True)
         self.assertTrue(os.path.exists(os.path.expanduser("~/.ordenley/%s" % models.Models.sqlite_db_name)))
 
+    def session_mysql_test(self):
+        """test for mysql db"""
+        session = models.Models.get_session(user = "skar", password = "mypass", sqlite=False)
+        models.Models.insert_test(session)
+        self.assertTrue(models.Models.delete_first_test(session))
+
+    def main_test(self):
+        """test for main fuction"""
+        models.Models.main()
+
+
     def insert_test_test(self):
-        """docstring for insert_test_test"""
+        """test for insert_test_test"""
         session = models.Models.get_session(sqlite=True)
-        models.Models.delete_db(session)
+        models.Models.delete_sqlite_db(session)
         session = models.Models.get_session(sqlite=True)
         self.assertTrue(models.Models.insert_test(session))
 
