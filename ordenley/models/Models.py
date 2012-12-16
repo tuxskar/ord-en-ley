@@ -8,6 +8,7 @@ from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+import shutil
 
 Base = declarative_base()
 sqlite_db_name = "leyenorden.db"
@@ -67,8 +68,8 @@ def delete_first_test(session):
 
 def delete_sqlite_db(session):
     """Delete db from software"""
-    db_path = os.path.expanduser('~/.ordenley/%s' % sqlite_db_name)
-    os.remove(db_path)
+    db_path = os.path.expanduser('~/.ordenley/')
+    shutil.rmtree(db_path)
 
 def main():
     """main function to test this module"""
