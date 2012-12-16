@@ -66,9 +66,9 @@ class db_manager(object):
 
 def main():
     """main fuction in db_manager"""
-    #dbman = db_manager()
-    #dbman.get_client("hola")
-    pass
+    dbman = db_manager()
+    dbman.get_client("hola")
+    return True
 
 if __name__ == '__main__':
     self.main()

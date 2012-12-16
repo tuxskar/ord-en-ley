@@ -105,9 +105,13 @@ class db_test(unittest.TestCase):
             clients_columns.append((c.name,c.surname,c.dni))
         self.assertEqual(columns, clients_columns)
 
-    def test_clients(self):
+    def test_clients_test(self):
         """test_clients from db_manager"""
         self.db_manager.insert_test_clients()
+
+    def main_test(self):
+        """test for main_test"""
+        self.assertTrue(db.db_manager.main())
 
 if __name__ == '__main__':
     unittest.main()
