@@ -61,8 +61,6 @@ class db_test(unittest.TestCase):
         self.clients_inserted.append(client)
         g_client = self.db_manager.get_client(client.dni)
         self.assertEqual(client, g_client)
-        
-        pass
 
     def random_string(self, length=10):
         s = ""
