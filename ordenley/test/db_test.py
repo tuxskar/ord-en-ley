@@ -58,9 +58,12 @@ class db_test(unittest.TestCase):
     def test_client_search(self):
         client = self.random_client()
         self.db_manager.insert_client(client)
+        self.db_manager.client_exist(client.dni)
         self.clients_inserted.append(client)
         g_client = self.db_manager.get_client(client.dni)
         self.assertEqual(client, g_client)
+        #This DNI is a imposible one because a dni is a consecution of numbers and a simple letter
+        self.assertFalse(self.db_manager.client_exist("XXXXxxkjd9999999999"))
 
     def random_string(self, length=10):
         s = ""
@@ -81,6 +84,35 @@ class db_test(unittest.TestCase):
                 email = email,
                 dni = dni)
         return client
+
+    def differents_session_test(self):
+        """Test all kind of session you can have"""
+        session1 = models.Models.get_session()
+        session2 = models.Models.get_session("skar", "mypass")
+        db_manager1 = db.db_manager.db_manager()
+        db_manager2 = db.db_manager.db_manager(session = session1)
+        db_manager3 = db.db_manager.db_manager("skar", "mypass")
+        self.assertEqual(db_manager2.session,session1)
+        self.assertNotEqual(db_manager1.session,session1)
+        self.assertNotEqual(db_manager3.session,session2)
+
+    def get_client_colums_test(self):
+        """get client columns test"""
+        columns = self.db_manager.get_client_columns()
+        clients = self.db_manager.get_all_clients()
+        clients_columns = []
+        for c in clients:
+            clients_columns.append((c.name,c.surname,c.dni))
+        self.assertEqual(columns, clients_columns)
+
+    def test_clients(self):
+        """test_clients from db_manager"""
+        self.db_manager.insert_test_clients()
+
+
+        
+
+        
 
 if __name__ == '__main__':
     unittest.main()
