@@ -79,7 +79,7 @@ class client_view(object):
             self.window.hide()
     
     def save_apply(self, apply_button, to_update=None):
-        dni = self.dni_entry.get_text()
+        dni = self.dni_entry.get_text().decode('utf-8')
         exist = self.controller.client_exist(dni)
         if dni=="":
             self.warning_label.set_text("Warning, dni field must be filled  ")
