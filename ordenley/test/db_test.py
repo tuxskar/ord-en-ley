@@ -109,10 +109,5 @@ class db_test(unittest.TestCase):
         """test_clients from db_manager"""
         self.db_manager.insert_test_clients()
 
-
-        
-
-        
-
 if __name__ == '__main__':
     unittest.main()
