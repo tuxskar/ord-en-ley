@@ -122,6 +122,10 @@ class main_view(object):
         delete_dialog.hide()
         return res
 
+    def get_window(self):
+        """Simple function to return window object"""
+        return self.window
+
     def show(self):
         self.window.show()
     
@@ -130,6 +134,13 @@ class main_view(object):
         
     def quit(self, widget):
         gtk.main_quit()
+
+    def get_buttons(self):
+        """Return all view buttons for test them"""
+        buttons = []
+        buttons.append(self.builder.get_object("new_client"))
+        buttons.append(self.builder.get_object("delete_client"))
+        return buttons
 
 if __name__ == '__main__':
     gui = main_view()

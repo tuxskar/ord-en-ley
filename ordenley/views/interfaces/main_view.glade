@@ -2,17 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkListStore" id="client_store">
-    <columns>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-      <!-- column-name surname -->
-      <column type="gchararray"/>
-      <!-- column-name dni -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkWindow" id="main_view">
+  <object class="GtkWindow" id="Ord-en Ley">
     <property name="width_request">800</property>
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_main_view_destroy" swapped="no"/>
@@ -211,7 +201,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">new</property>
+                        <property name="is_important">True</property>
+                        <property name="label" translatable="yes">New</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-new</property>
                         <signal name="clicked" handler="on_new_client_clicked" swapped="no"/>
@@ -226,7 +217,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">delete</property>
+                        <property name="is_important">True</property>
+                        <property name="label" translatable="yes">Delete</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-delete</property>
                         <signal name="clicked" handler="on_delete_client_clicked" swapped="no"/>
@@ -363,5 +355,15 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="client_store">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name surname -->
+      <column type="gchararray"/>
+      <!-- column-name dni -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
