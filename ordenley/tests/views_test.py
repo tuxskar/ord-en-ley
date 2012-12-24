@@ -64,83 +64,83 @@ class client_test(unittest.TestCase):
             #don't do anything with client
         #no c_id to raise exception 
 
-class app_test(unittest.TestCase):
-    def setUp(self):
-        """docstring for setUp"""
-        self.mv_name = "frmOrd-enLey"
-        self.new_c_button_name = "btnnew"
-        self.delete_c_button_name = "btndelete"
-        self.tree_name_mv = "tbl0"
-        ldtp.launchapp('python', args=['/home/skar/projects/python/orden-ley/ordenley/tests/run.py'])
-        ldtp.guiexist(self.mv_name)
-        #ldtp.waittillguiexist(self.mv_name)
+#class app_test(unittest.TestCase):
+    #def setUp(self):
+        #"""docstring for setUp"""
+        #self.mv_name = "frmOrd-enLey"
+        #self.new_c_button_name = "btnnew"
+        #self.delete_c_button_name = "btndelete"
+        #self.tree_name_mv = "tbl0"
+        #ldtp.launchapp('python', args=['/home/skar/projects/python/orden-ley/ordenley/tests/run.py'])
+        #ldtp.guiexist(self.mv_name)
+        ##ldtp.waittillguiexist(self.mv_name)
 
-    def tearDown(self):
-        """docstring for tearDown"""
-        ldtp.closewindow(self.mv_name)
+    #def tearDown(self):
+        #"""docstring for tearDown"""
+        #ldtp.closewindow(self.mv_name)
 
-    def test_insert_clientfromUI(self):
-        """docstring for test_insert_clientfromUI"""
-        ldtp.click(self.mv_name, self.new_c_button_name)
-        ldtp.guiexist("frmNewclient1")
-        ldtp.click("frmNewclient1", "btnCancel")
-        ldtp.click(self.mv_name, self.new_c_button_name)
-        ldtp.guiexist("frmNewclient2")
-        new_c_name = "frmNewclient2"
-        dni = "12345678R"
-        ldtp.settextvalue("frmNewclient2", "txt4", "Alice")
-        ldtp.settextvalue("frmNewclient2", "txt3", "Pound")
-        ldtp.click("frmNewclient2", "btnOK")
-        ldtp.settextvalue("frmNewclient2", "txt2", dni)
-        ldtp.click("frmNewclient2", "btnOK")
-        ldtp.singleclickrow(self.mv_name, self.tree_name_mv, "Alice")
+    #def test_insert_clientfromUI(self):
+        #"""docstring for test_insert_clientfromUI"""
+        #ldtp.click(self.mv_name, self.new_c_button_name)
+        #ldtp.guiexist("frmNewclient1")
+        #ldtp.click("frmNewclient1", "btnCancel")
+        #ldtp.click(self.mv_name, self.new_c_button_name)
+        #ldtp.guiexist("frmNewclient2")
+        #new_c_name = "frmNewclient2"
+        #dni = "12345678R"
+        #ldtp.settextvalue("frmNewclient2", "txt4", "Alice")
+        #ldtp.settextvalue("frmNewclient2", "txt3", "Pound")
+        #ldtp.click("frmNewclient2", "btnOK")
+        #ldtp.settextvalue("frmNewclient2", "txt2", dni)
+        #ldtp.click("frmNewclient2", "btnOK")
+        #ldtp.singleclickrow(self.mv_name, self.tree_name_mv, "Alice")
 
-        ##Alice client changing
-        #ldtp.doubleclickrow(self.mv_name, self.tree_name_mv, "Alice")
-        #ldtp.click(client_v, "btnCancel")
-        #ldtp.doubleclickrow(self.mv_name, self.tree_name_mv, "Alice")
-        #ldtp.click(client_v, "btnOK")
-        #ldtp.settextvalue(client_v, "txt3", "Poundssss")
-        #ldtp.click(client_v, "btnCancel")
-        #ldtp.settextvalue(client_v, "txt3", "Poundssss")
-        #ldtp.settextvalue(client_v, "txt2", "678R")
-        #ldtp.click(client_v, "btnOK")
+        ###Alice client changing
+        ##ldtp.doubleclickrow(self.mv_name, self.tree_name_mv, "Alice")
+        ##ldtp.click(client_v, "btnCancel")
+        ##ldtp.doubleclickrow(self.mv_name, self.tree_name_mv, "Alice")
+        ##ldtp.click(client_v, "btnOK")
+        ##ldtp.settextvalue(client_v, "txt3", "Poundssss")
+        ##ldtp.click(client_v, "btnCancel")
+        ##ldtp.settextvalue(client_v, "txt3", "Poundssss")
+        ##ldtp.settextvalue(client_v, "txt2", "678R")
+        ##ldtp.click(client_v, "btnOK")
 
 
-        ##Using dltp and GTK
-        #alice = models.Models.Client("Alice","Pound", dni="12345678R")
-        #alice_title = "frmClientwithDNI:12345678R"
-        #client_v = views.client.client_view(alice,c_id=dni)
-        #client_v.show()
-        #ldtp.waittillguiexist(alice_title)
-        #ldtp.click(client_v, "btnCancel")
-        #client_v = views.client.client_view(alice,c_id=dni)
-        #client_v.show()
-        #ldtp.click(client_v, "btnOK")
-        #client_v = views.client.client_view(alice,c_id=dni)
-        #client_v.show()
-        #ldtp.settextvalue(client_v, "txt3", "Poundssss")
-        #ldtp.click(client_v, "btnCancel")
-        #client_v = views.client.client_view(alice,c_id=dni)
-        #client_v.show()
-        #ldtp.settextvalue(client_v, "txt3", "Poundssss")
-        #ldtp.settextvalue(client_v, "txt2", "678R")
-        #ldtp.click(client_v, "btnOK")
+        ###Using dltp and GTK
+        ##alice = models.Models.Client("Alice","Pound", dni="12345678R")
+        ##alice_title = "frmClientwithDNI:12345678R"
+        ##client_v = views.client.client_view(alice,c_id=dni)
+        ##client_v.show()
+        ##ldtp.waittillguiexist(alice_title)
+        ##ldtp.click(client_v, "btnCancel")
+        ##client_v = views.client.client_view(alice,c_id=dni)
+        ##client_v.show()
+        ##ldtp.click(client_v, "btnOK")
+        ##client_v = views.client.client_view(alice,c_id=dni)
+        ##client_v.show()
+        ##ldtp.settextvalue(client_v, "txt3", "Poundssss")
+        ##ldtp.click(client_v, "btnCancel")
+        ##client_v = views.client.client_view(alice,c_id=dni)
+        ##client_v.show()
+        ##ldtp.settextvalue(client_v, "txt3", "Poundssss")
+        ##ldtp.settextvalue(client_v, "txt2", "678R")
+        ##ldtp.click(client_v, "btnOK")
 
-        #delete Alice from UI
-        delete_dlg = "dlgDeleteclient"
-        ldtp.click(self.mv_name, self.delete_c_button_name)
-        ldtp.guiexist(delete_dlg)
-        ldtp.click(delete_dlg, "btnNo")
+        ##delete Alice from UI
+        #delete_dlg = "dlgDeleteclient"
+        #ldtp.click(self.mv_name, self.delete_c_button_name)
+        #ldtp.guiexist(delete_dlg)
+        #ldtp.click(delete_dlg, "btnNo")
 
-        ldtp.click(self.mv_name, self.delete_c_button_name)
-        ldtp.singleclickrow(self.mv_name, self.tree_name_mv, "Alice")
-        ldtp.guiexist(delete_dlg)
-        ldtp.click(delete_dlg, "btnYes")
+        #ldtp.click(self.mv_name, self.delete_c_button_name)
+        #ldtp.singleclickrow(self.mv_name, self.tree_name_mv, "Alice")
+        #ldtp.guiexist(delete_dlg)
+        #ldtp.click(delete_dlg, "btnYes")
 
-        #ldtp.checkrow(self.mv_name, self.tree_name_mv, "Alice")
+        ##ldtp.checkrow(self.mv_name, self.tree_name_mv, "Alice")
 
-        #ient1udtp.selectlastrow("frmOrd-enLey", "tbl0")
+        ##ient1udtp.selectlastrow("frmOrd-enLey", "tbl0")
         
 
 
