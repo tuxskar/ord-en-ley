@@ -53,6 +53,7 @@ This version allow you just work with simple clients
 
 Features
 ........
+- Tested (up to ~90%)
 - Database located in the same position (at home/.ordenley)
 - Installation easy from PyPI using "pip install ordenley"
 - Show actual clients in the DB
