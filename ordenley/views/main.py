@@ -56,6 +56,7 @@ class main_view(object):
         self.builder.connect_signals(dic)
         self.values = {}
         self.activated_clients = []
+        self.window.set_title("Ord-en Ley")
         
     
     def add_row_client(self, client_column, old_dni=None):
@@ -84,7 +85,7 @@ class main_view(object):
             return False
 
     def new_client(self, new_button):
-        self.controller.show_client_info(None, kind="new")
+        self.controller.show_client_info(kind="new")
         self.notifier_label.set_text("Inserting new client")
         
     def delete_client(self, delete_button):

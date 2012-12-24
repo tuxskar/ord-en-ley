@@ -30,6 +30,8 @@ class Controller(object):
         self.db_manager = db.db_manager.db_manager(user_name, user_password)
         self.main_view = None
         self.client_views = {}
+        self.new_clients_views = []
+        self._nclientviews = 0
         
     def init_main(self):
         for client in self.db_manager.get_client_columns():
@@ -43,11 +45,18 @@ class Controller(object):
     def show_client_info(self, dni=None, kind=None):
         if dni!=None:
             client = self.db_manager.get_client(dni)
-            client_info = views.client.client_view(self,client)
+            client_info = views.client.client_view(self,client, c_id=client.dni)
             self.client_views[client.dni] = client_info
         else:
-            client_info = views.client.client_view(self,kind=kind)
+            c_id = self._new_client_view_id()
+            client_info = views.client.client_view(self,kind=kind, c_id=c_id)
+            self.client_views[c_id] = client_info
         client_info.show()
+
+    def _new_client_view_id(self):
+        """generate a new id for new client view"""
+        self._nclientviews += 1
+        return "#:" + str(self._nclientviews)
     
     def insert_new_client(self, client):
         self.db_manager.insert_client(client)
@@ -71,7 +80,7 @@ class Controller(object):
 
     def client_exist(self, dni):
         """Check if client with dni==dni is already in the system"""
-        # TODO select row with dni==dni in main_view
+        # TODO focus row with dni==dni in main_view
         return self.db_manager.client_exist(dni)
 
 if __name__ == '__main__':

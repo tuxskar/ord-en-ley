@@ -63,7 +63,6 @@ def delete_first_test(session):
     client = session.query(Client).first()
     session.delete(client)
     session.commit()
-    print 'deleted' + str(client)
     return True
 
 def delete_sqlite_db(session):

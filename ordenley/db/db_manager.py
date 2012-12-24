@@ -35,7 +35,7 @@ class db_manager(object):
         if ret!=None:
             return ret
         else:
-            return False
+            return None
 
     def delete_client(self, dni):
         self.session.query(models.Models.Client).filter(models.Models.Client.dni==dni).delete()
@@ -63,6 +63,8 @@ class db_manager(object):
         """Check if client exist in the db"""
         if self.get_client(dni):
             return True
+        else:
+            return False
 
 def main():
     """main fuction in db_manager"""
