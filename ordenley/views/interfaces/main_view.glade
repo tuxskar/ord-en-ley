@@ -240,6 +240,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">client_store</property>
+                    <signal name="select-cursor-row" handler="gtk_main_quit" swapped="no"/>
                     <signal name="row-activated" handler="on_client_tree_row_activated" swapped="no"/>
                     <child>
                       <object class="GtkTreeViewColumn" id="name_column">
