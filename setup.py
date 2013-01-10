@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-version = '0.1.6dev'
+version = '0.1.7dev'
 
 REQUIREMENTS = [
         'SQLAlchemy>=0.7.8',
@@ -23,7 +23,7 @@ setup(name = 'ordenley',
       install_requires = REQUIREMENTS,
       entry_points = {
           'console_scripts':
-          ['ordenley = ordenley.test.run:main']
+          ['ordenley = ordenley.tests.run:main']
           },
       classifiers = [
           'Development Status :: 2 - Pre-Alpha',

@@ -60,3 +60,8 @@ Features
 - Modify clients from UI
 - Add new clients from UI
 - Remove clients from UI
+
+Change-log
+----------
+From 0.1.6dev
+    - Renamed package test to tests to run the binary
