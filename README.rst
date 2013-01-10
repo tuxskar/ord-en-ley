@@ -65,3 +65,4 @@ Change-log
 ----------
 From 0.1.6dev
     - Renamed package test to tests to run the binary
+    - Fixed main_window plot

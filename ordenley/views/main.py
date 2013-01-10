@@ -32,7 +32,7 @@ class main_view(object):
         '''
         self.controller = ctrl
         self.builder = gtk.Builder()
-        self.main_window_name = "main_view"
+        self.main_window_name = "Ord-en Ley"
         glade_name = "main_view.glade"
         try:
             self.filename = views.get_data_dev(glade_name)
@@ -46,6 +46,10 @@ class main_view(object):
         self.notifier_label = self.builder.get_object("notifier_label")
         
         self.window = self.builder.get_object(self.main_window_name)
+
+        print "self.window=" + str(self.window)
+        print "self.filename=" + str(self.filename)
+        print "self.builder=" + str(self.builder)
         
         dic = {
         "on_main_view_destroy" : self.quit,
