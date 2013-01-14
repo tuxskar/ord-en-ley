@@ -36,6 +36,18 @@ class Client(Base):
         return "<Client('%s','%s','%s')>" % \
                 (self.dni, self.name, self.surname)
 
+class Address(Base):
+    __tablename__ = 'address'
+
+    id = Column(Integer, primary_key=True)
+    street = Column(String(60))
+    number = Column(Integer)
+    city = Column(String(50))
+    state = Column(String(50))
+    country = Column(String(50))
+    postal_code = Column(Integer)
+    
+
 def insert_test(session):
         clients = session.query(Client).all()
         if len(clients) == 0:
