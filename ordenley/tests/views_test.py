@@ -68,8 +68,8 @@ class app_test(unittest.TestCase):
     def setUp(self):
         """docstring for setUp"""
         self.mv_name = "frmOrd-enLey"
-        self.new_c_button_name = "btnnew"
-        self.delete_c_button_name = "btndelete"
+        self.new_c_button_name = "btnNew"
+        self.delete_c_button_name = "btnDelete"
         self.tree_name_mv = "tbl0"
         ldtp.launchapp('python', args=['/home/skar/projects/python/orden-ley/ordenley/tests/run.py'])
         ldtp.guiexist(self.mv_name)

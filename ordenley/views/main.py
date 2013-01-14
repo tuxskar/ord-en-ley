@@ -46,13 +46,10 @@ class main_view(object):
         self.notifier_label = self.builder.get_object("notifier_label")
         
         self.window = self.builder.get_object(self.main_window_name)
-
-        print "self.window=" + str(self.window)
-        print "self.filename=" + str(self.filename)
-        print "self.builder=" + str(self.builder)
         
         dic = {
         "on_main_view_destroy" : self.quit,
+        "gtk_main_quit" : self.quit,
         "on_client_tree_row_activated" : self.row_activated,
         "on_new_client_clicked" : self.new_client,
         "on_delete_client_clicked" : self.delete_client,
