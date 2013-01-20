@@ -50,6 +50,20 @@ class Address(Base):
     state = Column(String(50))
     country = Column(String(50))
     postal_code = Column(Integer)
+        
+    def __init__(self, street, number=None, city=None, state=None
+            country=None, postal_code=None):
+        """Class constructor"""
+        self.street  = street.decode('utf-8').lower().strip()
+        self.number  = number.decode('utf-8')
+        self.city    = city.decode('utf-8').lower().strip()
+        self.state   = state.decode('utf-8').lower().strip()
+        self.country = country.decode('utf-8').lower().strip()
+        self.postal_code = postal_code.decode('utf-8')
+
+    def __repr__(self):
+        return "<Address('%s','%d','%s', '%s')>" % \
+                (self.street, self.number, self.city, self.state)
     
 
 assoc_client_address = Table('client-address',Base.metadata,
