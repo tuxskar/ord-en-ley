@@ -22,6 +22,9 @@ class Client(Base):
     dni = Column(String(15), unique=True)
     email = Column(String(30))
     web = Column(String(30))
+    address = relationship("Child",
+                secondary=lambda: assoc_client_address,
+                backref="clients")
     
     def __init__(self, name="", surname="", 
                  dni="", email="", web=""):
@@ -47,6 +50,11 @@ class Address(Base):
     country = Column(String(50))
     postal_code = Column(Integer)
     
+
+assoc_client_address = Table('client-address',Base.metadata,
+           Column('client_id', Integer, ForeignKey('clients.id')),
+           Column('address_id', Integer, ForeignKey('address.id'))
+)
 
 def insert_test(session):
         clients = session.query(Client).all()
