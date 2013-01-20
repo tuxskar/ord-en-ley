@@ -22,9 +22,10 @@ class Client(Base):
     dni = Column(String(15), unique=True)
     email = Column(String(30))
     web = Column(String(30))
-    address = relationship("Child",
+    address = relationship("Address",
                 secondary=lambda: assoc_client_address,
-                backref="clients")
+                backref="clients",
+                cascade="all, delete, delete-orphan")
     
     def __init__(self, name="", surname="", 
                  dni="", email="", web=""):
@@ -43,7 +44,7 @@ class Address(Base):
     __tablename__ = 'address'
 
     id = Column(Integer, primary_key=True)
-    street = Column(String(60))
+    street = Column(String(60), nullable=False)
     number = Column(Integer)
     city = Column(String(50))
     state = Column(String(50))
