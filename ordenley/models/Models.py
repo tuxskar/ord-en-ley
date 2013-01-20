@@ -75,7 +75,11 @@ assoc_client_address = Table('client_address',Base.metadata,
 def insert_test(session, debug=False):
         clients = session.query(Client).all()
         if len(clients) == 0 or debug:
-            # clients
+            # Delete already DB for debug 
+            if debug:
+                for c in clients:
+                    session.delete(c)
+            # Inserting clients
             client1 = Client('Maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
             client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
             client3 = Client('Ana', 'Ramirez', '23456789r', web="www.anaramirez.tk")
