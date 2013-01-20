@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 '''
 Created on Nov 14, 2012
 
 @author: tuxskar
 '''
 
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship, backref
 import os
 import shutil
 
@@ -25,7 +26,7 @@ class Client(Base):
     address = relationship("Address",
                 secondary=lambda: assoc_client_address,
                 backref="clients",
-                cascade="all, delete, delete-orphan")
+                cascade="all, delete")
     
     def __init__(self, name="", surname="", 
                  dni="", email="", web=""):
@@ -51,34 +52,45 @@ class Address(Base):
     country = Column(String(50))
     postal_code = Column(Integer)
         
-    def __init__(self, street, number=None, city=None, state=None
+    def __init__(self, street, number=None, city=None, state=None,
             country=None, postal_code=None):
         """Class constructor"""
         self.street  = street.decode('utf-8').lower().strip()
-        self.number  = number.decode('utf-8')
+        self.number  = number
         self.city    = city.decode('utf-8').lower().strip()
         self.state   = state.decode('utf-8').lower().strip()
         self.country = country.decode('utf-8').lower().strip()
-        self.postal_code = postal_code.decode('utf-8')
+        self.postal_code = postal_code
 
     def __repr__(self):
         return "<Address('%s','%d','%s', '%s')>" % \
                 (self.street, self.number, self.city, self.state)
     
 
-assoc_client_address = Table('client-address',Base.metadata,
+assoc_client_address = Table('client_address',Base.metadata,
            Column('client_id', Integer, ForeignKey('clients.id')),
            Column('address_id', Integer, ForeignKey('address.id'))
 )
 
-def insert_test(session):
+def insert_test(session, debug=False):
         clients = session.query(Client).all()
-        if len(clients) == 0:
+        if len(clients) == 0 or debug:
+            # clients
             client1 = Client('Maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
             client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
             client3 = Client('Ana', 'Ramirez', '23456789r', web="www.anaramirez.tk")
             a = [client1,client2,client3]
             session.add_all(a)
+            # Address
+            address1 = Address("Alhama",84,"Lucena", "Cordoba","España",14900)
+            address2 = Address("Arroyo",56,"Rute", "Cordoba","España",14978)
+            address3 = Address("Almendros",1290 ,"Málaga", "Málaga","España",30264)
+
+            # Joining both classes
+            client1.address.append(address1)
+            client1.address.append(address2)
+            client2.address.append(address1)
+            client3.address.append(address3)
             session.commit()
             return True
                 
@@ -108,7 +120,8 @@ def delete_sqlite_db(session):
 def main():
     """main function to test this module"""
     session = get_session()
-    insert_test(session)
+    #insert_test(session)
+    insert_test(session, True)
     
 
 if __name__ == '__main__':
@@ -119,4 +132,4 @@ if __name__ == '__main__':
 #    mysql> create database leyenorden;
 #    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
 #    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
-    self.main()
+     main()
