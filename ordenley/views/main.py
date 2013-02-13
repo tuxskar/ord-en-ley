@@ -52,6 +52,7 @@ class main_view(object):
         print "self.builder=" + str(self.builder)
         
         dic = {
+        "gtk_main_quit" : self.quit,
         "on_main_view_destroy" : self.quit,
         "on_client_tree_row_activated" : self.row_activated,
         "on_new_client_clicked" : self.new_client,
