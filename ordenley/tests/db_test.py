@@ -20,10 +20,13 @@ class db_test(unittest.TestCase):
         u_pass = None
         self.db_manager = db.db_manager.db_manager(user,u_pass)
         self.clients_inserted = []
+        self.addresss_inserted = []
 
     def tearDown(self):
         for c in self.clients_inserted:
             self.db_manager.delete_client(c.dni)
+        for a in self.addresss_inserted:
+            self.db_manager.delete_address(a.street)
 
     def test_client_insert(self):
         old_clients = self.db_manager.get_all_clients()
@@ -67,13 +70,63 @@ class db_test(unittest.TestCase):
         self.assertFalse(self.db_manager.client_exist("XXXXxxkjd9999999999"))
 
     def test_address_insert(self):
-        new_address = 
+        #TODO
+        #get_all_address
+        #insert_address
+
+        #actual address in the db
+        old_addresss = self.db_manager.get_all_addresss()
+        address = self.random_address()
+        old_addresss.append(address)
+        #all address plus random address
+
+        self.db_manager.insert_address(address)
+        new_addresss = self.db_manager.get_all_addresss()
+        self.assertEqual(old_addresss, new_addresss)
+
+        self.addresss_inserted.append(address)
 
     def test_address_update(self):
+        #TODO
+        #insert_address
+        #modify_address
+        #get_address
+        address = self.random_address()
+        self.addresss_inserted.append(address)
+        self.db_manager.insert_address(address)
+        address.street      += address.street      
+        address.number      += address.number      
+        address.city        += address.city        
+        address.state       += address.state       
+        address.country     += address.country     
+        address.postal_code += address.postal_code
+        self.db_manager.modify_address(old_address, address) 
+        address_modified = self.db_manager.get_address(address.street)
+        self.assertequal(address,address_modified)
 
     def test_address_delete(self):
+        #TODO
+        #insert_address
+        #delete_address
+        #get_all__address
+        old_addresss = self.db_manager.get_all_addresss()
+        address = self.random_address()
+        self.db_manager.insert_address(address)
+        self.db_manager.delete_address(address.dni)
+        new_addresss = self.db_manager.get_all_addresss()
+        self.assertEqual(old_addresss, new_addresss)
 
     def test_address_search(self):
+        #TODO
+        #insert_address
+        #exist_address
+        #get__address
+        address = self.random_address()
+        self.db_manager.insert_address(address)
+        self.db_manager.exist_address(address.dni)
+        self.addresss_inserted.append(address)
+        g_address = self.db_manager.get_address(address.dni)
+        self.assertEqual(address, g_address)
 
     def random_string(self, length=10):
         s = ""
