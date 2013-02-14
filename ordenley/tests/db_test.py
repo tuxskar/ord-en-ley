@@ -66,10 +66,25 @@ class db_test(unittest.TestCase):
         #This DNI is a imposible one because a dni is a consecution of numbers and a simple letter
         self.assertFalse(self.db_manager.client_exist("XXXXxxkjd9999999999"))
 
+    def test_address_insert(self):
+        new_address = 
+
+    def test_address_update(self):
+
+    def test_address_delete(self):
+
+    def test_address_search(self):
+
     def random_string(self, length=10):
         s = ""
         for n in range(length):
             s += random.choice(string.ascii_letters + string.digits)
+        return s
+
+    def random_integer(self, length=10):
+        s = ""
+        for n in range(length):
+            s += random.choice(string.digits)
         return s
 
     def random_client(self):
@@ -85,6 +100,20 @@ class db_test(unittest.TestCase):
                 email = email,
                 dni = dni)
         return client
+
+    def random_address(self):
+        street = self.random_string()
+        number = self.random_integer()
+        city = self.random_string(9)
+        state = self.random_string()
+        posta_code = self.random_integer()
+        address = models.Models.Address(
+                street = street,
+                number = number,
+                city = city,
+                state = state,
+                posta_code = posta_code)
+        return address
 
     def test_differents_session(self):
         """Test all kind of session you can have"""
