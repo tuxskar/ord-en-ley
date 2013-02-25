@@ -21,7 +21,8 @@ class db_manager(object):
             self.session = models.Models.get_session(user_name, user_password, sqlite=False)
         else:
             self.session = models.Models.get_session()
-        
+
+class db_client_manager(db_manager):
     def get_all_clients(self):
         return self.session.query(models.Models.Client).all()
     
@@ -66,11 +67,36 @@ class db_manager(object):
         else:
             return False
 
+class db_address_manager(db_manager):
+    #+address_exist : function
+    #+delete_address : function
+    #+get_all_addresss : function
+    #+get_address : function
+    #+get_address_columns : function
+    #+insert_address : function
+    #+insert_test_addresss : function
+    #+modify_address : function
+
+    def address_exist(self):
+        pass
+    def delete_address(self):
+        pass
+    def get_address(self):
+        pass
+    def get_address_columns(self):
+        pass
+    def insert_address(self):
+        pass
+    def insert_test_addresss(self):
+        pass
+    def modify_address(self):
+        pass
+
 def main():
     """main fuction in db_manager"""
-    dbman = db_manager()
+    dbman = db_manager_client()
     dbman.get_client("hola")
     return True
 
 if __name__ == '__main__':
-    self.main()
+    main()
