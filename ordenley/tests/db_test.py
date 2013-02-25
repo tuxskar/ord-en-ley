@@ -12,7 +12,6 @@ import db.db_manager
 import models.Models
 import random
 import string
-import ordenley.tests
 
 class db_test(unittest.TestCase):
     def setUp(self):
@@ -25,8 +24,9 @@ class db_test(unittest.TestCase):
     def tearDown(self):
         for c in self.clients_inserted:
             self.db_manager.delete_client(c.dni)
-        for a in self.addresss_inserted:
-            self.db_manager.delete_address(a.street)
+        #TODO
+        #for a in self.addresss_inserted:
+            #self.db_manager.delete_address(a.street)
 
     def test_client_insert(self):
         old_clients = self.db_manager.get_all_clients()
@@ -92,6 +92,7 @@ class db_test(unittest.TestCase):
         #modify_address
         #get_address
         address = self.random_address()
+        old_address = address
         self.addresss_inserted.append(address)
         self.db_manager.insert_address(address)
         address.street      += address.street      
