@@ -4,7 +4,7 @@ Created on Nov 17, 2012
 
 @author: tuxskar
 '''
-import sys,os.path
+import sys
 import views
 
 try:  
@@ -37,7 +37,7 @@ class main_view(object):
         try:
             self.filename = views.get_data_dev(glade_name)
             self.builder.add_from_file(self.filename)
-        except glib.GError, e:
+        except glib.GError:
             self.filename = views.get_data(glade_name)
             self.builder.add_from_file(self.filename)
 
