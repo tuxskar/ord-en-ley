@@ -55,17 +55,22 @@ class Address(Base):
     def __init__(self, street, number=None, city=None, state=None,
             country=None, postal_code=None):
         """Class constructor"""
-        self.street  = street.decode('utf-8').lower().strip()
+        self.street  = _decode_or_none(street)
         self.number  = number
-        self.city    = city.decode('utf-8').lower().strip()
-        self.state   = state.decode('utf-8').lower().strip()
-        self.country = country.decode('utf-8').lower().strip()
+        self.city    = _decode_or_none(city)
+        self.state   = _decode_or_none(state)
+        self.country = _decode_or_none(country)
         self.postal_code = postal_code
 
     def __repr__(self):
-        return "<Address('%s','%d','%s', '%s')>" % \
+        return "<Address('%s','%s','%s', '%s')>" % \
                 (self.street, self.number, self.city, self.state)
-    
+
+def _decode_or_none(str):
+    """Function to decode a string or return None"""
+    if str is not None:
+        return str.decode('utf-8').lower().strip()
+    return ""
 
 assoc_client_address = Table('client_address',Base.metadata,
            Column('client_id', Integer, ForeignKey('clients.id')),
