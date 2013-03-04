@@ -93,18 +93,21 @@ class db_address_manager(db_manager):
 
 
     def delete_address(self, a):
+        """Method to delete the address a"""
         id = self.address_exist(a) 
         if id != False:
             self.session.query(models.Models.Address).filter(models.Models.Address.id==a.id).delete()
             self.session.commit()
 
     def get_all_address(self):
+        """Method to return all the address in the system"""
         return self.session.query(models.Models.Address).all()
 
     def get_address_columns(self):
         pass
 
     def insert_address(self, a):
+        """Method to insert a new address a """
         self.session.add(a)
         self.session.commit()
 
