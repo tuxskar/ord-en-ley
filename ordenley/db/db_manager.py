@@ -100,8 +100,9 @@ class db_address_manager(db_manager):
     def get_address_columns(self):
         pass
 
-    def insert_address(self):
-        pass
+    def insert_address(self, a):
+        self.session.add(a)
+        self.session.commit()
 
     def insert_test_addresss(self):
         pass
