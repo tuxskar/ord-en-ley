@@ -78,7 +78,8 @@ class db_address_manager(db_manager):
     #+modify_address : function
 
     def address_exist(self, a):
-        """Function to check if an address is already on the system"""
+        """Function to check if an address is already on the system
+        if the address is already on the system returns the actual id, otherwise False"""
         ladd = self.session.query(models.Models.Address).\
                 filter(models.Models.Address.street==a.street).all()
         for add in ladd:
@@ -87,12 +88,15 @@ class db_address_manager(db_manager):
                     add.state==a.state and \
                     add.country==a.country and \
                     add.postal_code==a.postal_code:
-                return True
+                return add.id
         return False
 
 
-    def delete_address(self):
-        pass
+    def delete_address(self, a):
+        id = self.address_exist(a) 
+        if id != False:
+            self.session.query(models.Models.Address).filter(models.Models.Address.id==a.id).delete()
+            self.session.commit()
 
     def get_all_address(self):
         return self.session.query(models.Models.Address).all()
@@ -103,9 +107,6 @@ class db_address_manager(db_manager):
     def insert_address(self, a):
         self.session.add(a)
         self.session.commit()
-
-    def insert_test_addresss(self):
-        pass
 
     def modify_address(self):
         pass
