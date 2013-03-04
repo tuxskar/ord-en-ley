@@ -17,16 +17,13 @@ class db_test(unittest.TestCase):
     def setUp(self):
         user = None
         u_pass = None
-        self.db_manager = db.db_manager.db_manager(user,u_pass)
+        self.db_manager =db.db_manager.db_client_manager(user,u_pass)
         self.clients_inserted = []
-        self.addresss_inserted = []
 
     def tearDown(self):
         for c in self.clients_inserted:
             self.db_manager.delete_client(c.dni)
         #TODO
-        #for a in self.addresss_inserted:
-            #self.db_manager.delete_address(a.street)
 
     def test_client_insert(self):
         old_clients = self.db_manager.get_all_clients()
@@ -68,85 +65,13 @@ class db_test(unittest.TestCase):
         self.assertEqual(client, g_client)
         #This DNI is a imposible one because a dni is a consecution of numbers and a simple letter
         self.assertFalse(self.db_manager.client_exist("XXXXxxkjd9999999999"))
-
-    def test_address_insert(self):
-        #TODO
-        #get_all_address
-        #insert_address
-
-        #actual address in the db
-        old_addresss = self.db_manager.get_all_addresss()
-        address = self.random_address()
-        old_addresss.append(address)
-        #all address plus random address
-
-        self.db_manager.insert_address(address)
-        new_addresss = self.db_manager.get_all_addresss()
-        self.assertEqual(old_addresss, new_addresss)
-
-        self.addresss_inserted.append(address)
-
-    def test_address_update(self):
-        #TODO
-        #insert_address
-        #modify_address
-        #get_address
-        address = self.random_address()
-        old_address = address
-        self.addresss_inserted.append(address)
-        self.db_manager.insert_address(address)
-        address.street      += address.street      
-        address.number      += address.number      
-        address.city        += address.city        
-        address.state       += address.state       
-        address.country     += address.country     
-        address.postal_code += address.postal_code
-        self.db_manager.modify_address(old_address, address) 
-        address_modified = self.db_manager.get_address(address.street)
-        self.assertequal(address,address_modified)
-
-    def test_address_delete(self):
-        #TODO
-        #insert_address
-        #delete_address
-        #get_all__address
-        old_addresss = self.db_manager.get_all_addresss()
-        address = self.random_address()
-        self.db_manager.insert_address(address)
-        self.db_manager.delete_address(address.dni)
-        new_addresss = self.db_manager.get_all_addresss()
-        self.assertEqual(old_addresss, new_addresss)
-
-    def test_address_search(self):
-        #TODO
-        #insert_address
-        #exist_address
-        #get__address
-        address = self.random_address()
-        self.db_manager.insert_address(address)
-        self.db_manager.exist_address(address.dni)
-        self.addresss_inserted.append(address)
-        g_address = self.db_manager.get_address(address.dni)
-        self.assertEqual(address, g_address)
-
-    def random_string(self, length=10):
-        s = ""
-        for n in range(length):
-            s += random.choice(string.ascii_letters + string.digits)
-        return s
-
-    def random_integer(self, length=10):
-        s = ""
-        for n in range(length):
-            s += random.choice(string.digits)
-        return s
-
+        
     def random_client(self):
-        name = self.random_string()
-        surname = self.random_string()
-        dni = self.random_string(9)
-        web = self.random_string()
-        email = self.random_string()
+        name = random_string()
+        surname = random_string()
+        dni = random_string(9)
+        web = random_string()
+        email = random_string()
         client = models.Models.Client(
                 name = name,
                 surname = surname,
@@ -154,20 +79,6 @@ class db_test(unittest.TestCase):
                 email = email,
                 dni = dni)
         return client
-
-    def random_address(self):
-        street = self.random_string()
-        number = self.random_integer()
-        city = self.random_string(9)
-        state = self.random_string()
-        posta_code = self.random_integer()
-        address = models.Models.Address(
-                street = street,
-                number = number,
-                city = city,
-                state = state,
-                posta_code = posta_code)
-        return address
 
     def test_differents_session(self):
         """Test all kind of session you can have"""
@@ -196,6 +107,72 @@ class db_test(unittest.TestCase):
     def test_main(self):
         """test for main_test"""
         self.assertTrue(db.db_manager.main())
+
+class db_address_test(unittest.TestCase):
+    def setUp(self):
+        """Setup method for address tests"""
+        pass
+
+    def tearDown(self):
+        """tearDown method to destroy all address generated"""
+        pass
+
+    def test_insert_address(self):
+        """This test verify exist, insert and delete address from db"""
+        da = db.db_manager.db_address_manager()
+        add = self.random_address()
+        while(da.address_exist(add) != False):
+            add = self.random_address()
+        da.insert_address(add)
+        self.assertTrue(da.address_exist(add), int)
+        da.delete_address(add)
+        self.assertFalse(da.address_exist(add))
+
+    def test_address_update(self):
+        pass
+        #TODO
+        #insert_address
+        #modify_address
+        #get_address
+        #address = self.random_address()
+        #old_address = address
+        #self.addresss_inserted.append(address)
+        #self.db_manager.insert_address(address)
+        #address.street      += address.street      
+        #address.number      += address.number      
+        #address.city        += address.city        
+        #address.state       += address.state       
+        #address.country     += address.country     
+        #address.postal_code += address.postal_code
+        #self.db_manager.modify_address(old_address, address) 
+        #address_modified = self.db_manager.get_address(address.street)
+        #self.assertequal(address,address_modified)
+
+    def random_address(self):
+        street = random_string()
+        number = random_integer()
+        city = random_string(9)
+        state = random_string()
+        postal_code = random_integer()
+        address = models.Models.Address(
+                street = street,
+                number = number,
+                city = city,
+                state = state,
+                postal_code = postal_code)
+        return address
+        
+def random_string(length=10):
+    s = ""
+    for n in range(length):
+        s += random.choice(string.ascii_letters + string.digits)
+    return s
+
+def random_integer(length=10):
+    s = ""
+    for n in range(length):
+        s += random.choice(string.digits)
+    return s
 
 if __name__ == '__main__':
     unittest.main()
