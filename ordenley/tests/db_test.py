@@ -27,7 +27,7 @@ class db_test(unittest.TestCase):
 
     def test_client_insert(self):
         old_clients = self.db_manager.get_all_clients()
-        client = self.random_client()
+        client = random_client()
         self.clients_inserted.append(client)
         old_clients.append(client)
         self.db_manager.insert_client(client)
@@ -35,7 +35,7 @@ class db_test(unittest.TestCase):
         self.assertEqual(old_clients, new_clients)
 
     def test_client_update(self):
-        client = self.random_client()
+        client = random_client()
         self.clients_inserted.append(client)
         self.db_manager.insert_client(client)
         old_dni = client.dni
@@ -50,14 +50,14 @@ class db_test(unittest.TestCase):
 
     def test_client_delete(self):
         old_clients = self.db_manager.get_all_clients()
-        client = self.random_client()
+        client = random_client()
         self.db_manager.insert_client(client)
         self.db_manager.delete_client(client.dni)
         new_clients = self.db_manager.get_all_clients()
         self.assertEqual(old_clients, new_clients)
 
     def test_client_search(self):
-        client = self.random_client()
+        client = random_client()
         self.db_manager.insert_client(client)
         self.db_manager.client_exist(client.dni)
         self.clients_inserted.append(client)
@@ -66,19 +66,6 @@ class db_test(unittest.TestCase):
         #This DNI is a imposible one because a dni is a consecution of numbers and a simple letter
         self.assertFalse(self.db_manager.client_exist("XXXXxxkjd9999999999"))
         
-    def random_client(self):
-        name = random_string()
-        surname = random_string()
-        dni = random_string(9)
-        web = random_string()
-        email = random_string()
-        client = models.Models.Client(
-                name = name,
-                surname = surname,
-                web = web,
-                email = email,
-                dni = dni)
-        return client
 
     def test_differents_session(self):
         """Test all kind of session you can have"""
@@ -120,13 +107,41 @@ class db_address_test(unittest.TestCase):
     def test_insert_address(self):
         """This test verify exist, insert and delete address from db"""
         da = db.db_manager.db_address_manager()
-        add = self.random_address()
+        add = random_address()
         while(da.address_exist(add) != False):
             add = self.random_address()
         da.insert_address(add)
         self.assertTrue(da.address_exist(add), int)
         da.delete_address(add)
         self.assertFalse(da.address_exist(add))
+
+    def test_insert_address_and_client(self):
+        """Test to verify we can insert address joined to clients
+       methods tested:
+       <Client>.address.append
+       <db_client_manager>.insert_address(<Address>)
+        """
+        da = db.db_manager.db_address_manager()
+        dc = db.db_manager.db_client_manager()
+        add1 = random_address() 
+        add2 = random_address() 
+        add3 = random_address() 
+        cc = random_client()
+        dc.insert_client(cc)
+        cc.address.append(add1)
+        dc.session.add(cc)
+
+        self.assertFalse(da.address_exist(add1))
+        self.assertFalse(da.address_exist(add2))
+
+        dc.insert_address(cc, add2)
+        dc.insert_address(cc, add3)
+
+        self.assertTrue(add2.clients[0].dni == cc.dni)
+        self.assertTrue(add1.clients[0].dni == cc.dni)
+        self.assertTrue(isinstance(cc.address.index(add2), int))
+        self.assertTrue(da.address_exist(add1))
+        self.assertTrue(da.address_exist(add2))
 
     def test_address_update(self):
         pass
@@ -148,19 +163,33 @@ class db_address_test(unittest.TestCase):
         #address_modified = self.db_manager.get_address(address.street)
         #self.assertequal(address,address_modified)
 
-    def random_address(self):
-        street = random_string()
-        number = random_integer()
-        city = random_string(9)
-        state = random_string()
-        postal_code = random_integer()
-        address = models.Models.Address(
-                street = street,
-                number = number,
-                city = city,
-                state = state,
-                postal_code = postal_code)
-        return address
+def random_client():
+    name = random_string()
+    surname = random_string()
+    dni = random_string(9)
+    web = random_string()
+    email = random_string()
+    client = models.Models.Client(
+            name = name,
+            surname = surname,
+            web = web,
+            email = email,
+            dni = dni)
+    return client
+
+def random_address():
+    street = random_string()
+    number = random_integer()
+    city = random_string(9)
+    state = random_string()
+    postal_code = random_integer()
+    address = models.Models.Address(
+            street = street,
+            number = number,
+            city = city,
+            state = state,
+            postal_code = postal_code)
+    return address
         
 def random_string(length=10):
     s = ""
