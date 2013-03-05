@@ -67,6 +67,12 @@ class db_client_manager(db_manager):
         else:
             return False
 
+    def insert_address(self, client, address):
+        """Method to add new address to the client client"""
+        address.clients.append(client)
+        self.session.add(address)
+        self.session.commit()
+
 class db_address_manager(db_manager):
     #+address_exist : function
     #+delete_address : function
