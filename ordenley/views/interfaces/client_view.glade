@@ -359,12 +359,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHButtonBox" id="hbuttonbox2">
+              <object class="GtkVButtonBox" id="vbuttonbox1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="homogeneous">True</property>
+                <property name="layout_style">spread</property>
                 <child>
-                  <object class="GtkButton" id="new_address_button">
-                    <property name="label" translatable="yes">New address</property>
+                  <object class="GtkButton" id="bnew_address">
+                    <property name="label" translatable="yes">New Address</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -374,6 +376,21 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="bdelete_address">
+                    <property name="label" translatable="yes">Delete 
+Address</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
