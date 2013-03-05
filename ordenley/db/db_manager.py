@@ -80,17 +80,17 @@ class db_address_manager(db_manager):
     def address_exist(self, a):
         """Function to check if an address is already on the system
         if the address is already on the system returns the actual id, otherwise False"""
-        ladd = self.session.query(models.Models.Address).\
-                filter(models.Models.Address.street==a.street).all()
-        for add in ladd:
-            if add.number==a.number and \
-                    add.city==a.city and \
-                    add.state==a.state and \
-                    add.country==a.country and \
-                    add.postal_code==a.postal_code:
-                return add.id
-        return False
-
+        aid = self.session.query(models.Models.Address.id).\
+                filter(models.Models.Address.street==a.street,
+                    models.Models.Address.number      == a.number,
+                    models.Models.Address.city        == a.city,
+                    models.Models.Address.state       == a.state,
+                    models.Models.Address.country     == a.country,
+                    models.Models.Address.postal_code == a.postal_code).first()
+        if aid == None:
+            return False
+        else:
+            return aid.id
 
     def delete_address(self, a):
         """Method to delete the address a"""
