@@ -13,58 +13,59 @@ import models.Models
 import random
 import string
 
-class db_test(unittest.TestCase):
+class db_client_test(unittest.TestCase):
     def setUp(self):
         user = None
         u_pass = None
-        self.db_manager =db.db_manager.db_client_manager(user,u_pass)
+        self.db_manager = db.db_manager.db_manager(user,u_pass)
+        self.db_cm = self.db_manager.cm
         self.clients_inserted = []
 
     def tearDown(self):
         for c in self.clients_inserted:
-            self.db_manager.delete_client(c.dni)
+            self.db_cm.delete_client(c.dni)
         #TODO
 
     def test_client_insert(self):
-        old_clients = self.db_manager.get_all_clients()
+        old_clients = self.db_cm.get_all_clients()
         client = random_client()
         self.clients_inserted.append(client)
         old_clients.append(client)
-        self.db_manager.insert_client(client)
-        new_clients = self.db_manager.get_all_clients()
+        self.db_cm.insert_client(client)
+        new_clients = self.db_cm.get_all_clients()
         self.assertEqual(old_clients, new_clients)
 
     def test_client_update(self):
         client = random_client()
         self.clients_inserted.append(client)
-        self.db_manager.insert_client(client)
+        self.db_cm.insert_client(client)
         old_dni = client.dni
         client.name += client.name
         client.surname += client.surname
         client.dni += client.dni
         client.web+= client.web
         client.email+= client.email
-        self.db_manager.modify_client(old_dni, client) 
-        client_modified = self.db_manager.get_client(client.dni)
+        self.db_cm.modify_client(old_dni, client) 
+        client_modified = self.db_cm.get_client(client.dni)
         self.assertEqual(client,client_modified)
 
     def test_client_delete(self):
-        old_clients = self.db_manager.get_all_clients()
+        old_clients = self.db_cm.get_all_clients()
         client = random_client()
-        self.db_manager.insert_client(client)
-        self.db_manager.delete_client(client.dni)
-        new_clients = self.db_manager.get_all_clients()
+        self.db_cm.insert_client(client)
+        self.db_cm.delete_client(client.dni)
+        new_clients = self.db_cm.get_all_clients()
         self.assertEqual(old_clients, new_clients)
 
     def test_client_search(self):
         client = random_client()
-        self.db_manager.insert_client(client)
-        self.db_manager.client_exist(client.dni)
+        self.db_cm.insert_client(client)
+        self.db_cm.client_exist(client.dni)
         self.clients_inserted.append(client)
-        g_client = self.db_manager.get_client(client.dni)
+        g_client = self.db_cm.get_client(client.dni)
         self.assertEqual(client, g_client)
         #This DNI is a imposible one because a dni is a consecution of numbers and a simple letter
-        self.assertFalse(self.db_manager.client_exist("XXXXxxkjd9999999999"))
+        self.assertFalse(self.db_cm.client_exist("XXXXxxkjd9999999999"))
         
 
     def test_differents_session(self):
@@ -80,8 +81,8 @@ class db_test(unittest.TestCase):
 
     def test_get_client_colums(self):
         """get client columns test"""
-        columns = self.db_manager.get_client_columns()
-        clients = self.db_manager.get_all_clients()
+        columns = self.db_cm.get_client_columns()
+        clients = self.db_cm.get_all_clients()
         clients_columns = []
         for c in clients:
             clients_columns.append((c.name,c.surname,c.dni))
@@ -89,7 +90,7 @@ class db_test(unittest.TestCase):
 
     def test_clients(self):
         """test_clients from db_manager"""
-        self.db_manager.insert_test_clients()
+        self.db_cm.insert_test_clients()
 
     def test_main(self):
         """test for main_test"""
@@ -98,22 +99,27 @@ class db_test(unittest.TestCase):
 class db_address_test(unittest.TestCase):
     def setUp(self):
         """Setup method for address tests"""
-        pass
+        user = None
+        u_pass = None
+        self.db_manager = db.db_manager.db_manager(user,u_pass)
+        self.db_am = self.db_manager.am
+        self.db_cm = self.db_manager.cm
+        self.address_inserted = []
 
     def tearDown(self):
         """tearDown method to destroy all address generated"""
-        pass
+        for a in self.address_inserted:
+            self.db_ca.delete_address(a)
 
     def test_insert_address(self):
         """This test verify exist, insert and delete address from db"""
-        da = db.db_manager.db_address_manager()
         add = random_address()
-        while(da.address_exist(add) != False):
+        while(self.db_am.address_exist(add) != False):
             add = self.random_address()
-        da.insert_address(add)
-        self.assertTrue(da.address_exist(add), int)
-        da.delete_address(add)
-        self.assertFalse(da.address_exist(add))
+        self.db_am.insert_address(add)
+        self.assertTrue(self.db_am.address_exist(add), int)
+        self.db_am.delete_address(add)
+        self.assertFalse(self.db_am.address_exist(add))
 
     def test_insert_address_and_client(self):
         """Test to verify we can insert address joined to clients
@@ -121,30 +127,49 @@ class db_address_test(unittest.TestCase):
        <Client>.address.append
        <db_client_manager>.insert_address(<Address>)
         """
-        da = db.db_manager.db_address_manager()
-        dc = db.db_manager.db_client_manager()
         add1 = random_address() 
         add2 = random_address() 
-        add3 = random_address() 
         cc = random_client()
-        dc.insert_client(cc)
-        cc.address.append(add1)
-        dc.session.add(cc)
+        self.db_cm.insert_client(cc)
 
-        self.assertFalse(da.address_exist(add1))
-        self.assertFalse(da.address_exist(add2))
+        self.assertFalse(self.db_am.address_exist(add1))
+        self.assertFalse(self.db_am.address_exist(add2))
 
-        dc.insert_address(cc, add2)
-        dc.insert_address(cc, add3)
+        self.db_am.insert_address_to_client(cc, add1)
+        self.db_am.insert_address_to_client(cc, add2)
 
         self.assertTrue(add2.clients[0].dni == cc.dni)
         self.assertTrue(add1.clients[0].dni == cc.dni)
         self.assertTrue(isinstance(cc.address.index(add2), int))
-        self.assertTrue(da.address_exist(add1))
-        self.assertTrue(da.address_exist(add2))
+        self.assertTrue(self.db_am.address_exist(add1))
+        self.assertTrue(self.db_am.address_exist(add2))
 
     def test_address_update(self):
-        pass
+        dc = self.db_cm
+        da = self.db_am
+        cc = random_client()
+        cc2 = random_client()
+        cc3 = random_client()
+        add = random_address()
+        add2 = random_address()
+        add4 = random_address()
+        add5 = random_address()
+
+        cc.address.append(add)
+        cc.address.append(add2)
+        cc2.address.append(add)
+        cc3.address.append(add2)
+
+        dc.insert_client(cc)
+        dc.insert_client(cc2)
+        dc.insert_client(cc3)
+        dc.session.commit()
+        
+        da.modify_address(add, add4)
+        da.modify_address(add2, add5)
+
+        self.assertTrue(isinstance(cc.address.index(add4), int))
+
         #TODO
         #insert_address
         #modify_address
