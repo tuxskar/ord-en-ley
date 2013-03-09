@@ -18,15 +18,13 @@ import views.client
 import gtk
 
 class Controller(object):
-    '''
+    """
     The controller part of the Model-View-Controller design pattern
-    '''
-    #_main_view = None
-
+    """
     def __init__(self, user_name=None, user_password=None, ctlr=None):
-        '''
+        """
         Initialize the controller with db_manager and views needs
-        '''
+        """
         self.db_manager = db.db_manager.db_manager(user_name, user_password)
         self.main_view = ctlr
         self.client_views = {}
@@ -68,6 +66,9 @@ class Controller(object):
 
     ######## Manage main_view ########
     def connect_main_view(self, view):
+        """
+        Method to connect controller with unique main_view
+        """
         self.main_view = view
 
     def fill_up_main_view(self):
