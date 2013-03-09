@@ -40,7 +40,7 @@ class Controller(object):
         """
         if kind == "new":
             self.__new_clients_views_count += 1
-            title_view = "New client " + str(self.__new_clients_count)
+            title_view = "New client"
             client_view = views.client.client_view(title_id=title_view)
         elif kind == "info":
             client = self.db_manager.cm.get_client(client_id)
@@ -50,19 +50,30 @@ class Controller(object):
         client_view.show()
 
     def client_returned_values(self, modification=None, mod_obj=None, 
-                                new_data=None, old_id=None):
+                                new_object=None, old_id=None):
         """
             Method to get the returned values from client_view
             This method is called when you finish modify a client in client_view and 
             you want to return all the modifications
-            Args   : modification , mod_obj  , new_data , old_id
-            values : None         , None     , None     , None       __ No modification at all
-                   : client       , delete   , client   , client.id
-                   :              , modified ,          ,            __ modify or delete client with old id old_id
-                   : address      , delete   , address  , address.id
-                   :              , modified ,          ,            __ modify or delete address with old id old_id
+            Args     : modification , mod_obj  , new_object    , old_id
+            values   : client       , delete   , client      , client.id
+                     :              , modified ,             ,            -- modify or delete client with old id old_id
+                     : address      , delete   , address     , address.id
+                     :              , modified ,             ,            -- modify or delete address with old id old_id
+                     : view         , delete   , view_object , None       -- Delete the client view_object
         """
-        # TODO: write code ...
+        manager = None
+        #Note: the unique variation for address, client, etc, is the db_manager controller am, cm, etc
+        if modification=="client":
+            manager = self.db_manager.cm
+        elif modification == "address":
+            manager = self.db_manager.am
+        if mod_obj == "delete":
+            manager.delete(new_object)
+        elif mod_obj == "modified":
+            manager.modify(new_object, old_id)
+        if modification == "view":
+            del new_object
 
     def hide_view(self, view):
         """
