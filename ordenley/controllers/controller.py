@@ -96,7 +96,7 @@ class Controller(object):
         """
             Method to add the client to the main_view client_tree
         """
-        # TODO: write code ...
+        self.main_view.new_client_row(client)
 
 
 
@@ -129,7 +129,7 @@ class Controller(object):
     def to_modify(self, dni, client):
         self.db_manager.cm.modify_client(dni, client)
         
-    def hide_view(self, dni):
+    def hide_client_view(self, dni):
         """Hide client_view by dni"""
         self.client_views.get(dni).hide()
 
