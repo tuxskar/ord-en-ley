@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Created on Nov 17, 2012
 
 @author: tuxskar
-'''
+"""
 import models.Models
 
 class db_manager(object):
-    '''
+    """
     This module is the layer between physical DB to controller
-    '''
+    """
 
     def __init__(self, user_name = None, user_password=None, session = None):
-        '''
+        """
         This constructor has at least a session object to start petitions agains 
-        '''
+        """
         if session != None:
             self.session = session
         elif user_name != None and user_password != None:
@@ -43,12 +43,8 @@ class db_client_manager(object):
                            models.Models.Client.surname,
                            models.Models.Client.dni).all()
                                              
-    def get_client(self, dni):
-        ret = self.session.query(models.Models.Client).filter(models.Models.Client.dni==dni).first()
-        if ret!=None:
-            return ret
-        else:
-            return None
+    def get_client(self, client_id):
+        return self.session.query(models.Models.Client).filter(models.Models.Client.id==client_id).first()
 
     def delete_client(self, dni):
         self.session.query(models.Models.Client).filter(models.Models.Client.dni==dni).delete()
