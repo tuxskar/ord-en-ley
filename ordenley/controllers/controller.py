@@ -109,49 +109,6 @@ class Controller(object):
         """
         self.main_view.new_client_row(client)
 
-
-
-######## this is end of methods with the new method structure #########
-    def show_client_info(self, dni=None, kind=None):
-        if dni!=None:
-            client = self.db_manager.cm.get_client(dni)
-            client_info = views.client.client_view(self,client, c_id=client.dni)
-            self.client_views[client.dni] = client_info
-        else:
-            c_id = self.__new_client_view_id()
-            client_info = views.client.client_view(self,kind=kind, c_id=c_id)
-            self.client_views[c_id] = client_info
-        client_info.show()
-
-    def __new_client_view_id(self):
-        """generate a new id for new client view"""
-        return "#:" + str(len(self.new_clients_views)+1)
-    
-    def insert_new_client(self, client):
-        self.db_manager.cm.insert_client(client)
-        
-    def refresh_clients_main_view(self, client, old_dni=None):
-        row_client = [client.name, client.surname, client.dni]
-        self.main_view.add_row_client(row_client, old_dni)
-    
-    def delete_client(self, dni):
-        self.db_manager.cm.delete_client(dni) 
-
-    def to_modify(self, dni, client):
-        self.db_manager.cm.modify_client(dni, client)
-        
-    def hide_client_view(self, dni):
-        """Hide client_view by dni"""
-        self.client_views.get(dni).hide()
-
-    def insert_test_clients(self):
-        self.db_manager.cm.insert_test_clients()
-
-    def client_exist(self, dni):
-        """Check if client with dni==dni is already in the system"""
-        # TODO focus row with dni==dni in main_view
-        return self.db_manager.cm.client_exist(dni)
-
 if __name__ == '__main__':
     cont = Controller()
     main_view = views.main.main_view(cont)
