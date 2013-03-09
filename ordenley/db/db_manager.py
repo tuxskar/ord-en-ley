@@ -79,7 +79,6 @@ class db_client_manager(object):
         else:
             return False
 
-
 class db_address_manager(object):
     def __init__(self, session):
         """db_address_manager constructor, it needs a session to build it in"""
