@@ -27,18 +27,27 @@ class Controller(object):
         """
         self.db_manager = db.db_manager.db_manager(user_name, user_password)
         self.main_view = ctlr
-        self.client_views = {}
-        self.new_clients_views = []
+        self.__client_views = {}
+        self.__new_clients_count = 0
 
     ######### Manage client_view ########
-    def show_client(self, kind, data=None):
+    def show_client(self, kind, client_id=None):
         """
         Method to show new client_view window
         kind , data
         new  , None   : Shows a new client_view window to insert a new client
-        info , client : Shows a client_view window with client information
+        info , client_id : Shows a client_view window with client information
         """
-        pass
+        if kind == "new":
+            self.__new_clients_views_count += 1
+            title_view = "New client " + str(self.__new_clients_count)
+            client_view = views.client.client_view(title_id=title_view)
+        elif kind == "info":
+            client = self.db_manager.cm.get_client(client_id)
+            title_view = client.name.capitalize() + " " + client.surname.capitalize()
+            client_view = views.client.client_view(client, title_view)
+            self.__cliet_views[client.id] = client_view
+        client_view.show()
 
     def client_returned_values(self, modification=None, mod_obj=None, 
                                 new_data=None, old_id=None):
