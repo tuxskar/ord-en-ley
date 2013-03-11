@@ -17,24 +17,24 @@ sqlite_db_name = "leyenorden.db"
 class Client(Base):
     __tablename__ = 'clients'
     
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30))
+    id      = Column(Integer, primary_key = True)
+    name    = Column(String(30))
     surname = Column(String(60))
-    dni = Column(String(15), unique=True)
-    email = Column(String(30))
-    web = Column(String(30))
+    dni     = Column(String(15), unique   = True)
+    email   = Column(String(30))
+    web     = Column(String(30))
     address = relationship("Address",
-                secondary=lambda: assoc_client_address,
-                backref="clients",
-                cascade="all, delete")
+                            secondary = lambda: assoc_client_address,
+                            backref   = "clients",
+                            cascade   = "all, delete")
     
     def __init__(self, name="", surname="", 
                  dni="", email="", web=""):
-        self.name = name.decode('utf-8')
+        self.name    = name.decode('utf-8')
         self.surname = surname.decode('utf-8')
-        self.dni = dni.decode('utf-8')
-        self.email = email.decode('utf-8')
-        self.web = web.decode('utf-8')
+        self.dni     = dni.decode('utf-8')
+        self.email   = email.decode('utf-8')
+        self.web     = web.decode('utf-8')
 
     
     def __repr__(self):
@@ -44,22 +44,22 @@ class Client(Base):
 class Address(Base):
     __tablename__ = 'address'
 
-    id = Column(Integer, primary_key=True)
-    street = Column(String(60), nullable=False)
-    number = Column(Integer)
-    city = Column(String(50))
-    state = Column(String(50))
-    country = Column(String(50))
+    id          = Column(Integer, primary_key = True)
+    street      = Column(String(60), nullable = False)
+    number      = Column(Integer)
+    city        = Column(String(50))
+    state       = Column(String(50))
+    country     = Column(String(50))
     postal_code = Column(Integer)
         
     def __init__(self, street, number=None, city=None, state=None,
             country=None, postal_code=None):
         """Class constructor"""
-        self.street  = _decode_or_none(street)
-        self.number  = number
-        self.city    = _decode_or_none(city)
-        self.state   = _decode_or_none(state)
-        self.country = _decode_or_none(country)
+        self.street      = _decode_or_none(street)
+        self.number      = number
+        self.city        = _decode_or_none(city)
+        self.state       = _decode_or_none(state)
+        self.country     = _decode_or_none(country)
         self.postal_code = postal_code
 
     def __repr__(self):
