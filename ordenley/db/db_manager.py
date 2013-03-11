@@ -21,14 +21,14 @@ class db_manager(object):
             self.session = models.Models.get_session(user_name, user_password, sqlite=False)
         else:
             self.session = models.Models.get_session()
-        self.cm = db_client_manager(self.session)
-        self.am = db_address_manager(self.session)
+        self.clients = db_client_manager(self.session)
+        self.address = db_address_manager(self.session)
 
     def new_session(self):
         """Method to create a new session"""
         self.session = models.Models.get_session()
-        self.cm.self.session = self.session
-        self.am.self.session = self.session
+        self.clients.self.session = self.session
+        self.address.self.session = self.session
 
 class db_client_manager(object):
     def __init__(self, session):
@@ -46,31 +46,31 @@ class db_client_manager(object):
     def get_client(self, client_id):
         return self.session.query(models.Models.Client).filter(models.Models.Client.id==client_id).first()
 
-    def delete_client(self, dni):
-        self.session.query(models.Models.Client).filter(models.Models.Client.dni==dni).delete()
+    def delete(self, client):
+        self.session.query(models.Models.Client).filter(models.Models.Client.id==client.id).delete()
         self.session.commit()
     
-    def insert_client(self, client):
+    def insert(self, client):
         self.session.add(client)
-        self.session.commit()
+        self.session.flush()
 
-    def modify_client(self, dni, client):
-        dic = {
-                models.Models.Client.name : client.name,
-                models.Models.Client.surname : client.surname,
-                models.Models.Client.dni : client.dni,
-                models.Models.Client.email : client.email,
-                models.Models.Client.web : client.web,
-                }
-        self.session.query(models.Models.Client).filter(models.Models.Client.dni==dni).update(dic)
-        self.session.commit()
+    def modify(self, client, old_client_id):
+        a = self.get_client(old_client_id)
+        a.name = client.name
+        a.surname = client.surname
+        a.dni = client.dni
+        a.email = client.email
+        a.web = client.web
+        a.address = client.address
+        self.session.add(a)
+        self.session.flush()
 
     def insert_test_clients(self):
         models.Models.insert_test(self.session)
 
-    def client_exist(self, dni):
+    def exist(self, client):
         """Check if client exist in the db"""
-        if self.get_client(dni):
+        if self.get_client(client.id):
             return True
         else:
             return False
@@ -80,7 +80,7 @@ class db_address_manager(object):
         """db_address_manager constructor, it needs a session to build it in"""
         self.session = session
 
-    def address_exist(self, a):
+    def exist(self, a):
         """Function to check if an address is already on the system
         if the address is already on the system returns the actual id, otherwise False"""
         if not(a in self.session):
@@ -96,30 +96,36 @@ class db_address_manager(object):
             return aid.id
         return a.id
 
-    def delete_address(self, a):
+    def delete(self, a):
         """Method to delete the address a"""
-        id = self.address_exist(a) 
+        id = self.exist(a) 
         if id != False:
             self.session.query(models.Models.Address).filter(models.Models.Address.id==a.id).delete()
             self.session.commit()
 
-    def get_all_address(self):
+    def get_all(self):
         """Method to return all the address in the system"""
         return self.session.query(models.Models.Address).all()
+
+    def get_address(self, add_id):
+        """Method to return all the address in the system"""
+        return self.session.query(models.Models.Address).filter(models.Models.Address.id==add_id).first()
 
     def get_address_columns(self):
         pass
 
-    def insert_address(self, a):
+    def insert(self, a):
         """Method to insert a new address a """
         self.session.add(a)
         self.session.commit()
 
-    def modify_address(self, a, b):
+    def modify(self, a, b_id):
         """Method to modify the address _a_ using the _b_ address instead"""
+        b = self.get_address(b_id)
         cc = a.clients
         for cli in cc:
             self.insert_address_to_client(cli,b,False)
+        self.session.add(b)
         self.session.delete(a)
         self.session.commit()
 
