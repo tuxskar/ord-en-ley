@@ -160,30 +160,13 @@ class db_address_test(unittest.TestCase):
         dc.insert(cc)
         dc.insert(cc2)
         dc.insert(cc3)
-        dc.session.commit()
         
         da.modify(add4, add.id)
         da.modify(add5, add2.id)
 
-        self.assertTrue(isinstance(cc.address.index(add4), int))
-
-        #TODO
-        #insert
-        #modify
-        #get_address
-        #address = self.random_address()
-        #old_address = address
-        #self.addresss_inserted.append(address)
-        #self.db_manager.insert(address)
-        #address.street      += address.street      
-        #address.number      += address.number      
-        #address.city        += address.city        
-        #address.state       += address.state       
-        #address.country     += address.country     
-        #address.postal_code += address.postal_code
-        #self.db_manager.modify(old_address, address) 
-        #address_modified = self.db_manager.get_address(address.street)
-        #self.assertequal(address,address_modified)
+        self.assertTrue(add4.street == add.street)
+        self.assertTrue(add4.city == add.city)
+        self.assertTrue(add4.state == add.state)
 
 def random_client():
     name = random_string()
