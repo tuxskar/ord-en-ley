@@ -121,12 +121,14 @@ class db_address_manager(object):
 
     def modify(self, a, b_id):
         """Method to modify the address _a_ using the _b_ address instead"""
-        b = self.get_address(b_id)
-        cc = a.clients
-        for cli in cc:
-            self.insert_address_to_client(cli,b,False)
-        self.session.add(b)
-        self.session.delete(a)
+        b_address = self.get_address(b_id)
+        b_address.street      = a.street
+        b_address.number      = a.number
+        b_address.city        = a.city
+        b_address.state       = a.state
+        b_address.country     = a.country
+        b_address.postal_code = a.postal_code
+        self.session.add(b_address)
         self.session.commit()
 
     def insert_address_to_client(self, client, address, commit=True):
