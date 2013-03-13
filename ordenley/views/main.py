@@ -59,21 +59,31 @@ class main_view(object):
         "on_delete_client_clicked" : self.delete_client,
                }
         self.builder.connect_signals(dic)
-        self.values = {}
         self.activated_clients = []
         self.window.set_title("Ord-en Ley")
+        # iter_id is a variable to get all pairs id iter in the liststore
+        self.__iter_id = {}
         
     
-    def add_row_client(self, client_column, old_dni=None):
-        #TODO optimitation using the old position of the client that you have update
-        if self.values.has_key(old_dni):
-            titer = self.liststore.insert_after(self.values.get(old_dni),client_column)
-            self.liststore.remove(self.values.pop(old_dni))
-            self.notifier_label.set_text("Modified client with old DNI: %s" % old_dni) 
+    def add_row_client(self, client_column, old_id=None):
+        """
+            This method add new row client if doesn't exist it append a new one, otherwise 
+            it modify the actual client Treerow
+            the rows have the next structure
+            c_id | name | surname | DNI | street | number | city | state | postal_code
+            where c_id column is hidden
+        """
+        if old_id != None:
+            treeiter = self.__iter_id.get(old_id)
+            self.liststore.insert_before(treeiter, client_column)
+            self.liststore.remove(treeiter)
+            self.iter_id[client_column[0]] = treeiter
+            self.notifier_label.set_text("Modified client: %s %s" % (client_column[1],client_column[2])) 
         else:
-            titer = self.liststore.append(client_column)
-            self.notifier_label.set_text(("Added client %s %s" % (client_column[0], client_column[1])))
-        self.values[client_column[2]] = titer
+            treeiter = self.liststore.append(client_column)
+            #client_column[0] is client_id
+            self.iter_id[client_column[0]] = treeiter
+            self.notifier_label.set_text(("Added client %s %s" % (client_column[1], client_column[2])))
     
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
