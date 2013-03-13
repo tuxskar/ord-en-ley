@@ -39,15 +39,17 @@ class db_client_manager(object):
         return self.session.query(models.Models.Client).all()
     
     def get_client_columns(self):
-        return self.session.query(models.Models.Client.name, 
+        return self.session.query(
+                           models.Models.Client.id, 
+                           models.Models.Client.name, 
                            models.Models.Client.surname,
                            models.Models.Client.dni).all()
                                              
     def get_client(self, client_id):
         return self.session.query(models.Models.Client).filter(models.Models.Client.id==client_id).first()
 
-    def delete(self, client):
-        self.session.query(models.Models.Client).filter(models.Models.Client.id==client.id).delete()
+    def delete(self, client_id):
+        self.session.query(models.Models.Client).filter(models.Models.Client.id==client_id).delete()
         self.session.commit()
     
     def insert(self, client):
@@ -68,9 +70,9 @@ class db_client_manager(object):
     def insert_test_clients(self):
         models.Models.insert_test(self.session)
 
-    def exist(self, client):
+    def exist(self, client_id):
         """Check if client exist in the db"""
-        if self.get_client(client.id):
+        if self.get_client(client_id):
             return True
         else:
             return False
@@ -80,7 +82,16 @@ class db_address_manager(object):
         """db_address_manager constructor, it needs a session to build it in"""
         self.session = session
 
-    def exist(self, a):
+    def exist(self, a_id):
+        """Function to check if an address with id==a_id is already on the system
+        if the address is already on the system returns the actual id, otherwise False"""
+        aid = self.session.query(models.Models.Address.id).\
+                filter(models.Models.Address.id==a_id).first()
+        if aid == None:
+            return False
+        return aid
+
+    def exist_by_object(self, a):
         """Function to check if an address is already on the system
         if the address is already on the system returns the actual id, otherwise False"""
         if not(a in self.session):
