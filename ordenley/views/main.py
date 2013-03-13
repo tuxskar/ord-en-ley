@@ -78,12 +78,12 @@ class main_view(object):
             self.liststore.insert_before(treeiter, client_column)
             self.liststore.remove(treeiter)
             self.iter_id[client_column[0]] = treeiter
-            self.notifier_label.set_text("Modified client: %s %s" % (client_column[1],client_column[2])) 
+            self.info("Modified client: %s %s" % (client_column[1],client_column[2]))
         else:
             treeiter = self.liststore.append(client_column)
             #client_column[0] is client_id
             self.iter_id[client_column[0]] = treeiter
-            self.notifier_label.set_text(("Added client %s %s" % (client_column[1], client_column[2])))
+            self.info("Added client %s %s" % (client_column[1], client_column[2]))
     
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
@@ -123,12 +123,12 @@ class main_view(object):
                     self.controller.hide_view(dni)
                 self.controller.delete_client(dni)
                 model.remove(path)
-                self.notifier_label.set_text("Client %s %s with dni: %s, has been deleted" % \
+                self.info("Client %s %s with dni: %s, has been deleted" % \
                     (name, surname, dni))
             else:
-                self.notifier_label.set_text("No client deleted")
+                self.info("No client deleted")
         else:
-            self.notifier_label.set_text("A Row must be selected to be deleted") 
+            self.info("A Row must be selected to be deleted") 
 
     def delete_client_dialog(self, name, surname, dni):
         delete_dialog = gtk.Dialog("Delete client", self.window,
