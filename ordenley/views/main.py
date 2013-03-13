@@ -90,7 +90,7 @@ class main_view(object):
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
         #it get the id of the client selected stored in liststore
-        c_id = self.liststore.get_value(treeiter, 0).decode('utf-8')
+        c_id = self.liststore.get_value(treeiter, 0)
         self.activated_clients.append(c_id)
         self.controller.show_client("info", c_id)
     
