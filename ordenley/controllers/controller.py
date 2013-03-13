@@ -43,7 +43,7 @@ class Controller(object):
             title_view = "New client"
             client_view = views.client.client_view(title_id=title_view)
         elif kind == "info":
-            client = self.db_manager.cm.get_client(client_id)
+            client = self.db_manager.clients.get_client(client_id)
             title_view = client.name.capitalize() + " " + client.surname.capitalize()
             client_view = views.client.client_view(client, title_view)
             self.__cliet_views[client.id] = client_view
@@ -103,7 +103,7 @@ class Controller(object):
         """
             Method to fill up main_view client_tree
         """
-        for client in self.db_manager.cm.get_client_columns():
+        for client in self.db_manager.clients.get_client_columns():
             row_client = [client[0], client[1], client[2]]
             self.main_view.add_row_client(row_client)
         self.main_view.show()
