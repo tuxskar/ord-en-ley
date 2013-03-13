@@ -65,9 +65,9 @@ class Controller(object):
         manager = None
         #Note: the unique variation for address, client, etc, is the db_manager controller am, cm, etc
         if modification=="client":
-            manager = self.db_manager.cm
+            manager = self.db_manager.clients
         elif modification == "address":
-            manager = self.db_manager.am
+            manager = self.db_manager.address
         if mod_obj == "delete":
             manager.delete(new_object)
         elif mod_obj == "modified":
@@ -88,6 +88,11 @@ class Controller(object):
             self.__client_views.get(view).hide()
 
     ######## Manage main_view ########
+    def init_main(self):
+        for client in self.db_manager.clients.get_client_columns():
+            row_client = [client[0],client[1], client[2], client[3]]
+            self.main_view.add_row_client(row_client)
+        self.main_view.show()
     def connect_main_view(self, view):
         """
             Method to connect controller with unique main_view
@@ -108,6 +113,9 @@ class Controller(object):
             Method to add the client to the main_view client_tree
         """
         self.main_view.new_client_row(client)
+
+    def insert_test_clients(self):
+        self.db_manager.clients.insert_test_clients()
 
 if __name__ == '__main__':
     cont = Controller()
