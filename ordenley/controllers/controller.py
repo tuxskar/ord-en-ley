@@ -69,7 +69,7 @@ class Controller(object):
         elif modification == "address":
             manager = self.db_manager.address
         if mod_obj == "delete":
-            manager.delete(new_object)
+            manager.delete(old_id)
         elif mod_obj == "modified":
             manager.modify(new_object, old_id)
         if modification == "view":
