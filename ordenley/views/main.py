@@ -77,9 +77,10 @@ class main_view(object):
     
     def row_activated(self, tree_view, path, column):
         treeiter = self.liststore.get_iter(path)
-        dni = self.liststore.get_value(treeiter, 2).decode('utf-8')
-        self.activated_clients.append(dni)
-        self.controller.show_client_info(dni)
+        #it get the id of the client selected stored in liststore
+        c_id = self.liststore.get_value(treeiter, 0).decode('utf-8')
+        self.activated_clients.append(c_id)
+        self.controller.show_client("info", c_id)
     
     def deactivate_client(self,dni):
         """Remove client from activated_clients by dni"""
@@ -128,10 +129,6 @@ class main_view(object):
         delete_dialog.hide()
         return res
 
-    def get_window(self):
-        """Simple function to return window object"""
-        return self.window
-
     def show(self):
         self.window.show()
     
@@ -140,13 +137,6 @@ class main_view(object):
         
     def quit(self, widget):
         gtk.main_quit()
-
-    def get_buttons(self):
-        """Return all view buttons for test them"""
-        buttons = []
-        buttons.append(self.builder.get_object("new_client"))
-        buttons.append(self.builder.get_object("delete_client"))
-        return buttons
 
 if __name__ == '__main__':
     gui = main_view()
