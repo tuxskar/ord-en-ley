@@ -102,7 +102,13 @@ class main_view(object):
 
     def new_client(self, new_button):
         self.controller.show_client_info(kind="new")
-        self.notifier_label.set_text("Inserting new client")
+        self.info("Inserting new client")
+
+    def info(self, msg):
+        """
+            Method to show the msg using view notifier
+        """
+        self.notifier_label.set_text(msg)
         
     def delete_client(self, delete_button):
         model, path = self.treeview.get_selection().get_selected()
