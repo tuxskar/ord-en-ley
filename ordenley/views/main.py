@@ -44,6 +44,8 @@ class main_view(object):
         self.treeview = self.builder.get_object("client_tree")
         self.liststore = self.builder.get_object("client_store")
         self.notifier_label = self.builder.get_object("notifier_label")
+        #dni_column = self.builder.get_object("id_column")
+        #dni_column.set_visible(False)
         
         self.window = self.builder.get_object(self.main_window_name)
 
@@ -77,12 +79,12 @@ class main_view(object):
             treeiter = self.__iter_id.get(old_id)
             self.liststore.insert_before(treeiter, client_column)
             self.liststore.remove(treeiter)
-            self.iter_id[client_column[0]] = treeiter
+            self.__iter_id[client_column[0]] = treeiter
             self.info("Modified client: %s %s" % (client_column[1],client_column[2]))
         else:
             treeiter = self.liststore.append(client_column)
             #client_column[0] is client_id
-            self.iter_id[client_column[0]] = treeiter
+            self.__iter_id[client_column[0]] = treeiter
             self.info("Added client %s %s" % (client_column[1], client_column[2]))
     
     def row_activated(self, tree_view, path, column):
@@ -111,19 +113,24 @@ class main_view(object):
         self.notifier_label.set_text(msg)
         
     def delete_client(self, delete_button):
-        model, path = self.treeview.get_selection().get_selected()
-        if path != None:
-            c_id = model.get_value(path, 0)
-            dni = model.get_value(path, 3).decode('utf8')
-            name = model.get_value(path, 1).decode('utf8')
-            surname = model.get_value(path, 2).decode('utf8')
+        model, treeiter = self.treeview.get_selection().get_selected()
+        if treeiter != None:
+            c_id = model.get_value(treeiter, 0)
+            name = model.get_value(treeiter, 1).decode('utf8')
+            surname = model.get_value(treeiter, 2).decode('utf8')
+            dni = model.get_value(treeiter, 3).decode('utf8')
             keep = self.delete_client_dialog(name, surname, dni)
+            print "id "      + str(c_id)
+            print "name "    + str(name)
+            print "surname " + str(surname)
+            print "dni "     + str(dni)
+
             if not keep:
                 #hide view_client if exist and delete
                 if self.deactivate_client(c_id):
                     self.controller.hide_view(c_id)
-                self.controller.delete_client(c_id)
-                model.remove(path)
+                self.controller.client_returned_values("client","delete",None, c_id)
+                model.remove(treeiter)
                 self.info("Client %s %s with dni: %s, has been deleted" % \
                     (name, surname, dni))
             else:
