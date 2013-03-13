@@ -92,10 +92,10 @@ class main_view(object):
         self.activated_clients.append(c_id)
         self.controller.show_client("info", c_id)
     
-    def deactivate_client(self,dni):
-        """Remove client from activated_clients by dni"""
-        if self.activated_clients.count(dni) != 0:
-            self.activated_clients.remove(dni)
+    def deactivate_client(self, c_id):
+        """Remove client from activated_clients by c_id"""
+        if self.activated_clients.count(c_id) != 0:
+            self.activated_clients.remove(c_id)
             return True
         else:
             return False
