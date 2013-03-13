@@ -235,15 +235,27 @@
                         <property name="model">client_store</property>
                         <property name="headers_clickable">False</property>
                         <property name="search_column">0</property>
+                        <property name="enable_grid_lines">horizontal</property>
                         <signal name="row-activated" handler="on_client_tree_row_activated" swapped="no"/>
                         <signal name="select-cursor-row" handler="gtk_main_quit" swapped="no"/>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="id_column">
+                            <property name="title" translatable="yes">id</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="id_cell"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="name_column">
                             <property name="title" translatable="yes">Name</property>
                             <child>
                               <object class="GtkCellRendererText" id="name_cell"/>
                               <attributes>
-                                <attribute name="text">0</attribute>
+                                <attribute name="text">1</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -254,7 +266,7 @@
                             <child>
                               <object class="GtkCellRendererText" id="surname_cell"/>
                               <attributes>
-                                <attribute name="text">1</attribute>
+                                <attribute name="text">2</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -265,7 +277,7 @@
                             <child>
                               <object class="GtkCellRendererText" id="dni_cell"/>
                               <attributes>
-                                <attribute name="text">2</attribute>
+                                <attribute name="text">3</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -356,6 +368,8 @@
   </object>
   <object class="GtkListStore" id="client_store">
     <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
       <!-- column-name name -->
       <column type="gchararray"/>
       <!-- column-name surname -->
