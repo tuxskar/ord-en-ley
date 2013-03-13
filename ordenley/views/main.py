@@ -113,15 +113,16 @@ class main_view(object):
     def delete_client(self, delete_button):
         model, path = self.treeview.get_selection().get_selected()
         if path != None:
-            dni = model.get_value(path, 2).decode('utf8')
-            name = model.get_value(path, 0).decode('utf8')
-            surname = model.get_value(path, 1).decode('utf8')
+            c_id = model.get_value(path, 0)
+            dni = model.get_value(path, 3).decode('utf8')
+            name = model.get_value(path, 1).decode('utf8')
+            surname = model.get_value(path, 2).decode('utf8')
             keep = self.delete_client_dialog(name, surname, dni)
             if not keep:
                 #hide view_client if exist and delete
-                if self.deactivate_client(dni):
-                    self.controller.hide_view(dni)
-                self.controller.delete_client(dni)
+                if self.deactivate_client(c_id):
+                    self.controller.hide_view(c_id)
+                self.controller.delete_client(c_id)
                 model.remove(path)
                 self.info("Client %s %s with dni: %s, has been deleted" % \
                     (name, surname, dni))
