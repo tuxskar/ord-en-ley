@@ -3,7 +3,8 @@ Created on Nov 17, 2012
 
 @author: tuxskar
 '''
-import sys,os.path
+import sys
+import glib
 
 try:  
     import pygtk  
@@ -23,27 +24,30 @@ import views
 
 class client_view(object):
     '''
-    This view show a client info
+        This view shows a client info or a client view for a new client
+        If data is None then it is a new client view,
+        otherwise it show a client view info
     '''
 
-    def __init__(self, ctrl, client=None, kind=None, c_id=None):
+    def __init__(self, ctrl, data=None, title=None):
         '''
-        c_id is the client_view identifier which could be:
-            -client.dni: for show info client
-            -#:<number>: that means new client to be inserted in the system
+            ctrl: is the controller necessary to manage MVC pattern
+            data: could be None for a new client view or client object 
+                of client info view
+            tittle: is the tittle of the window
         '''
         self.controller = ctrl
         self.builder = gtk.Builder()
-        self.main_window_name = "client_info"
+        main_window_name = "client_info"
         glade_name = "client_view.glade"
         try:
             self.filename = views.get_data_dev(glade_name)
             self.builder.add_from_file(self.filename)
-        except glib.GError, e:
+        except glib.GError:
             self.filename = views.get_data(glade_name)
             self.builder.add_from_file(self.filename)
         
-        self.window = self.builder.get_object(self.main_window_name)
+        self.window = self.builder.get_object(main_window_name)
         self.name_entry = self.builder.get_object("name_entry")
         self.surname_entry = self.builder.get_object("surname_entry")
         self.dni_entry = self.builder.get_object("dni_entry")
@@ -58,20 +62,18 @@ class client_view(object):
             "client_entry_changed" : self.entry_changed,
             "on_apply_clicked" : self.save_apply,
               }
-        if c_id.startswith("#:"):
-            self.old_dni = ""
-            self.window.set_title("New client %s" % c_id[2])
-        else:
-            self.old_dni = c_id
-            self.window.set_title("Client with DNI: %s" % c_id)
-        if client!=None:
+        self.window.set_title(title)
+        self.client = client
+        if self.client!=None:
             self.name_entry.set_text(_None_to_str(client.name))
             self.surname_entry.set_text(_None_to_str(client.surname))
             self.dni_entry.set_text(self.old_dni)
             self.email_entry.set_text(_None_to_str(client.email))
             self.web_entry.set_text(_None_to_str(client.web))
         self.builder.connect_signals(dic)
-        self.entry_changed = False
+        self.modified = [] # Store what kind of object has been modified
+        self.new_address = [] # For address added
+        self.deleted_address = [] # For address deleted
     
     def save_apply(self, apply_button):
         if self.entry_changed:
