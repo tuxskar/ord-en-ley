@@ -25,14 +25,14 @@ import views
 class client_view(object):
     '''
         This view shows a client info or a client view for a new client
-        If data is None then it is a new client view,
+        If client is None then it is a new client view,
         otherwise it show a client view info
     '''
 
-    def __init__(self, ctrl, data=None, title=None):
+    def __init__(self, ctrl, client=None, title=None):
         '''
             ctrl: is the controller necessary to manage MVC pattern
-            data: could be None for a new client view or client object 
+            client: could be None for a new client view or client object 
                 of client info view
             tittle: is the tittle of the window
         '''

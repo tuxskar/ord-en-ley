@@ -103,7 +103,7 @@ class main_view(object):
             return False
 
     def new_client(self, new_button):
-        self.controller.show_client_info(kind="new")
+        self.controller.show_client(kind="new")
         self.info("Inserting new client")
 
     def info(self, msg):

@@ -28,7 +28,7 @@ class Controller(object):
         self.db_manager = db.db_manager.db_manager(user_name, user_password)
         self.main_view = main_view
         self.__client_views = {}
-        self.__new_clients_count = 0
+        self.__new_clients_views_count = 0
 
     ######### Manage client_view ########
     def show_client(self, kind, client_id=None):
@@ -41,7 +41,7 @@ class Controller(object):
         if kind == "new":
             self.__new_clients_views_count += 1
             title_view = "New client"
-            client_view = views.client.client_view(title_id=title_view)
+            client_view = views.client.client_view(ctrl=self,title=title_view)
         elif kind == "info":
             client = self.db_manager.clients.get_client(client_id)
             title_view = client.name.capitalize() + " " + client.surname.capitalize()
