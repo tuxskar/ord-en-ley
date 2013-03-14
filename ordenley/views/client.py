@@ -48,6 +48,8 @@ class client_view(object):
             self.builder.add_from_file(self.filename)
         
         self.window = self.builder.get_object(main_window_name)
+
+        ######## client variables #########
         self.name_entry = self.builder.get_object("name_entry")
         self.surname_entry = self.builder.get_object("surname_entry")
         self.dni_entry = self.builder.get_object("dni_entry")
@@ -55,6 +57,14 @@ class client_view(object):
         self.web_entry = self.builder.get_object("web_entry")
         self.warning_label = self.builder.get_object("warning_label")    
         self.apply_button = self.builder.get_object("apply")
+
+        ######## address 1 variables #########
+        self.street_entry = self.builder.get_object("street_entry")
+        self.street_number_entry = self.builder.get_object("street_number_entry")
+        self.city_entry = self.builder.get_object("city_entry")
+        self.state_entry = self.builder.get_object("state_entry")
+        self.country_entry = self.builder.get_object("country_entry")
+        self.postal_code_entry = self.builder.get_object("postal_code_entry")
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -62,14 +72,18 @@ class client_view(object):
             "client_entry_changed" : self.entry_changed,
             "on_apply_clicked" : self.save_apply,
               }
+
         self.window.set_title(title)
         self.client = client
         if self.client!=None:
             self.name_entry.set_text(_None_to_str(client.name))
             self.surname_entry.set_text(_None_to_str(client.surname))
-            self.dni_entry.set_text(self.old_dni)
+            self.dni_entry.set_text(_None_to_str(client.dni))
             self.email_entry.set_text(_None_to_str(client.email))
             self.web_entry.set_text(_None_to_str(client.web))
+            #TODO show the first address, and then create a new notebook tab for each aditional address to show all address stored in client
+            if client.address != []:
+                self.street_entry.set_text(_None_to_str(client.address[0].street))
         self.builder.connect_signals(dic)
         self.modified = [] # Store what kind of object has been modified
         self.new_address = [] # For address added

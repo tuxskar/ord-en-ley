@@ -44,9 +44,10 @@ class Controller(object):
             client_view = views.client.client_view(ctrl=self,title=title_view)
         elif kind == "info":
             client = self.db_manager.clients.get_client(client_id)
+            client.name.capitalize()
             title_view = client.name.capitalize() + " " + client.surname.capitalize()
-            client_view = views.client.client_view(client, title_view)
-            self.__cliet_views[client.id] = client_view
+            client_view = views.client.client_view(self, client, title_view)
+            self.__client_views[client.id] = client_view
         client_view.show()
 
     def client_returned_values(self, modification=None, mod_obj=None, 
