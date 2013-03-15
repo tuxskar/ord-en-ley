@@ -36,6 +36,7 @@ class client_view(object):
                 of client info view
             tittle: is the tittle of the window
         '''
+        self.debbuging = True
         self.controller = ctrl
         self.builder = gtk.Builder()
         main_window_name = "client_info"
@@ -55,8 +56,12 @@ class client_view(object):
         self.dni_entry = self.builder.get_object("dni_entry")
         self.email_entry = self.builder.get_object("email_entry")
         self.web_entry = self.builder.get_object("web_entry")
-        self.warning_label = self.builder.get_object("warning_label")    
+        self.notification_label = self.builder.get_object("notification_label")    
         self.apply_button = self.builder.get_object("apply")
+        self.client_id_label = self.builder.get_object("client_id_label")
+        if self.debbuging:
+            #For debug
+            self.client_id_label.set_visible(True)
 
         ######## address 1 variables #########
         self.street_entry = self.builder.get_object("street_entry")
@@ -65,6 +70,10 @@ class client_view(object):
         self.state_entry = self.builder.get_object("state_entry")
         self.country_entry = self.builder.get_object("country_entry")
         self.postal_code_entry = self.builder.get_object("postal_code_entry")
+        self.id_label = self.builder.get_object("id_label")
+        if self.debbuging:
+            #For debug
+            self.id_label.set_visible(True)
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -76,6 +85,7 @@ class client_view(object):
         self.window.set_title(title)
         self.client = client
         if self.client!=None:
+            self.client_id_label.set_text(_None_to_str(str(client.id)))
             self.name_entry.set_text(_None_to_str(client.name))
             self.surname_entry.set_text(_None_to_str(client.surname))
             self.dni_entry.set_text(_None_to_str(client.dni))
@@ -84,6 +94,12 @@ class client_view(object):
             #TODO show the first address, and then create a new notebook tab for each aditional address to show all address stored in client
             if client.address != []:
                 self.street_entry.set_text(_None_to_str(client.address[0].street))
+                self.street_number_entry.set_text(_None_to_str(str(client.address[0].number)))
+                self.city_entry.set_text(_None_to_str(client.address[0].city))
+                self.state_entry.set_text(_None_to_str(client.address[0].state))
+                self.country_entry.set_text(_None_to_str(client.address[0].country))
+                self.postal_code_entry.set_text(_None_to_str(str(client.address[0].postal_code)))
+                self.id_label.set_text(str(client.address[0].id))
         self.builder.connect_signals(dic)
         self.modified = [] # Store what kind of object has been modified
         self.new_address = [] # For address added
