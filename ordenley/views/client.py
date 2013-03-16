@@ -108,8 +108,8 @@ class client_view(object):
                 if self.debbuging:
                     self.id_address_labels[0].set_visible(True)
 
-            if len(client.address) > 1:
-                self.add_address_tab(client.address[1],2)
+            for a in range(1,len(client.address)):
+                self.add_address_tab(client.address[a],a+1)
         self.builder.connect_signals(dic)
         self.modified = [] # Store what kind of object has been modified
         self.new_address = [] # For address added
