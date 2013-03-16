@@ -91,7 +91,6 @@ class client_view(object):
         self.modified = [] # Store what kind of object has been modified
         self.new_address = [] # For address added
         self.deleted_address = [] # For address deleted
-    
     def populate_client_view(self, client):
         """
             This method set all the client content into the client_view
@@ -120,7 +119,47 @@ class client_view(object):
                 #Adding all the others tabs with client.address informatation
                 for a in range(1,len(client.address)):
                     self.add_address_tab(client.address[a],a+1)
+    def save_apply(self, apply_button):
+        if self.entry_changed:
+            new_dni = self.dni_entry.get_text().decode('utf-8')
+            exist = self.controller.client_exist(new_dni)
+            if new_dni=="":
+                self.warning_label.set_text("DNI field must be filled")
+                self.warning_label.show()
+            elif new_dni[0] == "#":
+                self.warning_label.set_text("DNI not able to start with #")
+                self.warning_label.show()
+            elif (self.old_dni != new_dni and exist):
+                self.warning_label.set_text("DNI already in the system")
+                self.warning_label.show()
+            else:
+                self.warning_label.hide()
+                client = models.Models.Client(self.name_entry.get_text(),
+                                          self.surname_entry.get_text(),
+                                          new_dni,
+                                          self.email_entry.get_text(),
+                                          self.web_entry.get_text(),
+                                          )
+                #if new_dni != self.old_dni or exist:
+                if exist:
+                    self.controller.to_modify(self.old_dni, client)
+                else:
+                    self.controller.insert_new_client(client)
+                self.controller.refresh_clients_main_view(client, old_dni=self.old_dni)
+                self.window.hide()
+        else:
+            self.window.hide()
+    def entry_changed(self, widget):
+        self.entry_changed = True
+        self.apply_button.set_label("Save")
 
+    def info(self, message):
+        """
+            Method to show the _message_ string as user information
+        """
+        self.notification_label.set_text(message)
+
+    ######## Address management #########
     def add_address_tab(self, add, num):
         """
             Method to new address_tab
@@ -129,7 +168,6 @@ class client_view(object):
         title = gtk.Label("Address %d" % num)
         new_table = self.address_table(num, add)
         self.address_notebook.insert_page(new_table, title, position=num)
-        
     def address_table(self, tab_num, address=None):
         """
             Method to create an address table customized with tab_number
@@ -176,42 +214,6 @@ class client_view(object):
             vbox.pack_start(self.id_address_labels[tab_num])
         vbox.show_all()
         return vbox
-
-    def save_apply(self, apply_button):
-        if self.entry_changed:
-            new_dni = self.dni_entry.get_text().decode('utf-8')
-            exist = self.controller.client_exist(new_dni)
-            if new_dni=="":
-                self.warning_label.set_text("DNI field must be filled")
-                self.warning_label.show()
-            elif new_dni[0] == "#":
-                self.warning_label.set_text("DNI not able to start with #")
-                self.warning_label.show()
-            elif (self.old_dni != new_dni and exist):
-                self.warning_label.set_text("DNI already in the system")
-                self.warning_label.show()
-            else:
-                self.warning_label.hide()
-                client = models.Models.Client(self.name_entry.get_text(),
-                                          self.surname_entry.get_text(),
-                                          new_dni,
-                                          self.email_entry.get_text(),
-                                          self.web_entry.get_text(),
-                                          )
-                #if new_dni != self.old_dni or exist:
-                if exist:
-                    self.controller.to_modify(self.old_dni, client)
-                else:
-                    self.controller.insert_new_client(client)
-                self.controller.refresh_clients_main_view(client, old_dni=self.old_dni)
-                self.window.hide()
-        else:
-            self.window.hide()
-        
-    def entry_changed(self, widget):
-        self.entry_changed = True
-        self.apply_button.set_label("Save")
-
     def quit(self, widget):
         self.hide()
     
