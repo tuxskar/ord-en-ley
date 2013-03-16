@@ -64,16 +64,21 @@ class client_view(object):
             self.client_id_label.set_visible(True)
 
         ######## address 1 variables #########
-        self.street_entry = self.builder.get_object("street_entry")
-        self.street_number_entry = self.builder.get_object("street_number_entry")
-        self.city_entry = self.builder.get_object("city_entry")
-        self.state_entry = self.builder.get_object("state_entry")
-        self.country_entry = self.builder.get_object("country_entry")
-        self.postal_code_entry = self.builder.get_object("postal_code_entry")
-        self.id_label = self.builder.get_object("id_label")
+        #to manage address the view store every street entry in a lists 
+        #for instance to access to the stree_entry in the tab number 3, you can access
+        #using self.street_entries[3]
+        #the tabs starts in in 0
+        self.street_entries        = {0 : self.builder.get_object("street_entry")}
+        self.street_number_entries = {0 : self.builder.get_object("street_number_entry")}
+        self.city_entries          = {0 : self.builder.get_object("city_entry")}
+        self.state_entries         = {0 : self.builder.get_object("state_entry")}
+        self.country_entries       = {0 : self.builder.get_object("country_entry")}
+        self.postal_code_entries   = {0 : self.builder.get_object("postal_code_entry")}
+        self.id_labels             = {0 : self.builder.get_object("id_label")}
+        self.address_notebook = self.builder.get_object("address_notebook")
         if self.debbuging:
             #For debug
-            self.id_label.set_visible(True)
+            self.id_labels[0].set_visible(True)
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -93,18 +98,75 @@ class client_view(object):
             self.web_entry.set_text(_None_to_str(client.web))
             #TODO show the first address, and then create a new notebook tab for each aditional address to show all address stored in client
             if client.address != []:
-                self.street_entry.set_text(_None_to_str(client.address[0].street))
-                self.street_number_entry.set_text(_None_to_str(str(client.address[0].number)))
-                self.city_entry.set_text(_None_to_str(client.address[0].city))
-                self.state_entry.set_text(_None_to_str(client.address[0].state))
-                self.country_entry.set_text(_None_to_str(client.address[0].country))
-                self.postal_code_entry.set_text(_None_to_str(str(client.address[0].postal_code)))
-                self.id_label.set_text(str(client.address[0].id))
+                self.street_entries[0].set_text(_None_to_str(client.address[0].street))
+                self.street_number_entries[0].set_text(_None_to_str(str(client.address[0].number)))
+                self.city_entries[0].set_text(_None_to_str(client.address[0].city))
+                self.state_entries[0].set_text(_None_to_str(client.address[0].state))
+                self.country_entries[0].set_text(_None_to_str(client.address[0].country))
+                self.postal_code_entries[0].set_text(_None_to_str(str(client.address[0].postal_code)))
+                self.id_labels[0].set_text(str(client.address[0].id))
+            if len(client.address) > 1:
+                self.add_address_tab(client.address[1],2)
         self.builder.connect_signals(dic)
         self.modified = [] # Store what kind of object has been modified
         self.new_address = [] # For address added
         self.deleted_address = [] # For address deleted
     
+    def add_address_tab(self, add, num):
+        """
+            Method to new address_tab
+            num is the tab number
+        """
+        title = gtk.Label("Address %d" % num)
+        new_table = self.address_table(num, add)
+        self.address_notebook.insert_page(new_table, title, position=num)
+        
+    def address_table(self, tab_num, address=None):
+        """
+            Method to create an address table customized with tab_number
+            if address == None then just create a address_table empty,
+            otherwise it creates a new address_table filled up with
+            address information
+        """
+        table = gtk.Table(3,4)
+        self.street_entries[tab_num] = gtk.Entry()
+        self.street_number_entries[tab_num] = gtk.Entry()
+        self.city_entries[tab_num] = gtk.Entry()
+        self.state_entries[tab_num] = gtk.Entry()
+        self.country_entries[tab_num] = gtk.Entry()
+        self.postal_code_entries[tab_num] = gtk.Entry()
+        #First column
+        table.attach(gtk.Label("Street"),0,1,0,1)
+        table.attach(gtk.Label("City"),0,1,1,2)
+        table.attach(gtk.Label("Country"),0,1,2,3)
+        #Second column
+        table.attach(self.street_entries[tab_num],1,2,0,1)
+        table.attach(self.city_entries[tab_num],1,2,1,2)
+        table.attach(self.country_entries[tab_num],1,2,2,3)
+        #third column
+        table.attach(gtk.Label("Number"),2,3,0,1)
+        table.attach(gtk.Label("State"),2,3,1,2)
+        table.attach(gtk.Label("Postal Code"),2,3,2,3)
+        #fourth column
+        table.attach(self.street_number_entries[tab_num],3,4,0,1)
+        table.attach(self.state_entries[tab_num],3,4,1,2)
+        table.attach(self.postal_code_entries[tab_num],3,4,2,3)
+
+        if address != None:
+            self.street_entries[tab_num].set_text(_None_to_str(address.street))
+            self.street_number_entries[tab_num].set_text(_None_to_str(str(address.number)))
+            self.city_entries[tab_num].set_text(_None_to_str(address.city))
+            self.state_entries[tab_num].set_text(_None_to_str(address.state))
+            self.country_entries[tab_num].set_text(_None_to_str(address.country))
+            self.postal_code_entries[tab_num].set_text(_None_to_str(str(address.postal_code)))
+
+        table.show_all()
+        return table
+
+
+        
+
+
     def save_apply(self, apply_button):
         if self.entry_changed:
             new_dni = self.dni_entry.get_text().decode('utf-8')
