@@ -74,11 +74,8 @@ class client_view(object):
         self.state_entries         = {0 : self.builder.get_object("state_entry")}
         self.country_entries       = {0 : self.builder.get_object("country_entry")}
         self.postal_code_entries   = {0 : self.builder.get_object("postal_code_entry")}
-        self.id_labels             = {0 : self.builder.get_object("id_label")}
+        self.id_address_labels     = {0 : self.builder.get_object("id_label")}
         self.address_notebook = self.builder.get_object("address_notebook")
-        if self.debbuging:
-            #For debug
-            self.id_labels[0].set_visible(True)
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -96,7 +93,9 @@ class client_view(object):
             self.dni_entry.set_text(_None_to_str(client.dni))
             self.email_entry.set_text(_None_to_str(client.email))
             self.web_entry.set_text(_None_to_str(client.web))
-            #TODO show the first address, and then create a new notebook tab for each aditional address to show all address stored in client
+            #For debug
+            if self.debbuging:
+                self.client_id_label.set_visible(True)
             if client.address != []:
                 self.street_entries[0].set_text(_None_to_str(client.address[0].street))
                 self.street_number_entries[0].set_text(_None_to_str(str(client.address[0].number)))
@@ -104,7 +103,11 @@ class client_view(object):
                 self.state_entries[0].set_text(_None_to_str(client.address[0].state))
                 self.country_entries[0].set_text(_None_to_str(client.address[0].country))
                 self.postal_code_entries[0].set_text(_None_to_str(str(client.address[0].postal_code)))
-                self.id_labels[0].set_text(str(client.address[0].id))
+                self.id_address_labels[0].set_text(str(client.address[0].id))
+                #For debug
+                if self.debbuging:
+                    self.id_address_labels[0].set_visible(True)
+
             if len(client.address) > 1:
                 self.add_address_tab(client.address[1],2)
         self.builder.connect_signals(dic)
@@ -151,7 +154,7 @@ class client_view(object):
         table.attach(self.street_number_entries[tab_num],3,4,0,1)
         table.attach(self.state_entries[tab_num],3,4,1,2)
         table.attach(self.postal_code_entries[tab_num],3,4,2,3)
-
+        #Populate the address table with address information
         if address != None:
             self.street_entries[tab_num].set_text(_None_to_str(address.street))
             self.street_number_entries[tab_num].set_text(_None_to_str(str(address.number)))
@@ -159,13 +162,14 @@ class client_view(object):
             self.state_entries[tab_num].set_text(_None_to_str(address.state))
             self.country_entries[tab_num].set_text(_None_to_str(address.country))
             self.postal_code_entries[tab_num].set_text(_None_to_str(str(address.postal_code)))
-
-        table.show_all()
-        return table
-
-
-        
-
+            self.id_address_labels[tab_num] = gtk.Label(str(address.id))
+        vbox = gtk.VBox()
+        vbox.pack_start(table)
+        #Just show id if you are debbuging the applicacion
+        if self.debbuging:
+            vbox.pack_start(self.id_address_labels[tab_num])
+        vbox.show_all()
+        return vbox
 
     def save_apply(self, apply_button):
         if self.entry_changed:
