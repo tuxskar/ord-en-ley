@@ -86,6 +86,16 @@ class client_view(object):
 
         self.window.set_title(title)
         self.client = client
+        self.populate_client_view(client)
+        self.builder.connect_signals(dic)
+        self.modified = [] # Store what kind of object has been modified
+        self.new_address = [] # For address added
+        self.deleted_address = [] # For address deleted
+    
+    def populate_client_view(self, client):
+        """
+            This method set all the client content into the client_view
+        """
         if self.client!=None:
             self.client_id_label.set_text(_None_to_str(str(client.id)))
             self.name_entry.set_text(_None_to_str(client.name))
@@ -96,7 +106,7 @@ class client_view(object):
             #For debug
             if self.debbuging:
                 self.client_id_label.set_visible(True)
-            if client.address != []:
+            if len(client.address)>0: 
                 self.street_entries[0].set_text(_None_to_str(client.address[0].street))
                 self.street_number_entries[0].set_text(_None_to_str(str(client.address[0].number)))
                 self.city_entries[0].set_text(_None_to_str(client.address[0].city))
@@ -107,14 +117,10 @@ class client_view(object):
                 #For debug
                 if self.debbuging:
                     self.id_address_labels[0].set_visible(True)
+                #Adding all the others tabs with client.address informatation
+                for a in range(1,len(client.address)):
+                    self.add_address_tab(client.address[a],a+1)
 
-            for a in range(1,len(client.address)):
-                self.add_address_tab(client.address[a],a+1)
-        self.builder.connect_signals(dic)
-        self.modified = [] # Store what kind of object has been modified
-        self.new_address = [] # For address added
-        self.deleted_address = [] # For address deleted
-    
     def add_address_tab(self, add, num):
         """
             Method to new address_tab
