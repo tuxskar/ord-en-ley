@@ -93,6 +93,7 @@ class client_view(object):
         self.modified_add = [] # Store the tab_number of the modified address
         self.new_address = [] # For address added
         self.deleted_address = [] # For address deleted
+
     def populate_client_view(self, client):
         """
             This method set all the client content into the client_view
@@ -223,6 +224,13 @@ class client_view(object):
             self.country_entries[tab_num].set_text(_None_to_str(address.country))
             self.postal_code_entries[tab_num].set_text(_None_to_str(str(address.postal_code)))
             self.id_address_labels[tab_num] = gtk.Label(str(address.id))
+        #connect the handlers for the address entries
+        self.street_entries[tab_num].connect("changed",self.address_changed)
+        self.street_number_entries[tab_num].connect("changed",self.address_changed)
+        self.city_entries[tab_num].connect("changed",self.address_changed)
+        self.state_entries[tab_num].connect("changed",self.address_changed)
+        self.country_entries[tab_num].connect("changed",self.address_changed)
+        self.postal_code_entries[tab_num].connect("changed",self.address_changed)
         vbox = gtk.VBox()
         vbox.pack_start(table)
         #Just show id if you are debbuging the applicacion
@@ -235,7 +243,7 @@ class client_view(object):
         if self.modified.count("address") == 0:
             self.modified.append("address")
         tab_num = self.address_notebook.get_current_page()
-        if self.modified.count(tab_num) == 0:
+        if self.modified_add.count(tab_num) == 0:
             self.modified_add.append(self.address_notebook.get_current_page())
         self.apply_button.set_label("Save")
 
