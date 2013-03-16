@@ -90,6 +90,7 @@ class client_view(object):
         self.populate_client_view(client)
         self.builder.connect_signals(dic)
         self.modified = [] # Store what kind of object has been modified
+        self.modified_add = [] # Store the tab_number of the modified address
         self.new_address = [] # For address added
         self.deleted_address = [] # For address deleted
     def populate_client_view(self, client):
@@ -168,7 +169,7 @@ class client_view(object):
         self.notification_label.set_text(message)
 
     ######## Client management #########
-    def client_changed(self, widget):
+    def client_changed(self, widget_button):
         if self.modified.count("client") == 0:
             self.modified.append("client")
         self.apply_button.set_label("Save")
@@ -230,7 +231,7 @@ class client_view(object):
         vbox.show_all()
         return vbox
 
-    def address_changed(self, widget):
+    def address_changed(self, widget_button):
         if self.modified.count("address") == 0:
             self.modified.append("address")
         tab_num = self.address_notebook.get_current_page()
@@ -238,7 +239,12 @@ class client_view(object):
             self.modified_add.append(self.address_notebook.get_current_page())
         self.apply_button.set_label("Save")
 
-        
+    def delete_address(self, widget_button):
+        """
+            Method to delete the actual selected address
+        """
+        tab_num = self.address_notebook.get_current_page()
+
 def _None_to_str(txt):
     if txt == None:
         return ""
