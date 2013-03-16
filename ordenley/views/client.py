@@ -120,6 +120,7 @@ class client_view(object):
                 #Adding all the others tabs with client.address informatation
                 for a in range(1,len(client.address)):
                     self.add_address_tab(client.address[a],a+1)
+
     def save_apply(self, apply_button):
         if self.entry_changed:
             new_dni = self.dni_entry.get_text().decode('utf-8')
@@ -150,24 +151,27 @@ class client_view(object):
                 self.window.hide()
         else:
             self.window.hide()
-    def client_changed(self, widget):
-        if self.modified.count("client") == 0:
-            self.modified.append("client")
-        self.apply_button.set_label("Save")
 
-    def address_changed(self, widget):
-        if self.modified.count("address") == 0:
-            self.modified.append("address")
-        tab_num = self.address_notebook.get_current_page()
-        if self.modified.count(tab_num) == 0:
-            self.modified_add.append(self.address_notebook.get_current_page())
-        self.apply_button.set_label("Save")
+    def quit(self, widget):
+        self.hide()
+    
+    def show(self):
+        self.window.show()
+    
+    def hide(self):
+        self.window.hide()
 
     def info(self, message):
         """
             Method to show the _message_ string as user information
         """
         self.notification_label.set_text(message)
+
+    ######## Client management #########
+    def client_changed(self, widget):
+        if self.modified.count("client") == 0:
+            self.modified.append("client")
+        self.apply_button.set_label("Save")
 
     ######## Address management #########
     def add_address_tab(self, add, num):
@@ -178,6 +182,7 @@ class client_view(object):
         title = gtk.Label("Address %d" % num)
         new_table = self.address_table(num, add)
         self.address_notebook.insert_page(new_table, title, position=num)
+
     def address_table(self, tab_num, address=None):
         """
             Method to create an address table customized with tab_number
@@ -224,14 +229,15 @@ class client_view(object):
             vbox.pack_start(self.id_address_labels[tab_num])
         vbox.show_all()
         return vbox
-    def quit(self, widget):
-        self.hide()
-    
-    def show(self):
-        self.window.show()
-    
-    def hide(self):
-        self.window.hide()
+
+    def address_changed(self, widget):
+        if self.modified.count("address") == 0:
+            self.modified.append("address")
+        tab_num = self.address_notebook.get_current_page()
+        if self.modified.count(tab_num) == 0:
+            self.modified_add.append(self.address_notebook.get_current_page())
+        self.apply_button.set_label("Save")
+
         
 def _None_to_str(txt):
     if txt == None:
