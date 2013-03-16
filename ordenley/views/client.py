@@ -82,6 +82,7 @@ class client_view(object):
             "on_cancel_clicked" : self.quit,
             "client_entry_changed" : self.client_changed,
             "address_entry_changed" : self.address_changed,
+            "on_delete_address" : self.delete_address,
             "on_apply_clicked" : self.save_apply,
               }
 
@@ -121,7 +122,7 @@ class client_view(object):
                     self.id_address_labels[0].set_visible(True)
                 #Adding all the others tabs with client.address informatation
                 for a in range(1,len(client.address)):
-                    self.add_address_tab(client.address[a],a+1)
+                    self.add_address_tab(client.address[a],a)
 
     def save_apply(self, apply_button):
         if self.entry_changed:
@@ -180,8 +181,9 @@ class client_view(object):
         """
             Method to new address_tab
             num is the tab number
+            if add is None just insert a new empty table
         """
-        title = gtk.Label("Address %d" % num)
+        title = gtk.Label("Address %s" % str(num+1))
         new_table = self.address_table(num, add)
         self.address_notebook.insert_page(new_table, title, position=num)
 
@@ -252,6 +254,22 @@ class client_view(object):
             Method to delete the actual selected address
         """
         tab_num = self.address_notebook.get_current_page()
+        print tab_num
+        print self.id_address_labels
+        if tab_num > -1:
+            address_id = int(self.id_address_labels[tab_num].get_text())
+            self.deleted_address.append(address_id)
+        #substract 1 unit for the greaters numbers in list new_address and modified_add
+        for mod in self.modified_add:
+            if mod > tab_num:
+                self.modified_add[self.modified_add.index(mod)] = mod-1
+        for n in self.new_address:
+            if n > tab_num:
+                self.new_address[self.new_address.index(n)] = n-1
+        actual_n_pages = self.address_notebook.get_n_pages()
+        self.address_notebook.remove_page(tab_num)
+        if actual_n_pages == 1:
+            self.add_address_tab(add=None, num=0)
 
 def _None_to_str(txt):
     if txt == None:

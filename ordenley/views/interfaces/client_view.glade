@@ -431,6 +431,7 @@ Address</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_delete_address" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
