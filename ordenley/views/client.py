@@ -80,7 +80,8 @@ class client_view(object):
         dic = {
             "on_client_info_destroy" : self.quit,
             "on_cancel_clicked" : self.quit,
-            "client_entry_changed" : self.entry_changed,
+            "client_entry_changed" : self.client_changed,
+            "address_entry_changed" : self.address_changed,
             "on_apply_clicked" : self.save_apply,
               }
 
@@ -149,8 +150,17 @@ class client_view(object):
                 self.window.hide()
         else:
             self.window.hide()
-    def entry_changed(self, widget):
-        self.entry_changed = True
+    def client_changed(self, widget):
+        if self.modified.count("client") == 0:
+            self.modified.append("client")
+        self.apply_button.set_label("Save")
+
+    def address_changed(self, widget):
+        if self.modified.count("address") == 0:
+            self.modified.append("address")
+        tab_num = self.address_notebook.get_current_page()
+        if self.modified.count(tab_num) == 0:
+            self.modified_add.append(self.address_notebook.get_current_page())
         self.apply_button.set_label("Save")
 
     def info(self, message):
