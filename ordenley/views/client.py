@@ -226,6 +226,8 @@ class client_view(object):
             self.country_entries[tab_num].set_text(_None_to_str(address.country))
             self.postal_code_entries[tab_num].set_text(_None_to_str(str(address.postal_code)))
             self.id_address_labels[tab_num] = gtk.Label(str(address.id))
+        else:
+            self.id_address_labels[tab_num] = gtk.Label(str(-1))
         #connect the handlers for the address entries
         self.street_entries[tab_num].connect("changed",self.address_changed)
         self.street_number_entries[tab_num].connect("changed",self.address_changed)
@@ -257,8 +259,12 @@ class client_view(object):
         print tab_num
         print self.id_address_labels
         if tab_num > -1:
+            print tab_num
             address_id = int(self.id_address_labels[tab_num].get_text())
-            self.deleted_address.append(address_id)
+            #check if address_id isn't already in the list
+            print address_id
+            if self.deleted_address.count(address_id) == 0 and address_id != -1:
+                self.deleted_address.append(address_id)
         #substract 1 unit for the greaters numbers in list new_address and modified_add
         for mod in self.modified_add:
             if mod > tab_num:
@@ -266,10 +272,100 @@ class client_view(object):
         for n in self.new_address:
             if n > tab_num:
                 self.new_address[self.new_address.index(n)] = n-1
-        actual_n_pages = self.address_notebook.get_n_pages()
-        self.address_notebook.remove_page(tab_num)
-        if actual_n_pages == 1:
+        #update the key in the entries and labels dictionaries
+        self.id_address_labels = self.__update_dic_from_n(self.id_address_labels,tab_num)
+        self.street_entries        = self.__update_dic_from_n(self.street_entries,tab_num)
+        self.street_number_entries = self.__update_dic_from_n(self.street_number_entries,tab_num)
+        self.city_entries          = self.__update_dic_from_n(self.city_entries,tab_num)
+        self.state_entries         = self.__update_dic_from_n(self.state_entries,tab_num)
+        self.country_entries       = self.__update_dic_from_n(self.country_entries,tab_num)
+        self.postal_code_entries   = self.__update_dic_from_n(self.postal_code_entries,tab_num)
+        print self.id_address_labels
+        if self.address_notebook.get_n_pages() == 1:
+            self.address_notebook.remove_page(tab_num)
             self.add_address_tab(add=None, num=0)
+            self.info("There is no more address to delete")
+        else:
+            self.address_notebook.remove_page(tab_num)
+            self.info("Deleted address %s" % str(tab_num+1))
+        print self.deleted_address 
+    
+    def __update_dic_from_n(self, dic, n):
+        """
+            Method to substrac 1 unit to every key in the dictionary _dic_
+            after n
+        """
+        def f(mydict):
+            return dict((k-1,f(v) if hasattr(v,'keys') else v) for k,v in mydict.items() if k > n)
+        dic.pop(n)
+        dic = f(dic)
+        return dic
+
+class address_view(object):
+    """
+        This object repressent an address in the client_view
+        Its store the entries, labels, page number and id of the 
+        address normal object plus all the gtk object associated
+    """
+    def __init__(self, address, page_n):
+        self.n_page = page_n
+        self.street_entry        = gtk.Entry()
+        self.street_number_entry = gtk.Entry()
+        self.city_entry          = gtk.Entry()
+        self.state_entry         = gtk.Entry()
+        self.country_entry       = gtk.Entry()
+        self.postal_code_entry   = gtk.Entry()
+        self.id_address_label    = gtk.Label("-1")
+        self.street_label        = gtk.Label("Street")
+        self.street_number_label = gtk.Label("City")
+        self.city_label          = gtk.Label("Country")
+        self.state_label         = gtk.Label("Number")
+        self.country_label       = gtk.Label("State")
+        self.postal_code_label   = gtk.Label("Postal Code")
+        self.pack = self.create_pack(address)
+
+    def create_pack(self, address=None):
+        """
+            This method creates a pack with an address table
+            and inside a horizontal box and label id as end of 
+            VBox
+            If address is None create a empty pack, otherwise
+            it creates an pack filled up with it
+        """
+        table = gtk.Table(3,4)
+        #First column
+        table.attach(self.street_label,0,1,0,1)
+        table.attach(self.city_label,0,1,1,2)
+        table.attach(self.country_label,0,1,2,3)
+        #Second column
+        table.attach(self.street_entry,1,2,0,1)
+        table.attach(self.city_entry,1,2,1,2)
+        table.attach(self.country_entry,1,2,2,3)
+        #third column
+        table.attach(self.number_label,2,3,0,1)
+        table.attach(self.state_label,2,3,1,2)
+        table.attach(self.postal_code_label,2,3,2,3)
+        #fourth column
+        table.attach(self.street_number_entry,3,4,0,1)
+        table.attach(self.state_entry,3,4,1,2)
+        table.attach(self.postal_code_entry,3,4,2,3)
+        vbox = gtk.VBox()
+        vbox.pack_start(table)
+        vbox.pack_start(self.id_address_label)
+        if address != None:
+            self.street_entry.set_text(_None_to_str(address.street))
+            self.street_number_entry.set_text(_None_to_str(str(address.number)))
+            self.city_entry.set_text(_None_to_str(address.city))
+            self.state_entry.set_text(_None_to_str(address.state))
+            self.country_entry.set_text(_None_to_str(address.country))
+            self.postal_code_entry.set_text(_None_to_str(str(address.postal_code)))
+            self.id_address_label.set_text(str(address.id))
+        vbox.show_all()
+        if not self.debbuging:
+            self.id_address_label.hidde()
+        return vbox
+
+        
 
 def _None_to_str(txt):
     if txt == None:
