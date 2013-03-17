@@ -179,65 +179,9 @@ class client_view(object):
             num is the tab number
             if add is None just insert a new empty table
         """
+        add_v = Address_view(self,add,num)
         title = gtk.Label("Address %s" % str(num+1))
-        new_table = self.address_table(num, add)
-        self.address_notebook.insert_page(new_table, title, position=num)
-
-    def address_table(self, tab_num, address=None):
-        """
-            Method to create an address table customized with tab_number
-            if address == None then just create a address_table empty,
-            otherwise it creates a new address_table filled up with
-            address information
-        """
-        table = gtk.Table(3,4)
-        self.street_entries[tab_num] = gtk.Entry()
-        self.street_number_entries[tab_num] = gtk.Entry()
-        self.city_entries[tab_num] = gtk.Entry()
-        self.state_entries[tab_num] = gtk.Entry()
-        self.country_entries[tab_num] = gtk.Entry()
-        self.postal_code_entries[tab_num] = gtk.Entry()
-        #First column
-        table.attach(gtk.Label("Street"),0,1,0,1)
-        table.attach(gtk.Label("City"),0,1,1,2)
-        table.attach(gtk.Label("Country"),0,1,2,3)
-        #Second column
-        table.attach(self.street_entries[tab_num],1,2,0,1)
-        table.attach(self.city_entries[tab_num],1,2,1,2)
-        table.attach(self.country_entries[tab_num],1,2,2,3)
-        #third column
-        table.attach(gtk.Label("Number"),2,3,0,1)
-        table.attach(gtk.Label("State"),2,3,1,2)
-        table.attach(gtk.Label("Postal Code"),2,3,2,3)
-        #fourth column
-        table.attach(self.street_number_entries[tab_num],3,4,0,1)
-        table.attach(self.state_entries[tab_num],3,4,1,2)
-        table.attach(self.postal_code_entries[tab_num],3,4,2,3)
-        #Populate the address table with address information
-        if address != None:
-            self.street_entries[tab_num].set_text(_None_to_str(address.street))
-            self.street_number_entries[tab_num].set_text(_None_to_str(str(address.number)))
-            self.city_entries[tab_num].set_text(_None_to_str(address.city))
-            self.state_entries[tab_num].set_text(_None_to_str(address.state))
-            self.country_entries[tab_num].set_text(_None_to_str(address.country))
-            self.postal_code_entries[tab_num].set_text(_None_to_str(str(address.postal_code)))
-            self.id_address_labels[tab_num] = gtk.Label(str(address.id))
-        else:
-            self.id_address_labels[tab_num] = gtk.Label(str(-1))
-        #connect the handlers for the address entries
-        self.street_entries[tab_num]
-        self.street_number_entries[tab_num].connect("changed",self.address_changed)
-        self.city_entries[tab_num].connect("changed",self.address_changed)
-        self.state_entries[tab_num].connect("changed",self.address_changed)
-        self.country_entries[tab_num].connect("changed",self.address_changed)
-        self.postal_code_entries[tab_num].connect("changed",self.address_changed)
-        vbox = gtk.VBox()
-        vbox.pack_start(table)
-        #Just show id if you are debbuging the applicacion
-        if debbuging:
-            vbox.pack_start(self.id_address_labels[tab_num])
-        vbox.show_all()
-        return vbox
+        self.address_notebook.insert_page(add_v.pack, title, position=num)
 
     def address_changed(self, widget_button):
         if self.modified.count("address") == 0:
@@ -251,6 +195,7 @@ class client_view(object):
         """
             Method to delete the actual selected address
         """
+        pass
         tab_num = self.address_notebook.get_current_page()
         print tab_num
         print self.id_address_labels
