@@ -107,13 +107,12 @@ class client_view(object):
             #that has the client
             self.address_notebook.remove_page(0)
             if len(client.address)>0: 
-                i = 0
                 for add in client.address:
+                    i = client.address.index(add)
                     title = gtk.Label("Address %s" % str(i+1))
-                    add_v = Address_view(add,i)
+                    add_v = Address_view(self,add,i)
                     self.address_notebook.insert_page(add_v.pack,title, i)
                     self.address_pages.append(add_v)
-                    i += 1
             else:
                 #insert an empty table
                 title = gtk.Label("Address 1")
@@ -226,7 +225,7 @@ class client_view(object):
         else:
             self.id_address_labels[tab_num] = gtk.Label(str(-1))
         #connect the handlers for the address entries
-        self.street_entries[tab_num].connect("changed",self.address_changed)
+        self.street_entries[tab_num]
         self.street_number_entries[tab_num].connect("changed",self.address_changed)
         self.city_entries[tab_num].connect("changed",self.address_changed)
         self.state_entries[tab_num].connect("changed",self.address_changed)
@@ -300,11 +299,11 @@ class client_view(object):
 
 class Address_view(object):
     """
-        This object repressent an address in the client_view
+        This object repressent an address in some view
         Its store the entries, labels, page number and id of the 
         address normal object plus all the gtk object associated
     """
-    def __init__(self, address, page_n=-1):
+    def __init__(self, view, address, page_n=-1):
         self.n_page = page_n
         self.street_entry        = gtk.Entry()
         self.street_number_entry = gtk.Entry()
@@ -320,6 +319,13 @@ class Address_view(object):
         self.country_label       = gtk.Label("State")
         self.postal_code_label   = gtk.Label("Postal Code")
         self.pack = self.create_pack(address)
+        #connecting signals to entry objects
+        self.street_entry.connect("changed",view.address_changed)
+        self.street_number_entry.connect("changed",view.address_changed)
+        self.city_entry.connect("changed",view.address_changed)
+        self.state_entry.connect("changed",view.address_changed)
+        self.country_entry.connect("changed",view.address_changed)
+        self.postal_code_entry.connect("changed",view.address_changed)
 
     def create_pack(self, address=None):
         """
