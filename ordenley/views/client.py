@@ -76,6 +76,7 @@ class client_view(object):
             "on_cancel_clicked" : self.quit,
             "client_entry_changed" : self.client_changed,
             "address_entry_changed" : self.address_changed,
+            "on_new_address_clicked" : self.new_address,
             "on_delete_address" : self.delete_address,
             "on_apply_clicked" : self.save_apply,
               }
@@ -165,6 +166,7 @@ class client_view(object):
             Method to show the _message_ string as user information
         """
         self.notification_label.set_text(message)
+        self.notification_label.show()
 
     ######## Client management #########
     def client_changed(self, widget_button):
@@ -190,6 +192,26 @@ class client_view(object):
         if self.modified_add.count(tab_num) == 0:
             self.modified_add.append(self.address_notebook.get_current_page())
         self.apply_button.set_label("Save")
+
+    def new_address(self, widget_button):
+        """
+            Method to handle the signal of on_new_address_button_clicked
+        """
+        n_pages = self.address_notebook.get_n_pages()
+        print self.new_address
+        print self.modified_add
+        for news in self.new_address:
+            if self.modified_add.count(news) == 0:
+                self.info("There is already one new tab")
+                return False
+        if self.new_address.count(n_pages) == 0:
+            self.new_address.append(n_pages)
+            self.add_address_tab(add=None, num=n_pages)
+            current = self.address_notebook.get_current_page()
+            for pages in range(0,n_pages-current):
+                self.address_notebook.next_page()
+            self.info("New tab Address %s"%str(n_pages))
+            return True
 
     def delete_address(self, widget_button):
         """
