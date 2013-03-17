@@ -117,7 +117,7 @@ class client_view(object):
             else:
                 #insert an empty table
                 title = gtk.Label("Address 1")
-                add_v = Address_view(None,0)
+                add_v = Address_view(self,None,0)
                 self.address_notebook.insert_page(add_v.pack,title, 0)
                 self.address_pages.append(add_v)
 
@@ -198,8 +198,6 @@ class client_view(object):
             Method to handle the signal of on_new_address_button_clicked
         """
         n_pages = self.address_notebook.get_n_pages()
-        print self.new_address
-        print self.modified_add
         for news in self.new_address:
             if self.modified_add.count(news) == 0:
                 self.info("There is already one new tab")
