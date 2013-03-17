@@ -22,6 +22,7 @@ import db.db_manager
 import models.Models
 import views
 
+debbuging = True
 class client_view(object):
     '''
         This view shows a client info or a client view for a new client
@@ -36,7 +37,6 @@ class client_view(object):
                 of client info view
             tittle: is the tittle of the window
         '''
-        self.debbuging = True
         self.controller = ctrl
         self.builder = gtk.Builder()
         main_window_name = "client_info"
@@ -59,22 +59,16 @@ class client_view(object):
         self.notification_label = self.builder.get_object("notification_label")    
         self.apply_button = self.builder.get_object("apply")
         self.client_id_label = self.builder.get_object("client_id_label")
-        if self.debbuging:
+        if debbuging:
             #For debug
             self.client_id_label.set_visible(True)
 
         ######## address 1 variables #########
-        #to manage address the view store every street entry in a lists 
-        #for instance to access to the stree_entry in the tab number 3, you can access
-        #using self.street_entries[3]
-        #the tabs starts in in 0
-        self.street_entries        = {0 : self.builder.get_object("street_entry")}
-        self.street_number_entries = {0 : self.builder.get_object("street_number_entry")}
-        self.city_entries          = {0 : self.builder.get_object("city_entry")}
-        self.state_entries         = {0 : self.builder.get_object("state_entry")}
-        self.country_entries       = {0 : self.builder.get_object("country_entry")}
-        self.postal_code_entries   = {0 : self.builder.get_object("postal_code_entry")}
-        self.id_address_labels     = {0 : self.builder.get_object("id_label")}
+        #to manage the address notebook it create a list of address_view objects
+        #with the same index of the notebook page index
+        #If the client doesn't have any address its insert in the page 0 an empty
+        #address table as an address_view object without filled up
+        self.address_pages = []
         self.address_notebook = self.builder.get_object("address_notebook")
         
         dic = {
@@ -107,22 +101,25 @@ class client_view(object):
             self.email_entry.set_text(_None_to_str(client.email))
             self.web_entry.set_text(_None_to_str(client.web))
             #For debug
-            if self.debbuging:
+            if debbuging:
                 self.client_id_label.set_visible(True)
+            #first it removes the sample page, then it insert all address
+            #that has the client
+            self.address_notebook.remove_page(0)
             if len(client.address)>0: 
-                self.street_entries[0].set_text(_None_to_str(client.address[0].street))
-                self.street_number_entries[0].set_text(_None_to_str(str(client.address[0].number)))
-                self.city_entries[0].set_text(_None_to_str(client.address[0].city))
-                self.state_entries[0].set_text(_None_to_str(client.address[0].state))
-                self.country_entries[0].set_text(_None_to_str(client.address[0].country))
-                self.postal_code_entries[0].set_text(_None_to_str(str(client.address[0].postal_code)))
-                self.id_address_labels[0].set_text(str(client.address[0].id))
-                #For debug
-                if self.debbuging:
-                    self.id_address_labels[0].set_visible(True)
-                #Adding all the others tabs with client.address informatation
-                for a in range(1,len(client.address)):
-                    self.add_address_tab(client.address[a],a)
+                i = 0
+                for add in client.address:
+                    title = gtk.Label("Address %s" % str(i+1))
+                    add_v = Address_view(add,i)
+                    self.address_notebook.insert_page(add_v.pack,title, i)
+                    self.address_pages.append(add_v)
+                    i += 1
+            else:
+                #insert an empty table
+                title = gtk.Label("Address 1")
+                add_v = Address_view(None,0)
+                self.address_notebook.insert_page(add_v.pack,title, 0)
+                self.address_pages.append(add_v)
 
     def save_apply(self, apply_button):
         if self.entry_changed:
@@ -238,7 +235,7 @@ class client_view(object):
         vbox = gtk.VBox()
         vbox.pack_start(table)
         #Just show id if you are debbuging the applicacion
-        if self.debbuging:
+        if debbuging:
             vbox.pack_start(self.id_address_labels[tab_num])
         vbox.show_all()
         return vbox
@@ -301,13 +298,13 @@ class client_view(object):
         dic = f(dic)
         return dic
 
-class address_view(object):
+class Address_view(object):
     """
         This object repressent an address in the client_view
         Its store the entries, labels, page number and id of the 
         address normal object plus all the gtk object associated
     """
-    def __init__(self, address, page_n):
+    def __init__(self, address, page_n=-1):
         self.n_page = page_n
         self.street_entry        = gtk.Entry()
         self.street_number_entry = gtk.Entry()
@@ -342,7 +339,7 @@ class address_view(object):
         table.attach(self.city_entry,1,2,1,2)
         table.attach(self.country_entry,1,2,2,3)
         #third column
-        table.attach(self.number_label,2,3,0,1)
+        table.attach(self.street_number_label,2,3,0,1)
         table.attach(self.state_label,2,3,1,2)
         table.attach(self.postal_code_label,2,3,2,3)
         #fourth column
@@ -361,7 +358,7 @@ class address_view(object):
             self.postal_code_entry.set_text(_None_to_str(str(address.postal_code)))
             self.id_address_label.set_text(str(address.id))
         vbox.show_all()
-        if not self.debbuging:
+        if not debbuging:
             self.id_address_label.hidde()
         return vbox
 
