@@ -123,7 +123,7 @@ class client_view(object):
 
     def save_apply(self, apply_button):
         print "TODO"
-        pass
+        return None
         if self.entry_changed:
             new_dni = self.dni_entry.get_text().decode('utf-8')
             exist = self.controller.client_exist(new_dni)
@@ -218,7 +218,7 @@ class client_view(object):
             Method to delete the actual selected address
         """
         print "TODO"
-        pass
+        return None
         tab_num = self.address_notebook.get_current_page()
         print tab_num
         print self.id_address_labels
