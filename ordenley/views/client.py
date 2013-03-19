@@ -73,7 +73,7 @@ class client_view(object):
         
         dic = {
             "on_client_info_destroy" : self.quit,
-            "on_cancel_clicked" : self.quit,
+            "on_cancel_clicked" : self.cancel,
             "client_entry_changed" : self.client_changed,
             "address_entry_changed" : self.address_changed,
             "on_new_address_clicked" : self.new_address,
@@ -122,8 +122,14 @@ class client_view(object):
                 self.address_pages.append(add_v)
 
     def save_apply(self, apply_button):
+        """
+            Method to save all the changes done on the view
+        """
         print "TODO"
         return None
+        #if self.client == None:
+            
+
         if self.entry_changed:
             new_dni = self.dni_entry.get_text().decode('utf-8')
             exist = self.controller.client_exist(new_dni)
@@ -153,6 +159,18 @@ class client_view(object):
                 self.window.hide()
         else:
             self.window.hide()
+
+    def cancel(self, widget):
+        """
+            Method to handle on cancel button clicked
+        """
+        self.address_pages   = []
+        self.modified        = []
+        self.modified_add    = []
+        self.new_address     = []
+        self.deleted_address = []
+        self.quit(widget)
+
 
     def quit(self, widget):
         self.hide()
@@ -247,17 +265,6 @@ class client_view(object):
         n_pages = self.address_notebook.get_n_pages()
         for page in range(tab_num,n_pages):
             self.address_notebook.set_tab_label_text(self.address_pages[page].pack,"Address %s" % str(page+1))
-
-    def __update_dic_from_n(self, dic, n):
-        """
-            Method to substrac 1 unit to every key in the dictionary _dic_
-            after n
-        """
-        def f(mydict):
-            return dict((k-1,f(v) if hasattr(v,'keys') else v) for k,v in mydict.items() if k > n)
-        dic.pop(n)
-        dic = f(dic)
-        return dic
 
 class Address_view(object):
     """
