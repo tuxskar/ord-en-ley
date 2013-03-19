@@ -217,43 +217,37 @@ class client_view(object):
         """
             Method to delete the actual selected address
         """
-        print "TODO"
-        return None
+        #if tab_num==-1 there is no tab in the notebook
+        # if add_id != None the address is already in the system and 
+        # we have to delete it appending it to delete_address list
         tab_num = self.address_notebook.get_current_page()
-        print tab_num
-        print self.id_address_labels
         if tab_num > -1:
-            print tab_num
-            address_id = int(self.id_address_labels[tab_num].get_text())
-            #check if address_id isn't already in the list
-            print address_id
-            if self.deleted_address.count(address_id) == 0 and address_id != -1:
-                self.deleted_address.append(address_id)
-        #substract 1 unit for the greaters numbers in list new_address and modified_add
-        for mod in self.modified_add:
-            if mod > tab_num:
-                self.modified_add[self.modified_add.index(mod)] = mod-1
-        for n in self.new_address:
-            if n > tab_num:
-                self.new_address[self.new_address.index(n)] = n-1
-        #update the key in the entries and labels dictionaries
-        self.id_address_labels = self.__update_dic_from_n(self.id_address_labels,tab_num)
-        self.street_entries        = self.__update_dic_from_n(self.street_entries,tab_num)
-        self.street_number_entries = self.__update_dic_from_n(self.street_number_entries,tab_num)
-        self.city_entries          = self.__update_dic_from_n(self.city_entries,tab_num)
-        self.state_entries         = self.__update_dic_from_n(self.state_entries,tab_num)
-        self.country_entries       = self.__update_dic_from_n(self.country_entries,tab_num)
-        self.postal_code_entries   = self.__update_dic_from_n(self.postal_code_entries,tab_num)
-        print self.id_address_labels
-        if self.address_notebook.get_n_pages() == 1:
+            add_id = self.address_pages[tab_num].add_id
+            if add_id != None:
+                self.deleted_address.append(add_id)
+        if self.address_notebook.get_n_pages() == 1 \
+                and self.address_pages[tab_num].add_id != None:
             self.address_notebook.remove_page(tab_num)
-            self.add_address_tab(add=None, num=0)
+            add_v = Address_view(self,address=None,page_n=0)
+            self.address_pages.append(add_v)
+            title = gtk.Label("Address 1")
+            self.address_notebook.insert_page(add_v.pack,title, 0)
             self.info("There is no more address to delete")
         else:
             self.address_notebook.remove_page(tab_num)
+            self.address_pages.pop(tab_num)
+            self.update_address_labels(tab_num)
             self.info("Deleted address %s" % str(tab_num+1))
-        print self.deleted_address 
     
+    def update_address_labels(self, tab_num):
+        """
+            Update the address <num> tab title for all the tab greaters 
+            than tab_num
+        """
+        n_pages = self.address_notebook.get_n_pages()
+        for page in range(tab_num,n_pages):
+            self.address_notebook.set_tab_label_text(self.address_pages[page].pack,"Address %s" % str(page+1))
+
     def __update_dic_from_n(self, dic, n):
         """
             Method to substrac 1 unit to every key in the dictionary _dic_
@@ -272,7 +266,7 @@ class Address_view(object):
         address normal object plus all the gtk object associated
     """
     def __init__(self, view, address, page_n=-1):
-        self.n_page = page_n
+        self.add_id = None
         self.street_entry        = gtk.Entry()
         self.street_number_entry = gtk.Entry()
         self.city_entry          = gtk.Entry()
@@ -324,6 +318,7 @@ class Address_view(object):
         vbox.pack_start(table)
         vbox.pack_start(self.id_address_label)
         if address != None:
+            self.add_id = address.id
             self.street_entry.set_text(_None_to_str(address.street))
             self.street_number_entry.set_text(_None_to_str(str(address.number)))
             self.city_entry.set_text(_None_to_str(address.city))
@@ -335,8 +330,6 @@ class Address_view(object):
         if not debbuging:
             self.id_address_label.hidde()
         return vbox
-
-        
 
 def _None_to_str(txt):
     if txt == None:
