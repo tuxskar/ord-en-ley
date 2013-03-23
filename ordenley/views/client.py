@@ -174,9 +174,9 @@ class client_view(object):
         """
         self.address_pages   = []
         self.modified        = []
-        self.modified_add    = []
-        self.new_modified_address     = []
-        self.deleted_address = []
+        self.to_modify_add    = []
+        self.to_new_add     = []
+        self.to_delete_add = []
         self.quit(widget)
 
     def quit(self, widget):
