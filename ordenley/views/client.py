@@ -216,11 +216,21 @@ class client_view(object):
         return add_v
 
     def address_changed(self, widget_button):
-        if self.modified.count("address") == 0:
-            self.modified.append("address")
         tab_num = self.address_notebook.get_current_page()
-        if self.modified_add.count(tab_num) == 0:
-            self.modified_add.append(self.address_notebook.get_current_page())
+        add_id = self.address_pages[tab_num].add_id
+        if add_id == -1 and tab_num == self.has_new_add:
+            #empty address changed 
+            self.to_new_add.append(tab_num)
+            self.has_new_add = -1
+        elif add_id == -1:
+            #already as in to_new_add list
+            return None
+        else:
+            #already stored address to modify
+            if not (add_id in self.to_modify_add):
+                self.to_modify_add.append(add_id)
+        if not("address" in self.modified):
+            self.modified.append("address")
         self.apply_button.set_label("Save")
 
     def new_address(self, widget_button):
