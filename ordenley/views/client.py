@@ -242,50 +242,71 @@ class client_view(object):
         """
             Method to delete the actual selected address
         """
-        print "self.modified "
-        print self.modified
-        print "self.modified_add "
-        print self.modified_add
-        print "self.new_address "
-        print self.new_modified_address
-        print "self.deleted_address "
-        print self.deleted_address
+        #print "self.modified "
+        #print self.modified
+        #print "self.modified_add "
+        #print self.modified_add
+        #print "self.new_address "
+        #print self.new_modified_address
+        #print "self.deleted_address "
+        #print self.deleted_address
         #if tab_num==-1 there is no tab in the notebook
         # if add_id != None the address is already in the system and 
         # we have to delete it appending it to delete_address list
         tab_num = self.address_notebook.get_current_page()
-        if tab_num > -1:
-            add_id = self.address_pages[tab_num].add_id
-            if add_id != None:
-                self.deleted_address.append(add_id)
-                #change ok label to save
-        if self.address_notebook.get_n_pages() == 1 \
-                and self.address_pages[tab_num].add_id != None:
-            self.address_notebook.remove_page(tab_num)
-            self.address_pages.pop(tab_num)
-            add_v = Address_view(self,address=None,page_n=0)
-            self.address_pages.append(add_v)
-            title = gtk.Label("Address 1")
-            self.address_notebook.insert_page(add_v.pack,title, 0)
-            self.info("Deleted address %s" % str(tab_num+1))
-        elif self.address_notebook.get_n_pages() == 1 \
-                and self.address_pages[tab_num].add_id == None:
-            self.info("There is no more address to delete")
+        add_id = self.address_pages[tab_num].add_id
+        total_pages = self.address_notebook.get_n_pages()
+        if add_id != -1:
+            if total_pages > 1:
+                self.update_to_new_add_list(tab_num)
+            else:
+                self.address_notebook.remove_page(tab_num)
+                self.address_pages.pop(tab_num)
+                add_v = Address_view(self,address=None,page_n=0)
+                self.address_pages.append(add_v)
+                title = gtk.Label("Address 1")
+                self.address_notebook.insert_page(add_v.pack,title, 0)
+                self.info("No address to be deleted")
+                return None
         else:
-            self.address_notebook.remove_page(tab_num)
-            self.address_pages.pop(tab_num)
-            self.update_address_labels(tab_num)
-            self.update_lists(tab_num)
-            self.info("Deleted address %s" % str(tab_num+1))
+            if add_id in self.to_modify_add:
+                self.to_modify_add.pop(add_id)
+            self.to_delete_add.append(add_id)
+        self.address_pages.pop(tab_num)
+        self.address_notebook.remove_page(tab_num)
+        self.update_address_labels(tab_num)
+        self.info("Deleted address %s" % str(tab_num+1))
+
+        #if tab_num > -1:
+            #if add_id != None:
+                #self.deleted_address.append(add_id)
+                ##change ok label to save
+        #if self.address_notebook.get_n_pages() == 1 \
+                #and self.address_pages[tab_num].add_id != None:
+            #self.address_notebook.remove_page(tab_num)
+            #self.address_pages.pop(tab_num)
+            #add_v = Address_view(self,address=None,page_n=0)
+            #self.address_pages.append(add_v)
+            #title = gtk.Label("Address 1")
+            #self.address_notebook.insert_page(add_v.pack,title, 0)
+            #self.info("Deleted address %s" % str(tab_num+1))
+        #elif self.address_notebook.get_n_pages() == 1 \
+                #and self.address_pages[tab_num].add_id == None:
+            #self.info("There is no more address to delete")
+        #else:
+            #self.address_notebook.remove_page(tab_num)
+            #self.address_pages.pop(tab_num)
+            #self.update_address_labels(tab_num)
+            #self.update_lists(tab_num)
+            #self.info("Deleted address %s" % str(tab_num+1))
     
-    def update_lists(self, tab_num):
+    def update_to_new_add_list(self, tab_num):
         """
-            Method to update the index of the lists new_address and modified_add
+            Method to update the index of the list to_new_add
         """
-        for l in (self.new_modified_address,self.modified_add):
-            if len(l) > 0:
-                l.pop(tab_num)
-                l = [a-1 if a>tab_num else a for a in l]
+        if len(self.to_new_add) > 0:
+            self.to_new_add.pop(tab_num)
+            self.to_new_add = [a-1 if a>tab_num else a for a in self.to_new_add]
 
     def update_address_labels(self, tab_num):
         """
