@@ -172,10 +172,10 @@ class client_view(object):
         """
             Method to handle on cancel button clicked
         """
-        self.address_pages   = []
-        self.modified        = []
-        self.to_modify_add    = []
-        self.to_new_add     = []
+        self.address_pages = []
+        self.modified      = []
+        self.to_modify_add = []
+        self.to_new_add    = []
         self.to_delete_add = []
         self.quit(widget)
 
