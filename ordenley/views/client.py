@@ -242,17 +242,7 @@ class client_view(object):
         """
             Method to delete the actual selected address
         """
-        #print "self.modified "
-        #print self.modified
-        #print "self.modified_add "
-        #print self.modified_add
-        #print "self.new_address "
-        #print self.new_modified_address
-        #print "self.deleted_address "
-        #print self.deleted_address
-        #if tab_num==-1 there is no tab in the notebook
-        # if add_id != None the address is already in the system and 
-        # we have to delete it appending it to delete_address list
+        # if add_id != -1 the address is already in the system
         tab_num = self.address_notebook.get_current_page()
         add_id = self.address_pages[tab_num].add_id
         total_pages = self.address_notebook.get_n_pages()
@@ -276,29 +266,6 @@ class client_view(object):
         self.address_notebook.remove_page(tab_num)
         self.update_address_labels(tab_num)
         self.info("Deleted address %s" % str(tab_num+1))
-
-        #if tab_num > -1:
-            #if add_id != None:
-                #self.deleted_address.append(add_id)
-                ##change ok label to save
-        #if self.address_notebook.get_n_pages() == 1 \
-                #and self.address_pages[tab_num].add_id != None:
-            #self.address_notebook.remove_page(tab_num)
-            #self.address_pages.pop(tab_num)
-            #add_v = Address_view(self,address=None,page_n=0)
-            #self.address_pages.append(add_v)
-            #title = gtk.Label("Address 1")
-            #self.address_notebook.insert_page(add_v.pack,title, 0)
-            #self.info("Deleted address %s" % str(tab_num+1))
-        #elif self.address_notebook.get_n_pages() == 1 \
-                #and self.address_pages[tab_num].add_id == None:
-            #self.info("There is no more address to delete")
-        #else:
-            #self.address_notebook.remove_page(tab_num)
-            #self.address_pages.pop(tab_num)
-            #self.update_address_labels(tab_num)
-            #self.update_lists(tab_num)
-            #self.info("Deleted address %s" % str(tab_num+1))
     
     def update_to_new_add_list(self, tab_num):
         """
