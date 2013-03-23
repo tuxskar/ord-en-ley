@@ -73,6 +73,7 @@ class client_view(object):
         self.to_modify_add = [] # Store the tab_number of the modified address
         self.to_new_add = [] # For address added
         self.to_delete_add = [] # For address deleted
+        self.has_new_add = -1 # n_page of the new_address
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -119,6 +120,7 @@ class client_view(object):
                 add_v = Address_view(self,None,0)
                 self.address_notebook.insert_page(add_v.pack,title, 0)
                 self.address_pages.append(add_v)
+                self.has_new_add = 0 
 
     def save_apply(self, apply_button):
         """
@@ -211,6 +213,7 @@ class client_view(object):
         add_v = Address_view(self,add,num)
         title = gtk.Label("Address %s" % str(num+1))
         self.address_notebook.insert_page(add_v.pack, title, position=num)
+        return add_v
 
     def address_changed(self, widget_button):
         if self.modified.count("address") == 0:
@@ -224,19 +227,33 @@ class client_view(object):
         """
             Method to handle the signal of on_new_address_button_clicked
         """
-        n_pages = self.address_notebook.get_n_pages()
-        for news in self.new_modified_address:
-            if self.modified_add.count(news) == 0:
-                self.info("There is already one new tab")
-                return False
-        if self.new_modified_address.count(n_pages) == 0:
-            self.new_modified_address.append(n_pages)
-            self.add_address_tab(add=None, num=n_pages)
+        if self.has_new_add != -1:
+            self.info("Already empty address number %d to be added" % self.has_new_add)
+            return None
+        else:
+            n_pages = self.address_notebook.get_n_pages()
+            self.to_new_add.append(n_pages)
+            add_v = self.add_address_tab(add=None, num=n_pages)
             current = self.address_notebook.get_current_page()
+            #get focus on the just inserted tab
             for pages in range(0,n_pages-current):
                 self.address_notebook.next_page()
-            self.info("New tab Address %s"%str(n_pages))
-            return True
+            self.info("New tab Address %s"%str(n_pages+1))
+            self.address_pages.append(add_v)
+            self.has_new_add = n_pages
+
+        #for news in self.new_modified_address:
+            #if self.modified_add.count(news) == 0:
+                #self.info("There is already one new tab")
+                #return False
+        #if self.new_modified_address.count(n_pages) == 0:
+            #self.new_modified_address.append(n_pages)
+            #self.add_address_tab(add=None, num=n_pages)
+            #current = self.address_notebook.get_current_page()
+            #for pages in range(0,n_pages-current):
+                #self.address_notebook.next_page()
+            #self.info("New tab Address %s"%str(n_pages))
+            #return True
 
     def delete_address(self, widget_button):
         """
@@ -248,6 +265,8 @@ class client_view(object):
         total_pages = self.address_notebook.get_n_pages()
         if add_id != -1:
             if total_pages > 1:
+                if self.has_new_add == tab_num:
+                    self.has_new_add = -1
                 self.update_to_new_add_list(tab_num)
             else:
                 self.address_notebook.remove_page(tab_num)
@@ -272,7 +291,7 @@ class client_view(object):
             Method to update the index of the list to_new_add
         """
         if len(self.to_new_add) > 0:
-            self.to_new_add.pop(tab_num)
+            self.to_new_add.remove(tab_num)
             self.to_new_add = [a-1 if a>tab_num else a for a in self.to_new_add]
 
     def update_address_labels(self, tab_num):
