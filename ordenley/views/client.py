@@ -252,19 +252,6 @@ class client_view(object):
             self.address_pages.append(add_v)
             self.has_new_add = n_pages
 
-        #for news in self.new_modified_address:
-            #if self.modified_add.count(news) == 0:
-                #self.info("There is already one new tab")
-                #return False
-        #if self.new_modified_address.count(n_pages) == 0:
-            #self.new_modified_address.append(n_pages)
-            #self.add_address_tab(add=None, num=n_pages)
-            #current = self.address_notebook.get_current_page()
-            #for pages in range(0,n_pages-current):
-                #self.address_notebook.next_page()
-            #self.info("New tab Address %s"%str(n_pages))
-            #return True
-
     def delete_address(self, widget_button):
         """
             Method to delete the actual selected address
