@@ -19,7 +19,6 @@ except:
     sys.exit(1)
 
 import db.db_manager
-import models.Models
 import views
 
 debbuging = True
@@ -70,6 +69,10 @@ class client_view(object):
         #address table as an address_view object without filled up
         self.address_pages = []
         self.address_notebook = self.builder.get_object("address_notebook")
+        self.modified = [] # Store what kind of object has been modified either client, or address
+        self.to_modify_add = [] # Store the tab_number of the modified address
+        self.to_new_add = [] # For address added
+        self.to_delete_add = [] # For address deleted
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -85,10 +88,6 @@ class client_view(object):
         self.client = client
         self.populate_client_view(client)
         self.builder.connect_signals(dic)
-        self.modified = [] # Store what kind of object has been modified
-        self.modified_add = [] # Store the tab_number of the modified address
-        self.new_address = [] # For address added
-        self.deleted_address = [] # For address deleted
 
     def populate_client_view(self, client):
         """
@@ -127,38 +126,47 @@ class client_view(object):
         """
         print "TODO"
         return None
-        #if self.client == None:
+        #if client==None just cancel all, otherwise send all data to the controller to update database
+        if self.client == None:
+            self.cancel(None)
+        else:
+            if self.modified_add.count("address") > 0:
+                for to_del in self.deleted_address:
+                    self.controller.client_returned_values("client","delete",None,self.deleted_address[to_del])
+                #for to_add in self.new_address:
+
+
             
 
-        if self.entry_changed:
-            new_dni = self.dni_entry.get_text().decode('utf-8')
-            exist = self.controller.client_exist(new_dni)
-            if new_dni=="":
-                self.warning_label.set_text("DNI field must be filled")
-                self.warning_label.show()
-            elif new_dni[0] == "#":
-                self.warning_label.set_text("DNI not able to start with #")
-                self.warning_label.show()
-            elif (self.old_dni != new_dni and exist):
-                self.warning_label.set_text("DNI already in the system")
-                self.warning_label.show()
-            else:
-                self.warning_label.hide()
-                client = models.Models.Client(self.name_entry.get_text(),
-                                          self.surname_entry.get_text(),
-                                          new_dni,
-                                          self.email_entry.get_text(),
-                                          self.web_entry.get_text(),
-                                          )
-                #if new_dni != self.old_dni or exist:
-                if exist:
-                    self.controller.to_modify(self.old_dni, client)
-                else:
-                    self.controller.insert_new_client(client)
-                self.controller.refresh_clients_main_view(client, old_dni=self.old_dni)
-                self.window.hide()
-        else:
-            self.window.hide()
+        #if self.entry_changed#
+            #new_dni = self.dni_entry.get_text().decode('utf-8')
+            #exist = self.controller.client_exist(new_dni)
+            #if new_dni=="":
+                #self.warning_label.set_text("DNI field must be filled")
+                #self.warning_label.show()
+            #elif new_dni[0] == "#":
+                #self.warning_label.set_text("DNI not able to start with #")
+                #self.warning_label.show()
+            #elif (self.old_dni != new_dni and exist):
+                #self.warning_label.set_text("DNI already in the system")
+                #self.warning_label.show()
+            #else:
+                #self.warning_label.hide()
+                #client = models.Models.Client(self.name_entry.get_text(),
+                                          #self.surname_entry.get_text(),
+                                          #new_dni,
+                                          #self.email_entry.get_text(),
+                                          #self.web_entry.get_text(),
+                                          #)
+                ##if new_dni != self.old_dni or exist:
+                #if exist:
+                    #self.controller.to_modify(self.old_dni, client)
+                #else:
+                    #self.controller.insert_new_client(client)
+                #self.controller.refresh_clients_main_view(client, old_dni=self.old_dni)
+                #self.window.hide()
+        #else:
+            #self.window.hide()
 
     def cancel(self, widget):
         """
@@ -167,10 +175,9 @@ class client_view(object):
         self.address_pages   = []
         self.modified        = []
         self.modified_add    = []
-        self.new_address     = []
+        self.new_modified_address     = []
         self.deleted_address = []
         self.quit(widget)
-
 
     def quit(self, widget):
         self.hide()
@@ -218,12 +225,12 @@ class client_view(object):
             Method to handle the signal of on_new_address_button_clicked
         """
         n_pages = self.address_notebook.get_n_pages()
-        for news in self.new_address:
+        for news in self.new_modified_address:
             if self.modified_add.count(news) == 0:
                 self.info("There is already one new tab")
                 return False
-        if self.new_address.count(n_pages) == 0:
-            self.new_address.append(n_pages)
+        if self.new_modified_address.count(n_pages) == 0:
+            self.new_modified_address.append(n_pages)
             self.add_address_tab(add=None, num=n_pages)
             current = self.address_notebook.get_current_page()
             for pages in range(0,n_pages-current):
@@ -235,6 +242,14 @@ class client_view(object):
         """
             Method to delete the actual selected address
         """
+        print "self.modified "
+        print self.modified
+        print "self.modified_add "
+        print self.modified_add
+        print "self.new_address "
+        print self.new_modified_address
+        print "self.deleted_address "
+        print self.deleted_address
         #if tab_num==-1 there is no tab in the notebook
         # if add_id != None the address is already in the system and 
         # we have to delete it appending it to delete_address list
@@ -243,20 +258,35 @@ class client_view(object):
             add_id = self.address_pages[tab_num].add_id
             if add_id != None:
                 self.deleted_address.append(add_id)
+                #change ok label to save
         if self.address_notebook.get_n_pages() == 1 \
                 and self.address_pages[tab_num].add_id != None:
             self.address_notebook.remove_page(tab_num)
+            self.address_pages.pop(tab_num)
             add_v = Address_view(self,address=None,page_n=0)
             self.address_pages.append(add_v)
             title = gtk.Label("Address 1")
             self.address_notebook.insert_page(add_v.pack,title, 0)
+            self.info("Deleted address %s" % str(tab_num+1))
+        elif self.address_notebook.get_n_pages() == 1 \
+                and self.address_pages[tab_num].add_id == None:
             self.info("There is no more address to delete")
         else:
             self.address_notebook.remove_page(tab_num)
             self.address_pages.pop(tab_num)
             self.update_address_labels(tab_num)
+            self.update_lists(tab_num)
             self.info("Deleted address %s" % str(tab_num+1))
     
+    def update_lists(self, tab_num):
+        """
+            Method to update the index of the lists new_address and modified_add
+        """
+        for l in (self.new_modified_address,self.modified_add):
+            if len(l) > 0:
+                l.pop(tab_num)
+                l = [a-1 if a>tab_num else a for a in l]
+
     def update_address_labels(self, tab_num):
         """
             Update the address <num> tab title for all the tab greaters 
