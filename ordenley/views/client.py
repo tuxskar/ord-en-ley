@@ -348,10 +348,12 @@ class client_view(object):
         else:
             if add_id in self.to_modify_add:
                 self.to_modify_add.pop(add_id)
-            self.to_delete_add.append(add_id)
+        self.to_delete_add.append(add_id)
         self.address_pages.pop(tab_num)
         self.address_notebook.remove_page(tab_num)
         self.update_address_labels(tab_num)
+        if not ("address" in self.modified):
+            self.modified.append("address")
         self.info("Deleted address %s" % str(tab_num+1))
     
     def update_to_new_add_list(self, tab_num):

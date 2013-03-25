@@ -112,9 +112,9 @@ class db_address_manager(object):
 
     def delete(self, a):
         """Method to delete the address a"""
-        id = self.exist(a) 
-        if id != False:
-            self.session.query(models.Models.Address).filter(models.Models.Address.id==a.id).delete()
+        (ret_id,) = self.exist(a) 
+        if ret_id != False:
+            self.session.query(models.Models.Address).filter(models.Models.Address.id==ret_id).delete()
             self.session.commit()
 
     def get_all(self):
