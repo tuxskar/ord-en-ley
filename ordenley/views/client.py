@@ -129,12 +129,13 @@ class client_view(object):
         """
         #modify every change made in the view to close it 
         if "address" in self.modified:
-            print "to_modify "
-            print self.to_modify_add
-            print "to_new_add "
-            print self.to_new_add
-            print "to_delete_add "
-            print self.to_delete_add
+            if debbuging:
+                print "to_modify "
+                print self.to_modify_add
+                print "to_new_add "
+                print self.to_new_add
+                print "to_delete_add "
+                print self.to_delete_add
             #to add new address
             for n in self.to_new_add:
                 a = self.get_address_from_page(n)
@@ -142,15 +143,12 @@ class client_view(object):
                 self.controller.client_returned_values("address","new",a,None)
             for mod in self.to_modify_add:
                 a = self.get_address_from_page_with_id(mod)
-                print a
-                print a.street
                 self.controller.client_returned_values("address","modified",a,mod)
             for d in self.to_delete_add:
                 self.controller.client_returned_values("address","delete",None, d)
         if "client" in self.modified:
             c = self.get_client_from_view()
             if c.id != -1:
-                print c.id
                 self.controller.client_returned_values("client","modified",c,c.id)
             else:
                 self.controller.client_returned_values("client","new",c,None)
@@ -287,8 +285,6 @@ class client_view(object):
     def address_changed(self, widget_button):
         tab_num = self.address_notebook.get_current_page()
         add_id = self.address_pages[tab_num].add_id
-        print "add_id %d" % add_id
-        print "has_new_Add %d" % self.has_new_add
         if add_id == -1 and tab_num == self.has_new_add:
             #empty address changed 
             self.to_new_add.append(tab_num)
