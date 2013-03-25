@@ -18,6 +18,7 @@ except:
     print("GTK Not Available")
     sys.exit(1)
 
+import models.Models
 import db.db_manager
 import views
 
@@ -126,16 +127,83 @@ class client_view(object):
         """
             Method to save all the changes done on the view
         """
-        print "TODO"
-        return None
-        #if client==None just cancel all, otherwise send all data to the controller to update database
-        if self.client == None:
-            self.cancel(None)
-        else:
-            if self.modified_add.count("address") > 0:
-                for to_del in self.deleted_address:
-                    self.controller.client_returned_values("client","delete",None,self.deleted_address[to_del])
-                #for to_add in self.new_address:
+        #modify every change made in the view to close it 
+        if "address" in self.modified:
+            print "to_modify "
+            print self.to_modify_add
+            print "to_new_add "
+            print self.to_new_add
+            print "to_delete_add "
+            print self.to_delete_add
+            #to add new address
+            for n in self.to_new_add:
+                a = self.get_address_from_page(n)
+                self.controller.client_returned_values("address","new",a,None)
+            for mod in self.to_modify_add:
+                a = self.get_address_from_page_with_id(mod)
+                print a
+                print a.street
+                self.controller.client_returned_values("address","modified",a,mod)
+            for d in self.to_delete_add:
+                self.controller.client_returned_values("address","delete",None, d)
+        if "client" in self.modified:
+            c = self.get_client_from_view()
+            if c.id != -1:
+                print c.id
+                self.controller.client_returned_values("client","modified",c,c.id)
+            else:
+                self.controller.client_returned_values("client","new",c,None)
+        self.cancel(None)
+
+    def get_address_from_page(self, n):
+        """
+            Method to return the address in the page n
+        """
+        return self.from_add_v_to_add(self.address_pages[n])
+
+    def get_address_from_page_with_id(self, add_id):
+        """
+            Method to return an address using add_id to find it
+        """
+        for add_v in self.address_pages:
+            if add_v.add_id == add_id:
+                return self.from_add_v_to_add(add_v)
+
+    def from_add_v_to_add(self, add_v):
+            id = add_v.add_id
+            street      = add_v.street_entry.get_text()
+            #number      = int(add_v.street_number_entry.get_text())
+            city        = add_v.city_entry.get_text()
+            state       = add_v.state_entry.get_text()
+            country     = add_v.country_entry.get_text()
+            #postal_code = int(add_v.postal_code_entry.get_text()) 
+            return models.Models.Address(street,city=city,state=state,country=country,id=id)
+        
+    def get_client_from_view(self):
+        """
+            Mehtod to return a client from this view
+        """
+        id = int(self.client_id_label.get_text())
+        name    = self.name_entry.get_text()
+        surname = self.surname_entry.get_text()
+        dni     = self.dni_entry.get_text()
+        email   = self.email_entry.get_text()
+        web     = self.web_entry.get_text()
+        return models.Models.Client(name, surname, dni,email,web, id=id)
+
+
+
+
+
+
+
+        #if self.client == None:
+            #self.cancel(None)
+        #else:
+            #if self.modified_add.count("address") > 0:
+                #for to_del in self.deleted_address:
+                    #self.controller.client_returned_values("client","delete",None,self.deleted_address[to_del])
+                ##for to_add in self.new_address:
 
 
             
@@ -218,6 +286,8 @@ class client_view(object):
     def address_changed(self, widget_button):
         tab_num = self.address_notebook.get_current_page()
         add_id = self.address_pages[tab_num].add_id
+        print "add_id %d" % add_id
+        print "has_new_Add %d" % self.has_new_add
         if add_id == -1 and tab_num == self.has_new_add:
             #empty address changed 
             self.to_new_add.append(tab_num)
@@ -307,7 +377,7 @@ class Address_view(object):
         address normal object plus all the gtk object associated
     """
     def __init__(self, view, address, page_n=-1):
-        self.add_id = None
+        self.add_id = -1
         self.street_entry        = gtk.Entry()
         self.street_number_entry = gtk.Entry()
         self.city_entry          = gtk.Entry()
