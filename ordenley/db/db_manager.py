@@ -63,9 +63,8 @@ class db_client_manager(object):
         a.dni = client.dni
         a.email = client.email
         a.web = client.web
-        a.address = client.address
         self.session.add(a)
-        self.session.flush()
+        self.session.commit()
 
     def insert_test_clients(self):
         models.Models.insert_test(self.session)
