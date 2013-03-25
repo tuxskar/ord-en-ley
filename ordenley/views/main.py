@@ -118,12 +118,10 @@ class main_view(object):
             c_id = model.get_value(treeiter, 0)
             name = model.get_value(treeiter, 1).decode('utf8')
             surname = model.get_value(treeiter, 2).decode('utf8')
-            dni = model.get_value(treeiter, 3).decode('utf8')
+            dni = model.get_value(treeiter, 3)
+            if dni != None:
+                dni = dni.decode('utf8')
             keep = self.delete_client_dialog(name, surname, dni)
-            print "id "      + str(c_id)
-            print "name "    + str(name)
-            print "surname " + str(surname)
-            print "dni "     + str(dni)
 
             if not keep:
                 #hide view_client if exist and delete
@@ -143,10 +141,9 @@ class main_view(object):
                                   gtk.DIALOG_MODAL,
                                   ( gtk.STOCK_NO, True ,
                                     gtk.STOCK_YES, False))
-        label = gtk.Label("Are you sure you want to delete the client: \n\
+        label = gtk.Label("Are you sure you want to delete the client?: \n\
                 Name: %s \n\
-                Surname: %s \n\
-                DNI: %s?\n" % (name, surname, dni))
+                Surname: %s " % (name, surname))
         delete_dialog.get_content_area().pack_start(label)
         delete_dialog.show_all()
         res =  delete_dialog.run()
