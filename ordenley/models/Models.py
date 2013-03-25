@@ -20,7 +20,7 @@ class Client(Base):
     id      = Column(Integer, primary_key = True)
     name    = Column(String(30))
     surname = Column(String(60))
-    dni     = Column(String(15), unique   = True)
+    dni     = Column(String(15), unique=True, nullable=True)
     email   = Column(String(30))
     web     = Column(String(30))
     address = relationship("Address",
@@ -29,10 +29,12 @@ class Client(Base):
                             cascade   = "all, delete")
     
     def __init__(self, name="", surname="", 
-                 dni="", email="", web=""):
+                 dni=None, email="", web="", id=None):
+        self.id = id
         self.name    = name.decode('utf-8')
         self.surname = surname.decode('utf-8')
-        self.dni     = dni.decode('utf-8')
+        if self.dni != None:
+            self.dni     = dni.decode('utf-8')
         self.email   = email.decode('utf-8')
         self.web     = web.decode('utf-8')
 
@@ -53,7 +55,7 @@ class Address(Base):
     postal_code = Column(Integer)
         
     def __init__(self, street, number=None, city=None, state=None,
-            country=None, postal_code=None):
+            country=None, postal_code=None, id = None):
         """Class constructor"""
         self.street      = _decode_or_none(street)
         self.number      = number
@@ -61,6 +63,7 @@ class Address(Base):
         self.state       = _decode_or_none(state)
         self.country     = _decode_or_none(country)
         self.postal_code = postal_code
+        self.id = id
 
     def __repr__(self):
         return "<Address('%s','%s','%s', '%s')>" % \

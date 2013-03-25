@@ -53,8 +53,12 @@ class db_client_manager(object):
         self.session.commit()
     
     def insert(self, client):
+        print client.id
+        if client.id != None:
+            client.id = None
         self.session.add(client)
-        self.session.flush()
+        self.session.commit()
+        #self.session.flush()
 
     def modify(self, client, old_client_id):
         a = self.get_client(old_client_id)
