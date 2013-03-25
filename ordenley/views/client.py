@@ -138,6 +138,7 @@ class client_view(object):
             #to add new address
             for n in self.to_new_add:
                 a = self.get_address_from_page(n)
+                a.clients.append(self.client)
                 self.controller.client_returned_values("address","new",a,None)
             for mod in self.to_modify_add:
                 a = self.get_address_from_page_with_id(mod)
@@ -312,7 +313,7 @@ class client_view(object):
             return None
         else:
             n_pages = self.address_notebook.get_n_pages()
-            self.to_new_add.append(n_pages)
+            #self.to_new_add.append(n_pages)
             add_v = self.add_address_tab(add=None, num=n_pages)
             current = self.address_notebook.get_current_page()
             #get focus on the just inserted tab
@@ -431,11 +432,11 @@ class Address_view(object):
         if address != None:
             self.add_id = address.id
             self.street_entry.set_text(_None_to_str(address.street))
-            self.street_number_entry.set_text(_None_to_str(str(address.number)))
+            self.street_number_entry.set_text(_None_to_str(address.number))
             self.city_entry.set_text(_None_to_str(address.city))
             self.state_entry.set_text(_None_to_str(address.state))
             self.country_entry.set_text(_None_to_str(address.country))
-            self.postal_code_entry.set_text(_None_to_str(str(address.postal_code)))
+            self.postal_code_entry.set_text(_None_to_str(address.postal_code))
             self.id_address_label.set_text(str(address.id))
         vbox.show_all()
         if not debbuging:

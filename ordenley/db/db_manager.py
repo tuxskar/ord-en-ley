@@ -130,8 +130,15 @@ class db_address_manager(object):
 
     def insert(self, a):
         """Method to insert a new address a """
+        if a.id != None:
+            a.id = None
+        print "clientes de a "
+        print a.clients
+        for c in a.clients:
+            self.insert_address_to_client(c,a)
         self.session.add(a)
         self.session.commit()
+        print "hecho"
 
     def modify(self, a, b_id):
         """Method to modify the address _a_ using the _b_ address instead"""
