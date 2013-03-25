@@ -59,8 +59,10 @@ class Controller(object):
             Args     : modification , mod_obj  , new_object    , old_id
             values   : client       , delete   , client      , client.id
                      :              , modified ,             ,            -- modify or delete client with old id old_id
+                     :              , new      ,             , None
                      : address      , delete   , address     , address.id
                      :              , modified ,             ,            -- modify or delete address with old id old_id
+                     :              , new      ,             , None 
                      : view         , delete   , view_object , None       -- Delete the client view_object
         """
         manager = None
@@ -73,6 +75,8 @@ class Controller(object):
             manager.delete(old_id)
         elif mod_obj == "modified":
             manager.modify(new_object, old_id)
+        elif mod_obj == "new":
+            manager.insert(new_object)
         if modification == "view":
             del new_object
 
