@@ -2,7 +2,7 @@ import random
 import string
 import ordenley.tests
 import ordenley.models.Models
-
+debbuging = False
 def random_client():
     name = ordenley.tests.random_string()
     surname = ordenley.tests.random_string()

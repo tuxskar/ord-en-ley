@@ -19,6 +19,7 @@ except:
     print("GTK Not Available")
     sys.exit(1)
 import glib
+import tests
 
 class main_view(object):
     '''
@@ -48,10 +49,10 @@ class main_view(object):
         #dni_column.set_visible(False)
         
         self.window = self.builder.get_object(self.main_window_name)
-
-        print "self.window=" + str(self.window)
-        print "self.filename=" + str(self.filename)
-        print "self.builder=" + str(self.builder)
+        if tests.debbuging:
+            print "self.window=" + str(self.window)
+            print "self.filename=" + str(self.filename)
+            print "self.builder=" + str(self.builder)
         
         dic = {
         "gtk_main_quit" : self.quit,
