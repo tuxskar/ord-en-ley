@@ -60,21 +60,20 @@ class client_view(object):
         self.apply_button = self.builder.get_object("apply")
         self.client_id_label = self.builder.get_object("client_id_label")
         if tests.debbuging:
-            #For debug
             self.client_id_label.set_visible(True)
 
         ######## address 1 variables #########
-        #to manage the address notebook it create a list of address_view objects
-        #with the same index of the notebook page index
-        #If the client doesn't have any address its insert in the page 0 an empty
-        #address table as an address_view object without filled up
+        # to manage the address notebook it create a list of address_view objects __address_pages__
+        # with the same index of the notebook page index
+        # If the client doesn't have any address its insert in the page 0 an empty
+        # address table as an address_view object without filled up
         self.address_pages = []
         self.address_notebook = self.builder.get_object("address_notebook")
         self.modified = [] # Store what kind of object has been modified either client, or address
-        self.to_modify_add = [] # Store the tab_number of the modified address
-        self.to_new_add = [] # For address added
-        self.to_delete_add = [] # For address deleted
-        self.has_new_add = -1 # n_page of the new_address
+        self.to_modify_add = [] # Store the tab_number of the modified already stores address
+        self.to_new_add = [] # For new address, modified and NO already stores
+        self.to_delete_add = [] # For address deleted, just the stored ones
+        self.has_new_add = -1 # has_new_add is the index of the new add without been modified or -1
         
         dic = {
             "on_client_info_destroy" : self.quit,
@@ -170,20 +169,23 @@ class client_view(object):
                 return self.from_add_v_to_add(add_v)
 
     def from_add_v_to_add(self, add_v):
-            id = add_v.add_id
-            street      = add_v.street_entry.get_text()
-            #number      = int(add_v.street_number_entry.get_text())
-            number      = add_v.street_number_entry.get_text()
-            city        = add_v.city_entry.get_text()
-            state       = add_v.state_entry.get_text()
-            country     = add_v.country_entry.get_text()
-            #postal_code = int(add_v.postal_code_entry.get_text()) 
-            postal_code = add_v.postal_code_entry.get_text()
-            return models.Models.Address(street,number, city,state,country,postal_code,id)
+        """
+            Method to return an Address object form a Address_view one
+        """
+        id = add_v.add_id
+        street      = add_v.street_entry.get_text()
+        #number      = int(add_v.street_number_entry.get_text())
+        number      = add_v.street_number_entry.get_text()
+        city        = add_v.city_entry.get_text()
+        state       = add_v.state_entry.get_text()
+        country     = add_v.country_entry.get_text()
+        #postal_code = int(add_v.postal_code_entry.get_text()) 
+        postal_code = add_v.postal_code_entry.get_text()
+        return models.Models.Address(street,number, city,state,country,postal_code,id)
         
     def get_client_from_view(self):
         """
-            Mehtod to return a client from this view
+            Mehtod to return the Client object updated from this view
         """
         id = int(self.client_id_label.get_text())
         name    = self.name_entry.get_text()
@@ -196,6 +198,7 @@ class client_view(object):
     def cancel(self, widget):
         """
             Method to handle on cancel button clicked
+            It clear all changed made on the client_view 
         """
         self.address_pages = []
         self.modified      = []
@@ -222,6 +225,9 @@ class client_view(object):
 
     ######## Client management #########
     def client_changed(self, widget_button):
+        """
+            On change some client entry handle
+        """
         if self.modified.count("client") == 0:
             self.modified.append("client")
         self.apply_button.set_label("Save")
@@ -229,7 +235,7 @@ class client_view(object):
     ######## Address management #########
     def add_address_tab(self, add, num):
         """
-            Method to new address_tab
+            Method to add a new address_tab
             num is the tab number
             if add is None just insert a new empty table
         """
@@ -239,6 +245,9 @@ class client_view(object):
         return add_v
 
     def address_changed(self, widget_button):
+        """
+            On change some address entry handle
+        """
         tab_num = self.address_notebook.get_current_page()
         print self.address_pages
         add_id = self.address_pages[tab_num].add_id
@@ -399,6 +408,9 @@ class Address_view(object):
         return vbox
 
 def _None_to_str(txt):
+    """
+        Auxiliar method to return "" or str, but never None
+    """
     if txt == None:
         return ""
     return txt
