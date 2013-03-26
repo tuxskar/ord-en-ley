@@ -85,32 +85,43 @@ assoc_client_address = Table('client_address',Base.metadata,
 )
 
 def insert_test(session, debug=False):
-        clients = session.query(Client).all()
-        if len(clients) == 0 or debug:
-            # Delete already DB for debug 
-            if debug:
-                for c in clients:
-                    session.delete(c)
-            # Inserting clients
-            client1 = Client('Maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
-            client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
-            client3 = Client('Ana', 'Ramirez', '23456789r', web="www.anaramirez.tk")
-            a = [client1,client2,client3]
-            session.add_all(a)
-            # Address
-            address1 = Address("Alhama",84,"Lucena", "Cordoba","España",14900)
-            address2 = Address("Arroyo",56,"Rute", "Cordoba","España",14978)
-            address3 = Address("Almendros",1290 ,"Málaga", "Málaga","España",30264)
+    """
+        Method to insert dummy data in a empty database
+    """
+    clients = session.query(Client).all()
+    if len(clients) == 0 or debug:
+        # Delete already DB for debug 
+        if debug:
+            for c in clients:
+                session.delete(c)
+        # Inserting clients
+        client1 = Client('Maria', 'Ortega', '12345678z', 'maria-ortega@gmail.com', 'www.mariao.org')
+        client2 = Client('Josefa', 'Jimenez', '98765454s', 'JJimenez@hotmail.com', 'www.Jjimenez.es')
+        client3 = Client('Ana', 'Ramirez', '23456789r', web="www.anaramirez.tk")
+        # Address
+        address1 = Address("Alhama","84","Lucena", "Cordoba","España","14900")
+        address2 = Address("Arroyo","56","Rute", "Cordoba","España","14978")
+        address3 = Address("Almendros","1290" ,"Málaga", "Málaga","España","30264")
+        address4 = Address("Naranjos","12" ,"Madrid", "Madrid","España","76602")
+        address5 = Address("Pinos","90" ,"Granada", "Madrid","España","62764")
 
-            # Joining both classes
-            client1.address.append(address1)
-            client1.address.append(address2)
-            client2.address.append(address1)
-            client3.address.append(address3)
-            session.commit()
-            return True
+        # Joining both classes
+        client1.address.append(address1)
+        client1.address.append(address2)
+        client2.address.append(address1)
+        client2.address.append(address4)
+        client2.address.append(address5)
+        client3.address.append(address3)
+        client3.address.append(address5)
+        a = [client1,client2,client3]
+        session.add_all(a)
+        session.commit()
+        return True
                 
 def get_session(user = None, password = None, echo=False, sqlite=True):
+    """
+        Method to get a new session
+    """
     if sqlite:
         ordenpath = os.path.expanduser('~/.ordenley')
         if not os.path.exists(ordenpath):
@@ -141,11 +152,4 @@ def main():
     
 
 if __name__ == '__main__':
-#    Before use this module you should create a user and password plus create a database
-#    called leyenorden
-#    in mysql database you should loggin into root profile and execute:
-#    > mysql -u root -p
-#    mysql> create database leyenorden;
-#    mysql> grant all on ordenley.* to leyuser@localhost identified by 'pass';
-#    engine = create_engine("mysql://leyuser:pass@localhost/ordenley", echo=True)
      main()
