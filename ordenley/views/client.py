@@ -5,6 +5,7 @@ Created on Nov 17, 2012
 '''
 import sys
 import glib
+import tests
 
 try:  
     import pygtk  
@@ -22,7 +23,6 @@ import models.Models
 import db.db_manager
 import views
 
-debbuging = False
 class client_view(object):
     '''
         This view shows a client info or a client view for a new client
@@ -59,7 +59,7 @@ class client_view(object):
         self.notification_label = self.builder.get_object("notification_label")    
         self.apply_button = self.builder.get_object("apply")
         self.client_id_label = self.builder.get_object("client_id_label")
-        if debbuging:
+        if tests.debbuging:
             #For debug
             self.client_id_label.set_visible(True)
 
@@ -103,7 +103,7 @@ class client_view(object):
             self.email_entry.set_text(_None_to_str(client.email))
             self.web_entry.set_text(_None_to_str(client.web))
             #For debug
-            if debbuging:
+            if tests.debbuging:
                 self.client_id_label.set_visible(True)
             #first it removes the sample page, then it insert all address
             #that has the client
@@ -115,13 +115,14 @@ class client_view(object):
                     add_v = Address_view(self,add,i)
                     self.address_notebook.insert_page(add_v.pack,title, i)
                     self.address_pages.append(add_v)
-            else:
-                #insert an empty table
-                title = gtk.Label("Address 1")
-                add_v = Address_view(self,None,0)
-                self.address_notebook.insert_page(add_v.pack,title, 0)
-                self.address_pages.append(add_v)
-                self.has_new_add = 0 
+        if self.client == None or len(client.address)==0:
+            self.address_notebook.remove_page(0)
+            #insert an empty table
+            title = gtk.Label("Address 1")
+            add_v = Address_view(self,None,0)
+            self.address_notebook.insert_page(add_v.pack,title, 0)
+            self.address_pages.append(add_v)
+            self.has_new_add = 0 
 
     def save_apply(self, apply_button):
         """
@@ -129,7 +130,7 @@ class client_view(object):
         """
         #modify every change made in the view to close it 
         if "address" in self.modified:
-            if debbuging:
+            if tests.debbuging:
                 print "to_modify "
                 print self.to_modify_add
                 print "to_new_add "
@@ -286,6 +287,7 @@ class client_view(object):
 
     def address_changed(self, widget_button):
         tab_num = self.address_notebook.get_current_page()
+        print self.address_pages
         add_id = self.address_pages[tab_num].add_id
         if add_id == -1 and tab_num == self.has_new_add:
             #empty address changed 
@@ -387,10 +389,10 @@ class Address_view(object):
         self.postal_code_entry   = gtk.Entry()
         self.id_address_label    = gtk.Label("-1")
         self.street_label        = gtk.Label("Street")
-        self.street_number_label = gtk.Label("City")
-        self.city_label          = gtk.Label("Country")
-        self.state_label         = gtk.Label("Number")
-        self.country_label       = gtk.Label("State")
+        self.street_number_label = gtk.Label("Number")
+        self.city_label          = gtk.Label("City")
+        self.state_label         = gtk.Label("State")
+        self.country_label       = gtk.Label("Country")
         self.postal_code_label   = gtk.Label("Postal Code")
         self.pack = self.create_pack(address)
         #connecting signals to entry objects
@@ -432,14 +434,14 @@ class Address_view(object):
         if address != None:
             self.add_id = address.id
             self.street_entry.set_text(_None_to_str(address.street))
-            self.street_number_entry.set_text(_None_to_str(str(address.number)))
+            self.street_number_entry.set_text(_None_to_str(address.number))
             self.city_entry.set_text(_None_to_str(address.city))
             self.state_entry.set_text(_None_to_str(address.state))
             self.country_entry.set_text(_None_to_str(address.country))
-            self.postal_code_entry.set_text(_None_to_str(str(address.postal_code)))
+            self.postal_code_entry.set_text(_None_to_str(address.postal_code))
             self.id_address_label.set_text(str(address.id))
         vbox.show_all()
-        if not debbuging:
+        if not tests.debbuging:
             self.id_address_label.hide()
         return vbox
 
