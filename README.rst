@@ -47,22 +47,28 @@ As the program script is stored into bin you can run it using:
 
 > ordenley
 
-Actual version Pre-alpha
-------------------------
-This version allow you just work with simple clients
+Actual version 0.2.1dev Alpha
+-----------------------------
+This is an improved version and let you manage more complex clients and many to many address and clients
 
 Features
 ........
-- Tested (up to ~90%)
-- Database located in the same position (at home/.ordenley)
+- Insert/Modify/Delete clients
+- Insert/Modify/Delete address
 - Installation easy from PyPI using "pip install ordenley"
-- Show actual clients in the DB
-- Modify clients from UI
-- Add new clients from UI
-- Remove clients from UI
+- Identifiers for clients and address using id
+- No force to use not empty DNI for clients
+- Many clients could same address or more than one each one (many to many relation)
 
 Change-log
 ----------
+from 0.1.7dev
+    - Clients now could have address
+    - Clients identifiers by Id instead of by DNI
+    - New client_view GUI with address
+    - Reimplemented almos from scratch the code
+    - Better structure to add more features as modules
+    - New menu in main_view to add and delete client
 From 0.1.6dev
     - Renamed package test to tests to run the binary
     - Fixed main_window plot
