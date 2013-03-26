@@ -94,10 +94,15 @@ class Controller(object):
 
     ######## Manage main_view ########
     def init_main(self):
+        """
+            Method to populate the main_view at the begining of the 
+            program execution
+        """
         for client in self.db_manager.clients.get_client_columns():
             row_client = [client[0],client[1], client[2], client[3]]
             self.main_view.add_row_client(row_client)
         self.main_view.show()
+
     def connect_main_view(self, view):
         """
             Method to connect controller with unique main_view
@@ -120,6 +125,9 @@ class Controller(object):
         self.main_view.new_client_row(client)
 
     def insert_test_clients(self):
+        """
+            Method to insert a dummy data if the database is empty
+        """
         self.db_manager.clients.insert_test_clients()
 
 if __name__ == '__main__':
