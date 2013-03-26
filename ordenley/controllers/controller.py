@@ -99,8 +99,7 @@ class Controller(object):
             program execution
         """
         for client in self.db_manager.clients.get_client_columns():
-            row_client = [client[0],client[1], client[2], client[3]]
-            self.main_view.add_row_client(row_client)
+            self.main_view.add_row_client(client)
         self.main_view.show()
 
     def connect_main_view(self, view):
@@ -122,7 +121,7 @@ class Controller(object):
         """
             Method to add the client to the main_view client_tree
         """
-        self.main_view.new_client_row(client)
+        self.main_view.add_row_client(client)
 
     def insert_test_clients(self):
         """

@@ -128,7 +128,17 @@ class client_view(object):
             Method to save all the changes done on the view
         """
         #modify every change made in the view to close it 
+        if "client" in self.modified:
+            c = self.get_client_from_view()
+            self.client = c
+            if c.id != -1:
+                self.controller.client_returned_values("client","modified",c,c.id)
+            else:
+                self.controller.client_returned_values("client","new",c,None)
         if "address" in self.modified:
+            if self.client == None:
+                self.info("You must fill a client to add an address")
+                return None
             if tests.debbuging:
                 print "to_modify "
                 print self.to_modify_add
@@ -146,13 +156,8 @@ class client_view(object):
                 self.controller.client_returned_values("address","modified",a,mod)
             for d in self.to_delete_add:
                 self.controller.client_returned_values("address","delete",None, d)
-        if "client" in self.modified:
-            c = self.get_client_from_view()
-            if c.id != -1:
-                self.controller.client_returned_values("client","modified",c,c.id)
-            else:
-                self.controller.client_returned_values("client","new",c,None)
         self.cancel(None)
+        self.controller.add_client_row(self.client)
 
     def get_address_from_page(self, n):
         """
@@ -249,7 +254,8 @@ class client_view(object):
             On change some address entry handle
         """
         tab_num = self.address_notebook.get_current_page()
-        print self.address_pages
+        if tests.debbuging:
+            print self.address_pages
         add_id = self.address_pages[tab_num].add_id
         if add_id == -1 and tab_num == self.has_new_add:
             #empty address changed 

@@ -45,12 +45,16 @@ class main_view(object):
         self.treeview = self.builder.get_object("client_tree")
         self.liststore = self.builder.get_object("client_store")
         self.notifier_label = self.builder.get_object("notifier_label")
+        self.id_column = self.builder.get_object("id_column")
+        self.id_column.set_visible(False)
         
         self.window = self.builder.get_object(self.main_window_name)
         if tests.debbuging:
             print "self.window=" + str(self.window)
             print "self.filename=" + str(self.filename)
             print "self.builder=" + str(self.builder)
+            self.id_column.set_visible(True)
+
         
         dic = {
         "gtk_main_quit" : self.quit,
@@ -65,7 +69,7 @@ class main_view(object):
         # iter_id is a variable to get all pairs id iter in the liststore
         self.__iter_id = {}
     
-    def add_row_client(self, client_column, old_id=None):
+    def add_row_client(self, client):
         """
             This method add new row client if doesn't exist it append a new one, otherwise 
             it modify the actual client Treerow
@@ -73,8 +77,9 @@ class main_view(object):
             c_id | name | surname | DNI | street | number | city | state | postal_code
             where c_id column is hidden
         """
-        if old_id != None:
-            treeiter = self.__iter_id.get(old_id)
+        client_column = [client.id, client.name, client.surname, client.dni]
+        treeiter = self.__iter_id.get(client.id)
+        if treeiter != None:
             self.liststore.insert_before(treeiter, client_column)
             self.liststore.remove(treeiter)
             self.__iter_id[client_column[0]] = treeiter
