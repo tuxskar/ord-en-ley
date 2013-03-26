@@ -22,7 +22,7 @@ import models.Models
 import db.db_manager
 import views
 
-debbuging = True
+debbuging = False
 class client_view(object):
     '''
         This view shows a client info or a client view for a new client
@@ -172,11 +172,13 @@ class client_view(object):
             id = add_v.add_id
             street      = add_v.street_entry.get_text()
             #number      = int(add_v.street_number_entry.get_text())
+            number      = add_v.street_number_entry.get_text()
             city        = add_v.city_entry.get_text()
             state       = add_v.state_entry.get_text()
             country     = add_v.country_entry.get_text()
             #postal_code = int(add_v.postal_code_entry.get_text()) 
-            return models.Models.Address(street,city=city,state=state,country=country,id=id)
+            postal_code = add_v.postal_code_entry.get_text()
+            return models.Models.Address(street,number, city,state,country,postal_code,id)
         
     def get_client_from_view(self):
         """
@@ -430,15 +432,15 @@ class Address_view(object):
         if address != None:
             self.add_id = address.id
             self.street_entry.set_text(_None_to_str(address.street))
-            self.street_number_entry.set_text(_None_to_str(address.number))
+            self.street_number_entry.set_text(_None_to_str(str(address.number)))
             self.city_entry.set_text(_None_to_str(address.city))
             self.state_entry.set_text(_None_to_str(address.state))
             self.country_entry.set_text(_None_to_str(address.country))
-            self.postal_code_entry.set_text(_None_to_str(address.postal_code))
+            self.postal_code_entry.set_text(_None_to_str(str(address.postal_code)))
             self.id_address_label.set_text(str(address.id))
         vbox.show_all()
         if not debbuging:
-            self.id_address_label.hidde()
+            self.id_address_label.hide()
         return vbox
 
 def _None_to_str(txt):
