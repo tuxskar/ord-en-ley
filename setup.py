@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-version = '0.1.7dev'
+version = '0.2.1dev'
 
 REQUIREMENTS = [
         'SQLAlchemy>=0.7.8',
@@ -26,7 +26,7 @@ setup(name = 'ordenley',
           ['ordenley = ordenley.tests.run:main']
           },
       classifiers = [
-          'Development Status :: 2 - Pre-Alpha',
+          'Development Status :: 3 - Alpha',
           'Intended Audience :: End Users/Desktop',
           'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
           'Environment :: X11 Applications :: GTK',
