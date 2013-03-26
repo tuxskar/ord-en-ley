@@ -48,21 +48,25 @@ class Address(Base):
 
     id          = Column(Integer, primary_key = True)
     street      = Column(String(60), nullable = False)
-    number      = Column(Integer)
+    #number      = Column(Integer)
+    number      = Column(String(30))
     city        = Column(String(50))
     state       = Column(String(50))
     country     = Column(String(50))
-    postal_code = Column(Integer)
+    #postal_code = Column(Integer)
+    postal_code = Column(String(30))
         
     def __init__(self, street, number=None, city=None, state=None,
             country=None, postal_code=None, id = None):
         """Class constructor"""
         self.street      = _decode_or_none(street)
-        self.number      = number
+        #self.number      = number
+        self.number      = _decode_or_none(number)
         self.city        = _decode_or_none(city)
         self.state       = _decode_or_none(state)
         self.country     = _decode_or_none(country)
-        self.postal_code = postal_code
+        #self.postal_code = postal_code
+        self.postal_code = _decode_or_none(postal_code)
         self.id = id
 
     def __repr__(self):
