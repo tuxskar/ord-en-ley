@@ -45,8 +45,6 @@ class main_view(object):
         self.treeview = self.builder.get_object("client_tree")
         self.liststore = self.builder.get_object("client_store")
         self.notifier_label = self.builder.get_object("notifier_label")
-        #dni_column = self.builder.get_object("id_column")
-        #dni_column.set_visible(False)
         
         self.window = self.builder.get_object(self.main_window_name)
         if tests.debbuging:
@@ -66,7 +64,6 @@ class main_view(object):
         self.window.set_title("Ord-en Ley")
         # iter_id is a variable to get all pairs id iter in the liststore
         self.__iter_id = {}
-        
     
     def add_row_client(self, client_column, old_id=None):
         """
@@ -89,6 +86,9 @@ class main_view(object):
             self.info("Added client %s %s" % (client_column[1], client_column[2]))
     
     def row_activated(self, tree_view, path, column):
+        """
+            on client_tree_row_activated handle
+        """
         treeiter = self.liststore.get_iter(path)
         #it get the id of the client selected stored in liststore
         c_id = self.liststore.get_value(treeiter, 0)
@@ -96,7 +96,9 @@ class main_view(object):
         self.controller.show_client("info", c_id)
     
     def deactivate_client(self, c_id):
-        """Remove client from activated_clients by c_id"""
+        """
+            Remove client from activated_clients by c_id
+        """
         if self.activated_clients.count(c_id) != 0:
             self.activated_clients.remove(c_id)
             return True
@@ -104,6 +106,9 @@ class main_view(object):
             return False
 
     def new_client(self, new_button):
+        """
+            on_new_client_clicked handle
+        """
         self.controller.show_client(kind="new")
         self.info("Inserting new client")
 
@@ -114,6 +119,9 @@ class main_view(object):
         self.notifier_label.set_text(msg)
         
     def delete_client(self, delete_button):
+        """
+            on_delete_client_clicked handle
+        """
         model, treeiter = self.treeview.get_selection().get_selected()
         if treeiter != None:
             c_id = model.get_value(treeiter, 0)
@@ -138,6 +146,10 @@ class main_view(object):
             self.info("A Row must be selected to be deleted") 
 
     def delete_client_dialog(self, name, surname, dni):
+        """
+            Method to create a dialog to ask if really want to delete
+            the client selected
+        """
         delete_dialog = gtk.Dialog("Delete client", self.window,
                                   gtk.DIALOG_MODAL,
                                   ( gtk.STOCK_NO, True ,
