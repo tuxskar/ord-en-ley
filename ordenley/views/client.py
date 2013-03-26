@@ -193,53 +193,6 @@ class client_view(object):
         web     = self.web_entry.get_text()
         return models.Models.Client(name, surname, dni,email,web, id=id)
 
-
-
-
-
-
-
-        #if self.client == None:
-            #self.cancel(None)
-        #else:
-            #if self.modified_add.count("address") > 0:
-                #for to_del in self.deleted_address:
-                    #self.controller.client_returned_values("client","delete",None,self.deleted_address[to_del])
-                ##for to_add in self.new_address:
-
-
-            
-
-        #if self.entry_changed#
-            #new_dni = self.dni_entry.get_text().decode('utf-8')
-            #exist = self.controller.client_exist(new_dni)
-            #if new_dni=="":
-                #self.warning_label.set_text("DNI field must be filled")
-                #self.warning_label.show()
-            #elif new_dni[0] == "#":
-                #self.warning_label.set_text("DNI not able to start with #")
-                #self.warning_label.show()
-            #elif (self.old_dni != new_dni and exist):
-                #self.warning_label.set_text("DNI already in the system")
-                #self.warning_label.show()
-            #else:
-                #self.warning_label.hide()
-                #client = models.Models.Client(self.name_entry.get_text(),
-                                          #self.surname_entry.get_text(),
-                                          #new_dni,
-                                          #self.email_entry.get_text(),
-                                          #self.web_entry.get_text(),
-                                          #)
-                ##if new_dni != self.old_dni or exist:
-                #if exist:
-                    #self.controller.to_modify(self.old_dni, client)
-                #else:
-                    #self.controller.insert_new_client(client)
-                #self.controller.refresh_clients_main_view(client, old_dni=self.old_dni)
-                #self.window.hide()
-        #else:
-            #self.window.hide()
-
     def cancel(self, widget):
         """
             Method to handle on cancel button clicked
