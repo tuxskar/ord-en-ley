@@ -30,15 +30,24 @@ class db_manager(object):
         self.clients.self.session = self.session
         self.address.self.session = self.session
 
+"""
+    All object and method use the object.id as identifier
+"""
 class db_client_manager(object):
     def __init__(self, session):
-        """db_client_constructor, it needs session to manage be built in"""
+        """
+            db_client_constructor, it needs session to manage be built in
+        """
         self.session = session
 
     def get_all_clients(self):
         return self.session.query(models.Models.Client).all()
     
     def get_client_columns(self):
+        """
+            Method to return all needed values from main_view to plot
+            the information of all client in the main Treeview
+        """
         return self.session.query(
                            models.Models.Client.id, 
                            models.Models.Client.name, 
@@ -53,6 +62,10 @@ class db_client_manager(object):
         self.session.commit()
     
     def insert(self, client):
+        """
+            Method to add new client into DB, if client.id has to be None or it will 
+            change it to generate a new id by the ORM
+        """
         if client.id != None:
             client.id = None
         self.session.add(client)
@@ -60,6 +73,9 @@ class db_client_manager(object):
         #self.session.flush()
 
     def modify(self, client, old_client_id):
+        """
+            Modify the client with old_client_id using the client values
+        """
         a = self.get_client(old_client_id)
         a.name = client.name
         a.surname = client.surname
@@ -73,7 +89,9 @@ class db_client_manager(object):
         models.Models.insert_test(self.session)
 
     def exist(self, client_id):
-        """Check if client exist in the db"""
+        """
+            Check if client exist in the db
+        """
         if self.get_client(client_id):
             return True
         else:
@@ -81,12 +99,16 @@ class db_client_manager(object):
 
 class db_address_manager(object):
     def __init__(self, session):
-        """db_address_manager constructor, it needs a session to build it in"""
+        """
+            db_address_manager constructor, it needs a session to build it in
+        """
         self.session = session
 
     def exist(self, a_id):
-        """Function to check if an address with id==a_id is already on the system
-        if the address is already on the system returns the actual id, otherwise False"""
+        """
+            Function to check if an address with id==a_id is already on the system
+            if the address is already on the system returns the actual id, otherwise False
+        """
         aid = self.session.query(models.Models.Address.id).\
                 filter(models.Models.Address.id==a_id).first()
         if aid == None:
@@ -94,8 +116,10 @@ class db_address_manager(object):
         return aid
 
     def exist_by_object(self, a):
-        """Function to check if an address is already on the system
-        if the address is already on the system returns the actual id, otherwise False"""
+        """
+            Function to check if an address is already on the system using the entire object as _a_
+            if the address is already on the system returns the actual id, otherwise False
+        """
         if not(a in self.session):
             aid = self.session.query(models.Models.Address.id).\
                     filter(models.Models.Address.street==a.street,
@@ -110,24 +134,34 @@ class db_address_manager(object):
         return a.id
 
     def delete(self, a):
-        """Method to delete the address a"""
+        """
+            Method to delete the address a
+        """
         (ret_id,) = self.exist(a) 
         if ret_id != False:
             self.session.query(models.Models.Address).filter(models.Models.Address.id==ret_id).delete()
             self.session.commit()
 
     def get_all(self):
-        """Method to return all the address in the system"""
+        """
+            Method to return all the address in the system
+        """
         return self.session.query(models.Models.Address).all()
 
     def get_address(self, add_id):
-        """Method to return all the address in the system"""
+        """
+            Method to return all the address in the system
+        """
         return self.session.query(models.Models.Address).filter(models.Models.Address.id==add_id).first()
 
     def get_address_columns(self):
         pass
 
     def insert(self, a):
+        """
+            Method to add new address into DB, if client.id has to be None or it will 
+            change it to generate a new id by the ORM
+        """
         """Method to insert a new address a """
         if a.id != None:
             a.id = None
@@ -137,7 +171,9 @@ class db_address_manager(object):
         self.session.commit()
 
     def modify(self, a, b_id):
-        """Method to modify the address _a_ using the _b_ address instead"""
+        """
+            Method to modify the address with _b_id_ as id using the _a_ address instead
+        """
         b_address = self.get_address(b_id)
         b_address.street      = a.street
         b_address.number      = a.number
@@ -149,7 +185,9 @@ class db_address_manager(object):
         self.session.commit()
 
     def insert_address_to_client(self, client, address, commit=True):
-        """Method to add new address to the client client"""
+        """
+            Method to add new address to the client client
+        """
         self.session.add(address)
         address.clients.append(client)
         if commit==True:
@@ -157,7 +195,7 @@ class db_address_manager(object):
 
 def main():
     """main fuction in db_manager"""
-    return True
+    pass
 
 if __name__ == '__main__':
     main()
