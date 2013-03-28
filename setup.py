@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-version = '0.2.1dev'
+version = '0.2.2dev'
 
 REQUIREMENTS = [
         'SQLAlchemy>=0.7.8',
@@ -17,8 +17,8 @@ setup(name = 'ordenley',
       url = 'http://github.com/tuxskar/ord-en-ley',
       packages = find_packages(),
       data_files = [
-          ('ordenley/interfaces' , ['ordenley/views/interfaces/main_view.glade',
-              'ordenley/views/interfaces/client_view.glade']),
+          ('ordenley/interfaces' , ['ordenley/views/interfaces/main_view.ui',
+              'ordenley/views/interfaces/client_view.ui']),
             ],
       install_requires = REQUIREMENTS,
       entry_points = {
