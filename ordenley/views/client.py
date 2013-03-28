@@ -40,7 +40,7 @@ class client_view(object):
         self.controller = ctrl
         self.builder = gtk.Builder()
         main_window_name = "client_info"
-        glade_name = "client_view.glade"
+        glade_name = "client_view.ui"
         try:
             self.filename = views.get_data_dev(glade_name)
             self.builder.add_from_file(self.filename)

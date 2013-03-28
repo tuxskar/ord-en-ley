@@ -34,7 +34,7 @@ class main_view(object):
         self.controller = ctrl
         self.builder = gtk.Builder()
         self.main_window_name = "Ord-en Ley"
-        glade_name = "main_view.glade"
+        glade_name = "main_view.ui"
         try:
             self.filename = views.get_data_dev(glade_name)
             self.builder.add_from_file(self.filename)
